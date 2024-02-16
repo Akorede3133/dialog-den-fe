@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-secondary: #878a92;
+  --color-primary: #343a40;
+  --color-silver: #E6EBF5;
+  --color-blue: #7269EF;
+  --color--background--light: #fff;
+  --color--background--dark: #262E35;
+  --color--sidebar-light: #7269EF;
+  --color-sidebar--dark: #303841;
+  --color--sender--background--dark: #262E35;
+  --color--message--cirle: #523B49;
+  --color--message--text: #EF4669;
+}
