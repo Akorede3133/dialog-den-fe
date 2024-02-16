@@ -1,7 +1,34 @@
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
+import Chat from "./features/chats/Chat"
+import AppLayout from "./components/AppLayout"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import Profile from "./features/profile/Profile"
+import Settings from "./features/settings/Settings"
+import Contacts from "./features/contacts/Contacts"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production"
+
+const router = createBrowserRouter(createRoutesFromElements(
+  <Route element={<AppLayout />}>
+    <Route path="/" element={<Chat />} />
+    <Route path="profile" element={<Profile />} />
+    <Route path="settings" element={<Settings />} />
+    <Route path="contacts" element={<Contacts />} />
+  </Route>
+))
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 0
+    }
+  }
+});
 const App = () => {
   return (
-    <div className="">App</div>
+    <QueryClientProvider client={client} >
+      <ReactQueryDevtools initialIsOpen={false} />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   )
 }
 
-export default App
+export default App;
