@@ -9,6 +9,7 @@ export default {
       colors: {
         'bg-light': '#fff',
         'bg-dark': '#262e35',
+        'text-primary': '#343a40',
         'primary-blue': '#7269ef',
         'sidebar-light': '#F5F7FB',
         'sidebar-dark': '#303841',

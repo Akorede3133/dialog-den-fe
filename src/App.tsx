@@ -1,5 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
-import Chat from "./features/chats/Chat"
+import Chat from "./features/chats/page/Chat"
 import AppLayout from "./components/AppLayout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Profile from "./features/profile/Profile"
