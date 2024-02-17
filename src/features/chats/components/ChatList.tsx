@@ -1,11 +1,12 @@
 import ActiveUsers from "./ActiveUsers"
 import ChatListHeader from "./ChatListHeader"
+import RecentChats from "./RecentChats"
 
 const ChatList = () => {
   return (
-    <div className="w-[90%] mx-auto">
+    <div className="">
       <ChatListHeader />
-      <ActiveUsers />
+      <RecentChats />
     </div>
   )
 }
