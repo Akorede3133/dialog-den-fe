@@ -4,7 +4,7 @@ import AppLayout from "./components/AppLayout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Profile from "./features/profile/Profile"
 import Settings from "./features/settings/Settings"
-import Contacts from "./features/contacts/Contacts"
+import Contacts from "./features/contacts/page/Contacts"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 const router = createBrowserRouter(createRoutesFromElements(
