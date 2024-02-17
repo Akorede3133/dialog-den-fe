@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Profile from "./features/profile/Profile"
 import Settings from "./features/settings/Settings"
 import Contacts from "./features/contacts/Contacts"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route element={<AppLayout />}>
@@ -18,14 +18,14 @@ const router = createBrowserRouter(createRoutesFromElements(
 const client = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 0
+      staleTime: 0,
     }
   }
 });
 const App = () => {
   return (
     <QueryClientProvider client={client} >
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       <RouterProvider router={router} />
     </QueryClientProvider>
   )
