@@ -2,7 +2,7 @@ import ChatListHeader from "./ChatListHeader"
 
 const ChatList = () => {
   return (
-    <div>
+    <div className="w-[90%] mx-auto">
       <ChatListHeader />
     </div>
   )

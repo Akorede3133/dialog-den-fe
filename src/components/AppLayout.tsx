@@ -5,7 +5,7 @@ const AppLayout = () => {
   return (
     <div>
       <NavBar />
-      <main>
+      <main className='sm:ml-[5rem]'>
         <Outlet />
       </main>
     </div>
