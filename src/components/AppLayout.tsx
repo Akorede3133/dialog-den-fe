@@ -1,15 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
+import Conversation from '../features/chats/components/Conversation';
 
 const AppLayout = () => {
   return (
     <div className='relative'>
       <NavBar />
-      <main className='sm:ml-[5rem] flex  bg-blu'>
-        <div className=' w-full sm:w-[400px] bg-sidebar-light min-h-screen'>
+      <main className='sm:ml-[5rem] flex  bg-blu relative'>
+        <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen'>
           <Outlet />
         </div>
-        <div className='hidden sm:block bg-red-500 min-h-screen'>
+        <div className=' sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-white'>
+          <Conversation />
         </div>
       </main>
     </div>

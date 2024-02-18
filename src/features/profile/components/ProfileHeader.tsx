@@ -4,7 +4,7 @@ import logo from '../../../assets/logo.png';
 
 const ProfileHeader = () => {
   return (
-    <div className="px-5 my-10">
+    <div className="px-5 mb-10">
       <section className="flex justify-between">
         <PagesHeader text="My Profile" />
         <button>
