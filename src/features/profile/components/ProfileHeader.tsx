@@ -1,6 +1,6 @@
-import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineEllipsisVertical, HiOutlineUser } from "react-icons/hi2"
 import PagesHeader from "../../../components/PagesHeader"
 import logo from '../../../assets/logo.png';
+import { HiOutlineEllipsisVertical } from "react-icons/hi2";
 
 const ProfileHeader = () => {
   return (

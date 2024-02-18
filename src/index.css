@@ -6,14 +6,20 @@
   width: 0;
 }
 
+/* body {
+  overflow: hidden;
+} */
+
 .recent--chats::-webkit-scrollbar,
- .profile::-webkit-scrollbar,
- .contacts::-webkit-scrollbar {
+.profile::-webkit-scrollbar,
+.contacts::-webkit-scrollbar,
+.convo::-webkit-scrollbar {
   width: 6px;
 }
 .recent--chats::-webkit-scrollbar-thumb,
 .profile::-webkit-scrollbar-thumb,
-.contacts::-webkit-scrollbar-thumb {
+.contacts::-webkit-scrollbar-thumb,
+.convo::-webkit-scrollbar-thumb {
   background-color: #c9d1e1;
   border-radius: 3px;
 }
