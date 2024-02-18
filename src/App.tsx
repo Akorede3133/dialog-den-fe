@@ -2,7 +2,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Chat from "./features/chats/page/Chat"
 import AppLayout from "./components/AppLayout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import Profile from "./features/profile/Profile"
+import Profile from "./features/profile/page/Profile"
 import Settings from "./features/settings/Settings"
 import Contacts from "./features/contacts/page/Contacts"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
