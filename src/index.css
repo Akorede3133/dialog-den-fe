@@ -2,21 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-::-webkit-scrollbar {
+ body::-webkit-scrollbar {
+  width: 0;
+}
+
+.recent--chats::-webkit-scrollbar,
+ .profile::-webkit-scrollbar,
+ .contacts::-webkit-scrollbar {
+  width: 6px;
+}
+.recent--chats::-webkit-scrollbar-thumb,
+.profile::-webkit-scrollbar-thumb,
+.contacts::-webkit-scrollbar-thumb {
+  background-color: #c9d1e1;
+  border-radius: 3px;
+}
+
+/* ::-webkit-scrollbar {
   width: 0;
 }
 
 :hover::-webkit-scrollbar {
   width: 6px;
-}
+} */
 
-::-webkit-scrollbar-thumb {
-  background-color: #c9d1e1;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track {
   background-color: #f1f1f1;
-}
+} */
 
 
 :root {

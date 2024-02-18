@@ -4,7 +4,7 @@ import logo from '../../../assets/logo.png';
 
 const ProfileHeader = () => {
   return (
-    <div className="px-5 mb-10">
+    <div className="px-5">
       <section className="flex justify-between">
         <PagesHeader text="My Profile" />
         <button>
@@ -20,41 +20,6 @@ const ProfileHeader = () => {
       </section>
       <section className=" border-t  my-5 py-3">
         <p className="text-text-gray">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual.</p>
-      </section>
-      <section className="bg-white py-2 px-4 shadow-md">
-        <div className=" flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <HiOutlineUser />
-            <span className="text-sm">About</span>
-          </div>
-          <button>
-            {false && <HiOutlineChevronUp />}
-            <HiOutlineChevronDown />
-
-          </button>
-        </div>
-        <ul className="space-y-4 my-3">
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-        </ul>
       </section>
     </div>
   )
