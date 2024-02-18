@@ -2,7 +2,7 @@ import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingG
 import logo from '../../../assets/logo.png';
 const ConversationHeader = () => {
   return (
-    <div className="flex justify-between bg-white px-3">
+    <div className="flex justify-between bg-white px-3 border-b">
      <section className="flex items-center gap-2">
       <button className="sm:hidden">
         <HiOutlineChevronLeft />
@@ -12,7 +12,7 @@ const ConversationHeader = () => {
         <span className="h-[10px] w-[10px] bg-green-500 rounded-full"></span>
      </section>
 
-     <ul className="flex items-center gap-5">
+     <ul className="flex items-center gap-10">
       <li>
         <button>
           <HiOutlineMagnifyingGlass className="text-xl" />

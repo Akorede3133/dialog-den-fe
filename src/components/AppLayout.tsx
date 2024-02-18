@@ -10,7 +10,7 @@ const AppLayout = () => {
         <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2'>
           <Outlet />
         </div>
-        <div className='hidde sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
+        <div className='sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
           <Conversation />
         </div>
       </main>

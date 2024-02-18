@@ -2,7 +2,7 @@ import ContactCard from "./ContactCard"
 
 const ContactItems = () => {
   return (
-    <div className="h-[400px] sm:h-[600px] overflow-auto contacts px-5">
+    <div className="h-[450px] overflow-auto contacts px-5">
       <ul className=" mt-6 space-y-8">
         <ContactCard />
         <ContactCard />

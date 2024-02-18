@@ -3,7 +3,7 @@ import ContactsHeader from "./ContactsHeader"
 
 const ContactsList = () => {
   return (
-    <div>
+    <div className="">
       <ContactsHeader />
       <ContactItems />
     </div>
