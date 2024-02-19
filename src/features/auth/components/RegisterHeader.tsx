@@ -2,7 +2,7 @@ import logo from '../../../assets/chat-logo.png';
 
 const RegisterHeader = () => {
   return (
-    <section className='flex flex-col justify-center items-center min-h-screen gap-10'>
+    <section className='flex flex-col justify-center items-center gap-10'>
       <div className='flex gap-3 items-center'>
         <img src={logo} alt="" className='w-[30px] object-cover'/>
         <h3 className=' text-text-primary text-2xl font-medium'>DialogueDen</h3>
