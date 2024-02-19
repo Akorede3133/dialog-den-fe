@@ -28,14 +28,6 @@ const ProfileContent = () => {
             <p>Name</p>
             <p>Patricia Smith</p>
           </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
-          <li>
-            <p>Name</p>
-            <p>Patricia Smith</p>
-          </li>
         </ul>
       </section>
     </div>
