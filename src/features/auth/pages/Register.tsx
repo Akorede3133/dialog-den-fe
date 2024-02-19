@@ -1,6 +1,10 @@
+import RegisterHeader from "../components/RegisterHeader"
+
 const Register = () => {
   return (
-    <div>Register</div>
+    <div className=" bg-bg-silver">
+      <RegisterHeader />
+    </div>
   )
 }
 
