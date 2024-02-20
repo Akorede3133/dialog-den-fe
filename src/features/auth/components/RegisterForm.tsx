@@ -11,7 +11,7 @@ const RegisterForm = () => {
           <button className="bg-bg-silver p-3">
             <HiOutlineMail className=" text-text-gray" />
           </button>
-          <input type="email" placeholder="Enter Email" className=" outline-none text-sm" />
+          <input type="email" placeholder="Enter Email" className=" outline-none text-sm w-full" />
         </div>
       </section>
       <section className=" space-y-2">
@@ -20,7 +20,7 @@ const RegisterForm = () => {
           <button className="bg-bg-silver p-3">
             <HiOutlineUser className=" text-text-gray" />
           </button>
-          <input type="text" placeholder="Enter Username" className=" outline-none text-sm" />
+          <input type="text" placeholder="Enter Username" className=" outline-none text-sm w-full" />
         </div>
       </section>
       <section className=" space-y-2">
@@ -29,7 +29,7 @@ const RegisterForm = () => {
           <button className="bg-bg-silver p-3">
             <HiOutlineLockClosed className=" text-text-gray" />
           </button>
-          <input type="password" placeholder="Enter Password" className=" outline-none text-sm" />
+          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full" />
         </div>
       </section>
       <section className="pt-3">

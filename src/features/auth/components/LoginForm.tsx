@@ -10,7 +10,7 @@ const LoginForm = () => {
           <button className="bg-bg-silver p-3">
             <HiOutlineUser className=" text-text-gray" />
           </button>
-          <input type="text" placeholder="Enter Username" className=" outline-none text-sm" />
+          <input type="text" placeholder="Enter Username" className=" outline-none text-sm w-full" />
         </div>
       </section>
       <section className=" space-y-2">
@@ -19,14 +19,14 @@ const LoginForm = () => {
           <button className="bg-bg-silver p-3">
             <HiOutlineLockClosed className=" text-text-gray" />
           </button>
-          <input type="password" placeholder="Enter Password" className=" outline-none text-sm" />
+          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full" />
         </div>
       </section>
       <section className="pt-3">
         <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md">Register</button>
       </section>
       <section className="text-center space-y-3 pt-5">
-        <p>Don&apos;t have an account? <Link to='/login' className="text-message-bg-blue">register</Link></p>
+        <p>Don&apos;t have an account? <Link to='/register' className="text-message-bg-blue">register</Link></p>/
         <p>&copy; 2024 Dialogden</p>
       </section>
     </form>
