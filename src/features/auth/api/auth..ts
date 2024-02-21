@@ -18,7 +18,9 @@ export const register = async (data: RegisterProp) => {
       throw new Error(result.message);
     }
   } catch (error) {
-    throw new Error(error.message)
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
   }
  
 }
