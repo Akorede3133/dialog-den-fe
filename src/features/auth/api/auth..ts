@@ -38,7 +38,7 @@ export const login = async (data: RegisterProp) => {
       body: JSON.stringify(data)
     });
     const result = await response.json();
-        
+    
     if(!response.ok) {
       throw new Error(result.message);
     }
