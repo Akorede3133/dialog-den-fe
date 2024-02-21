@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.BASE_URL;
+const API_URL = import.meta.env.VITE_BASE_URL;
 
 type RegisterProp = {
   username: string;
@@ -8,12 +8,16 @@ type RegisterProp = {
 
 export const register = async (data: RegisterProp) => {
   try {
+      console.log(data);
     const response = await fetch(`${API_URL}/register`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(data)
     });
     const result = await response.json();
-  
+        
     if(!response.ok) {
       throw new Error(result.message);
     }
