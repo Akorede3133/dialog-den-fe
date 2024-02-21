@@ -13,7 +13,8 @@ export const register = async (data: RegisterProp) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      credentials: 'include'
     });
     const result = await response.json();
 
@@ -35,7 +36,26 @@ export const login = async (data: RegisterProp) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
+      credentials: 'include'
+    });
+    const result = await response.json();
+    
+    if(!response.ok) {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
+ 
+}
+
+export const currentUser = async () => {
+  try {
+    const response = await fetch(`${API_URL}/currentUser`, {
+      credentials: 'include'
     });
     const result = await response.json();
     

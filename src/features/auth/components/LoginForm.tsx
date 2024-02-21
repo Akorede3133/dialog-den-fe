@@ -46,7 +46,7 @@ const LoginForm = () => {
         <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isLogginIn}>Login</button>
       </section>
       <section className="text-center space-y-3 pt-5">
-        <p>Don&apos;t have an account? <Link to='/register' className="text-message-bg-blue">register</Link></p>/
+        <p>Don&apos;t have an account? <Link to='/register' className="text-message-bg-blue">register</Link></p>
         <p>&copy; 2024 Dialogden</p>
       </section>
     </form>
