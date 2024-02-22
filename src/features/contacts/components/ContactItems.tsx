@@ -1,27 +1,20 @@
-import ContactCard from "./ContactCard"
+import useGetUsers from "../../auth/hooks/useGetUsers"
+import ContactCard, { UserProp } from "./ContactCard"
 
 const ContactItems = () => {
+  const { isGettingUsers, users, error} = useGetUsers();
+
+  if (isGettingUsers) {
+    return <p>Loading...</p>
+  }
+  
+  
   return (
     <div className="h-[450px] overflow-auto contacts px-5">
       <ul className=" mt-6 space-y-8">
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-        <ContactCard />
-
-
+      {Object.entries(users).map(([category, usersInCategory]) => (
+          <ContactCard key={category} category={category} users={usersInCategory as UserProp[]} />
+        ))}
       </ul>
     </div>
   )
