@@ -6,7 +6,7 @@ export type DataProp = {
 };
 
 
-const sendMessage = async (data: DataProp, receiverId: string) => {
+const sendMessage = async (data: DataProp, receiverId: number) => {
   try {
     const response = await fetch(`${API_URL}/send/${receiverId}`, {
       method: 'POST',

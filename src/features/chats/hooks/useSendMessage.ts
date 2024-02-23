@@ -3,11 +3,14 @@ import sendMessage, { DataProp } from "../api/sendMessage"
 
 type MessageProp = {
   data: DataProp;
-  receiverId: string;
+  receiverId: number;
 }
 const useSendMessage = () => {
   const { mutate: send, isPending: isSending} = useMutation({
-    mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId)
+    mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
+    onSuccess: () => {
+      
+    }
   })
 
   return { send, isSending }
