@@ -1,6 +1,10 @@
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import logo from '../../../assets/logo.png';
+import { useAppSelector } from "../../../redux/hooks";
+import { selectChat } from "../redux/chatSlice";
 const ConversationHeader = () => {
+  const { receiver } = useAppSelector(selectChat);
+
   return (
     <div className="flex justify-between bg-white px-3 border-b">
      <section className="flex items-center gap-2">
@@ -8,7 +12,7 @@ const ConversationHeader = () => {
         <HiOutlineChevronLeft />
       </button>
         <img src={logo} alt="" className="w-[35px] h-[35px] rounded-full" />
-        <p>Patrick Hendricks</p>
+        <p>{receiver?.username}</p>
         <span className="h-[10px] w-[10px] bg-green-500 rounded-full"></span>
      </section>
 
