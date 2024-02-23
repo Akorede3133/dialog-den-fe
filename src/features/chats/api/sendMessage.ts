@@ -1,6 +1,6 @@
 const API_URL = import.meta.env.VITE_BASE_URL;
 
-type DataProp = {
+export type DataProp = {
   content: string;
   type: string;
 };
