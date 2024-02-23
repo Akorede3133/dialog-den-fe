@@ -7,6 +7,9 @@ const ContactItems = () => {
   if (isGettingUsers) {
     return <p>Loading...</p>
   }
+  if (error) {
+    return <p>{error.message}</p>
+  }
   
   
   return (
