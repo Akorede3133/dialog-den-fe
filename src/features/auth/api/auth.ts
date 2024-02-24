@@ -1,3 +1,5 @@
+import { UserProp } from "../../contacts/components/ContactCard";
+
 const API_URL = import.meta.env.VITE_BASE_URL;
 
 type RegisterProp = {
@@ -52,7 +54,7 @@ export const login = async (data: RegisterProp) => {
  
 }
 
-export const currentUser = async () => {
+export const currentUser = async (): Promise<UserProp> => {
   try {
     const response = await fetch(`${API_URL}/currentUser`, {
       credentials: 'include'
@@ -62,10 +64,12 @@ export const currentUser = async () => {
     if(!response.ok) {
       throw new Error(result.message);
     }
+    return result;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message)
     }
+    throw error;
   }
  
 }

@@ -9,7 +9,8 @@ const getMessages = async (receiverId: number) => {
 
     if(!response.ok) {
       throw new Error(result.message);
-    }
+    }    
+    return result;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message)
