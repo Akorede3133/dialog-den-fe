@@ -9,11 +9,15 @@ const ConversationFooter = () => {
   const { receiver } = useAppSelector(selectChat);
   const { send, isSending } = useSendMessage();
   const [message, setMessage] = useState<string>('');
-  console.log(receiver);
   const data = {
     content: message,
     type: 'text'
   };
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    // adjustTextArea(e.target)
+  }
 
   const handleSend = () => {
     if (receiver) {
@@ -21,12 +25,19 @@ const ConversationFooter = () => {
       setMessage('');
     }
   }
+
+  const adjustTextArea = (e) => {
+    const { target } = e;
+    const scrollHeight = target.scrollHeight;
+    target.style.height = 'auto';
+    target.style.height = `${scrollHeight}px`;
+  }
   
 
   return (
     <div className="bg-white grid grid-cols-[1fr,auto] items-center gap-4 p-3">
       <section className="">
-        <input type="text" placeholder="Enter Message..."  className=" bg-bg-silver p-3 w-full rounded-md outline-none" value={message} onChange={(e) => setMessage(e.target.value) }/>
+        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-hidden" value={message} onChange={handleInput } onKeyDown={ adjustTextArea}  rows={1}/>
       </section>
       <section className="flex gap-5 items-center">
         <button>
