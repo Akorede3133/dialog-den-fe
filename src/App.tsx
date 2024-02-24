@@ -31,7 +31,7 @@ const client = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={client} >
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
       <RouterProvider router={router} />
     </QueryClientProvider>
   )
