@@ -15,16 +15,19 @@ const ConversationBody = () => {
     createdAt: string;
     updatedAt: string;
   }
+
   const { receiver } = useAppSelector(selectChat);
+
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
+
   const { user, isGettingUser } = useCurrentUser();
+
   if (isPending || isGettingUser) {
     return <p>Loading...</p>
   }
   if (error) {
     return <p>{error.message}</p>
   }
-  console.log(user);
   
   return (
     <div className="bg-[#EFF7FE] overflow-auto convo p-3">
@@ -32,12 +35,14 @@ const ConversationBody = () => {
         {
           messages.map((message: MessageProp, index: number) => {            
             const { content, senderId } = message;
+
             const isSender = senderId === user?.id;
-            const senderContainerClass = isSender ? 'self-end' : 'self-start';  
+
             const senderTextClass = messages[index - 1]?.senderId == user?.id ? ' rounded-[50px_0px_50px_50px]' : 'rounded-[50px_50px_0_50px]'
-            const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-[50px_50px_50px_0px]' : 'rounded-[0px_50px_50px_50px]'
+            const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-[50px_50px_50px_0px]' : 'rounded-[0px_50px_50px_50px]';
+
             return (
-              <li className={`${senderContainerClass} flex flex-col`}>
+              <li className={`${isSender ? 'self-end' : 'self-start'} flex flex-col`}>
                 { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-15px] text-sm self-end'>
                   <span>{user?.username}</span>
                   <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />

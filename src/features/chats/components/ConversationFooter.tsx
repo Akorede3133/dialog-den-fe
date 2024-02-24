@@ -17,7 +17,8 @@ const ConversationFooter = () => {
 
   const handleSend = () => {
     if (receiver) {
-      send({ data, receiverId: receiver?.id })
+      send({ data, receiverId: receiver?.id });
+      setMessage('');
     }
   }
   
