@@ -5,6 +5,7 @@ import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
 import { selectChat } from '../redux/chatSlice';
 import { formatTime } from '../../../utils/dateTime';
+import { useEffect, useRef } from 'react';
 const ConversationBody = () => {
   type MessageProp = {
     id: number;
@@ -16,12 +17,20 @@ const ConversationBody = () => {
     updatedAt: string;
   }
 
+
+
   const { receiver } = useAppSelector(selectChat);
 
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
 
   const { user, isGettingUser } = useCurrentUser();
 
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight;
+    }
+  }, [messages])
   if (isPending || isGettingUser) {
     return <p>Loading...</p>
   }
@@ -30,7 +39,7 @@ const ConversationBody = () => {
   }
   
   return (
-    <div className="bg-[#EFF7FE] overflow-auto convo p-3">
+    <div  ref={ref} className="bg-[#EFF7FE] overflow-auto convo p-3">
       <ul className="flex flex-col gap-4">
         {
           messages.map((message: MessageProp, index: number) => {            
