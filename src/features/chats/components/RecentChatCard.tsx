@@ -1,5 +1,8 @@
 import logo from '../../../assets/logo.png';
+import { useAppDispatch } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
+import { UserProp } from '../../contacts/components/ContactCard';
+import { setReceiver } from '../redux/chatSlice';
 
 export type ChatProp =  {
   messageId: number;
@@ -17,9 +20,15 @@ export type ChatProp =  {
   receiverEmail?: string;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
-  const { senderUsername, receiverUsername, content, createdAt } = chat;
+  const { senderUsername, receiverUsername, content, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
+  const dispatch = useAppDispatch();
+  const user = {
+    id: msgSenderId || msgReceiverId,
+    email: senderEmail || receiverEmail,
+    username: senderUsername || receiverUsername
+  } as UserProp;
   return (
-    <li className="flex justify-between items-center">
+    <li className="flex cursor-pointer justify-between items-center"  onClick={() => dispatch(setReceiver(user))}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
           <img src={logo} alt="" className='w-fu;ll h-full rounded-full'/>
