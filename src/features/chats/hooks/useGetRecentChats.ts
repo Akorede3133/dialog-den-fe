@@ -3,7 +3,7 @@ import getRecentChats from "../api/getRecentChats"
 
 const useGetRecentChats = () => {
   const { data: chats, isPending:isGettingChats, error } = useQuery({
-    queryFn: () => getRecentChats(),
+    queryFn: getRecentChats,
     queryKey: ['recentChats']
   })
 

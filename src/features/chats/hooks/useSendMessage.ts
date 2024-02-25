@@ -10,7 +10,7 @@ const useSendMessage = () => {
   const { mutate: send, isPending: isSending} = useMutation({
     mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['messages']})
+      queryClient.invalidateQueries()
     }
   })
 

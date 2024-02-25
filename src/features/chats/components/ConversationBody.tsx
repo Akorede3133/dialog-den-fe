@@ -34,7 +34,7 @@ const ConversationBody = () => {
       <ul className="flex flex-col gap-4">
         {
           messages.map((message: MessageProp, index: number) => {            
-            const { content, senderId } = message;
+            const { content, senderId, id } = message;
 
             const isSender = senderId === user?.id;
 
@@ -42,7 +42,7 @@ const ConversationBody = () => {
             const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-[50px_50px_50px_0px]' : 'rounded-[0px_50px_50px_50px]';
 
             return (
-              <li className={`${isSender ? 'self-end' : 'self-start'} flex flex-col`}>
+              <li key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col`}>
                 { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-15px] text-sm self-end'>
                   <span>{user?.username}</span>
                   <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />

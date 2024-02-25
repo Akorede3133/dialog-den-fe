@@ -1,8 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
+import { useAppSelector } from '../redux/hooks';
+import { selectChat } from '../features/chats/redux/chatSlice';
 
 const AppLayout = () => {
+  const { receiver } = useAppSelector(selectChat);
   return (
     <div className='relative'>
       <NavBar />
@@ -11,7 +14,9 @@ const AppLayout = () => {
           <Outlet />
         </div>
         <div className='sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
-          <Conversation />
+          {
+            receiver ? <Conversation /> : 'Select a chat'
+          }
         </div>
       </main>
     </div>

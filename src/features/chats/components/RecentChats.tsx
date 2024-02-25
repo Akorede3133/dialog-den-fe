@@ -15,7 +15,7 @@ const RecentChats = () => {
       <ul className="space-y-5 px-5">
         {
           chats.map((chat: ChatProp) => (
-            <RecentChatCard key={chat.id} chat={chat} />
+            <RecentChatCard key={chat.messageId} chat={chat} />
           ))
         }
       </ul>
