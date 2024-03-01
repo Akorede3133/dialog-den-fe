@@ -68,7 +68,10 @@ const ConversationBody = () => {
                 </p>
                 }
                 {
-                  message.type === 'image' && <img src={content} alt="" className=' object-cover rounded-lg w-[150px]' />
+                  message.type === 'image' && 
+                  <div className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 w-[150px] `}>
+                    <img src={content} alt="" className=' object-cover rounde w-full h-full' />
+                  </div>
                 }
                 
               </li>

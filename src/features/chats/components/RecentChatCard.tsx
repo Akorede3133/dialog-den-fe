@@ -1,8 +1,10 @@
+import { FaPhotoFilm } from 'react-icons/fa6';
 import logo from '../../../assets/logo.png';
 import { useAppDispatch } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
 import { setReceiver } from '../redux/chatSlice';
+import { HiPhoto } from 'react-icons/hi2';
 
 export type ChatProp =  {
   messageId: number;
@@ -20,7 +22,7 @@ export type ChatProp =  {
   receiverEmail?: string;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
-  const { senderUsername, receiverUsername, content, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
+  const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
   const dispatch = useAppDispatch();
   const user = {
     id: msgSenderId || msgReceiverId,
@@ -36,7 +38,17 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
         </div>
         <div className="flex flex-col">
           <span>{senderUsername || receiverUsername}</span>
-          <span className="text-sm text-text-gray">{content}</span>
+          {
+            type === 'text' && <span className="text-sm text-text-gray">{content}</span>
+          }
+
+          {
+            type === 'image' && <div className=' flex items-center gap-3'>
+              <span className='text-sm'>Photo</span>
+              <HiPhoto className=' text-text-gray' />
+            </div>
+          }
+         
         </div>
       </section>
       <span className="text-[12px] text-text-gray">{formatTime(createdAt)}</span>
