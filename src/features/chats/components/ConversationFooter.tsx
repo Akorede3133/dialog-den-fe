@@ -4,11 +4,19 @@ import { useAppSelector } from "../../../redux/hooks"
 import { selectChat } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useState } from "react"
+import useSendImage from "../hooks/useSendImage"
 
 const ConversationFooter = () => {
   const { receiver } = useAppSelector(selectChat);
   const { send, isSending } = useSendMessage();
+  const { sendImageFile, isSendingImage, error } = useSendImage();
   const [message, setMessage] = useState<string>('');
+  const [image, setImage]  = useState(null)
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    console.log(file, receiver);
+    sendImageFile({ file, receiverId: receiver?.id});
+  }
   const data = {
     content: message,
     type: 'text'
@@ -43,9 +51,10 @@ const ConversationFooter = () => {
         <button>
           <HiOutlineEmojiHappy className=" text-message-bg-blue" />
         </button>
-        <button>
+        <label htmlFor="image" className=" cursor-pointer">
           <HiOutlinePhoto className=" text-message-bg-blue" />
-        </button>
+          <input type="file" name="image" id="image" hidden accept="image/png, image/jpeg" onChange={handleImageUpload} />
+        </label>
         <button>
           <HiOutlineMicrophone className=" text-message-bg-blue" />
         </button>
