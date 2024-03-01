@@ -60,11 +60,17 @@ const ConversationBody = () => {
                   <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />
                   <span>{receiver?.username}</span>
                 </div> }
-                <p className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 `}>
+                {
+                  message.type === 'text' &&  <p className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 `}>
                   <span className='text-sm'>{content}</span>
                 <span className={`text-[12px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(message.createdAt)}</span>
 
                 </p>
+                }
+                {
+                  message.type === 'image' && <img src={content} alt="" className=' object-cover rounded-lg w-[150px]' />
+                }
+                
               </li>
             )
           })
