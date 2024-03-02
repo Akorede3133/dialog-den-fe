@@ -26,13 +26,8 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
   const dispatch = useAppDispatch();
   const { onlineUsers } = useSocketContext();
-  console.log(msgReceiverId, msgReceiverId);
-  
-  
-  const isUserOnline = onlineUsers.includes(msgReceiverId || msgSenderId);
-
-  console.log(isUserOnline);
-  
+    
+  const isUserOnline = onlineUsers.includes(msgReceiverId as number || msgSenderId as number);
   
   const user = {
     id: msgSenderId || msgReceiverId,
