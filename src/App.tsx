@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { io } from "socket.io-client"
 import { useAppDispatch } from "./redux/hooks"
 import { connectSocket } from "./features/chats/redux/socketSlice"
+import { SocketProvider } from "./features/chats/context/socketContext"
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -36,8 +37,11 @@ const client = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={client} >
-      <ReactQueryDevtools initialIsOpen={false} />
-      <RouterProvider router={router} />
+      <SocketProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <RouterProvider router={router} />
+      </SocketProvider>
+     
     </QueryClientProvider>
   )
 }

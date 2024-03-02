@@ -3,7 +3,7 @@ import { currentUser } from "../api/auth"
 
 const useCurrentUser = () => {
   const { data: user, isPending: isGettingUser, error } = useQuery({
-    queryFn: () => currentUser(),
+    queryFn:  currentUser,
     queryKey: ['user']
   });
   return { user, isGettingUser, error };
