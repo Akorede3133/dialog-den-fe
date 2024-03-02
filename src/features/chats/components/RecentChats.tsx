@@ -2,7 +2,7 @@ import useGetRecentChats from "../hooks/useGetRecentChats"
 import RecentChatCard, { ChatProp } from "./RecentChatCard"
 
 const RecentChats = () => {
-  const { chats, isGettingChats, error } = useGetRecentChats();
+  const { chats, isGettingChats, error } = useGetRecentChats();  
 
   if (isGettingChats) {
     return <p>Loading...</p>

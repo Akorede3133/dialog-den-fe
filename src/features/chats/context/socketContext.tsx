@@ -4,24 +4,23 @@ import { Socket, io } from "socket.io-client";
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 interface SocketContextProps {
   socket: Socket | null;
+  onlineUsers: number[];
 }
 
-export const SocketContext = createContext<SocketContextProps | null>(null);
+export const SocketContext = createContext<SocketContextProps>({} as SocketContextProps);
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket| null>(null);
-  const [onlineUsers, setOnlineUsers] = useState([])
-  const { user }  = useCurrentUser();
-  console.log(onlineUsers);
-  
-  
+  const [onlineUsers, setOnlineUsers] = useState<number[]>([])
+  const { user }  = useCurrentUser();  
+
   useEffect(()=> {
     const socket = io('http://localhost:3000', {
       query: {
         userId: user?.id
       }
     });
-    socket.on('getOnlineUsers', (users) => {
+    socket.on('getOnlineUsers', (users: number[]) => {
       setOnlineUsers(users);
     })
     setSocket(socket);
@@ -32,7 +31,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [user])
   return <SocketContext.Provider value={{
-    socket
+    socket,
+    onlineUsers
   }}>
     { children }
   </SocketContext.Provider>
