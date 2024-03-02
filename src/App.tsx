@@ -8,6 +8,11 @@ import Contacts from "./features/contacts/page/Contacts"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
+import { useEffect, useState } from "react"
+import { io } from "socket.io-client"
+import { useAppDispatch } from "./redux/hooks"
+import { connectSocket } from "./features/chats/redux/socketSlice"
+
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>
