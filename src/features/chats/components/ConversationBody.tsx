@@ -1,48 +1,64 @@
-import { format, formatDate } from 'date-fns';
 import logo from '../../../assets/logo.png';
 import { useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
 import { selectChat } from '../redux/chatSlice';
 import { formatTime } from '../../../utils/dateTime';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useSocketContext } from '../context/socketContext';
+
+export type MessageProp = {
+  id: number;
+  content: string;
+  type: string;
+  senderId: number;
+  receiverId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const ConversationBody = () => {
-  type MessageProp = {
-    id: number;
-    content: string;
-    type: string;
-    senderId: number;
-    receiverId: number;
-    createdAt: string;
-    updatedAt: string;
-  }
-
-
-
   const { receiver } = useAppSelector(selectChat);
-
+  const { socket } = useSocketContext();
+  const [socketMessages, setSocketMessages] = useState<MessageProp[]>([]);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
+
+  useEffect(() => {
+    if (messages) {
+      setSocketMessages(messages)
+    }
+  }, [messages])
+
+  useEffect(() => {    
+    const handleMessage = (message: MessageProp) => {
+      setSocketMessages((prevMessage) => {
+        return [...prevMessage, message];
+      });
+    };
+
+    socket?.on('getMessage', handleMessage);
+
+    return () => {
+      socket?.off('getMessage', handleMessage);
+    }
+  }, [socket, messages])
 
   const { user, isGettingUser } = useCurrentUser();
 
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop = ref.current.scrollHeight;
-    }
-  }, [messages])
+  const ref = useRef<HTMLDivElement>(null);  
+  
   if (isPending || isGettingUser) {
     return <p>Loading...</p>
   }
   if (error) {
     return <p>{error.message}</p>
   }
-  
+    
   return (
     <div  ref={ref} className="bg-[#EFF7FE] overflow-auto convo p-3">
       <ul className="flex flex-col gap-4">
         {
-          messages.map((message: MessageProp, index: number) => {            
+          socketMessages.map((message: MessageProp, index: number) => {            
             const { content, senderId, id } = message;
 
             const isSender = senderId === user?.id;

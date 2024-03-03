@@ -5,9 +5,12 @@ import { selectChat } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useState } from "react"
 import useSendImage from "../hooks/useSendImage"
+import { useQueryClient } from "@tanstack/react-query"
 
 const ConversationFooter = () => {
   const { receiver } = useAppSelector(selectChat);
+  const queryClient = useQueryClient();
+
   const { send, isSending } = useSendMessage();
   const { sendImageFile, isSendingImage, error } = useSendImage();
   const [message, setMessage] = useState<string>('');
@@ -29,7 +32,11 @@ const ConversationFooter = () => {
 
   const handleSend = () => {
     if (receiver) {
-      send({ data, receiverId: receiver?.id });
+      send({ data, receiverId: receiver?.id }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
+        }
+      });
       setMessage('');
     }
   }
