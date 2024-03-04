@@ -7,10 +7,13 @@ const ConversationFooter = () => {
   const handleShowRecorder = () => {
     setShowVoiceRecorder(true);
   }
+  const handleHideRecorder = () => {
+    setShowVoiceRecorder(false);
+  }
   return (
     <div  className="bg-white grid grid-cols-[1fr,auto] items-center gap-4 p-3">
       {
-        showVoiceRecorder ? <SendVoiceMessage />
+        showVoiceRecorder ? <SendVoiceMessage hideRecorder={handleHideRecorder} />
         : <SendTextMessage showRecorder={handleShowRecorder} />
       }
     </div>

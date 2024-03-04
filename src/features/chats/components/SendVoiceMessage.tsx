@@ -3,7 +3,11 @@ import { FaMicrophone, FaPause, FaPlay, FaStop, FaTrash } from "react-icons/fa6"
 import { HiPaperAirplane } from "react-icons/hi2";
 import WaveSurfer from "wavesurfer.js";
 
-const SendVoiceMessage = () => {
+
+type VoiceMessageProps = {
+  hideRecorder: () => void
+}
+const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
@@ -133,7 +137,7 @@ const SendVoiceMessage = () => {
   }
   return (
     <div className="flex justify-end items-center gap-10 px-4">
-      <FaTrash className=" text-message-bg-blue text-xl" />
+      <FaTrash className=" text-message-bg-blue text-xl" onClick={hideRecorder} />
       { isRecording ? 
           <div className=" animate-pulse text-sm text-text-primary">
             <p>Recording <span>{formatDuration(recordingDuration)}</span></p>
