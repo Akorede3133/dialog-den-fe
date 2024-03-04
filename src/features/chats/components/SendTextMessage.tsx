@@ -7,7 +7,10 @@ import { useState } from "react"
 import useSendImage from "../hooks/useSendImage"
 import { useQueryClient } from "@tanstack/react-query"
 
-const SendTextMessage = () => {
+type TextMessageProps = {
+  showRecorder: () => void
+}
+const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { receiver } = useAppSelector(selectChat);
   const queryClient = useQueryClient();
 
@@ -60,7 +63,7 @@ const SendTextMessage = () => {
           <HiOutlinePhoto className=" text-message-bg-blue" />
           <input type="file" name="image" id="image" hidden accept="image/png, image/jpeg" onChange={handleImageUpload} />
         </label>
-        <button>
+        <button onClick={showRecorder}>
           <HiOutlineMicrophone className=" text-message-bg-blue" />
         </button>
         <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSend} disabled={isSending}>

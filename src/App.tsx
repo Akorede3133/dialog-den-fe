@@ -27,6 +27,7 @@ const client = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 0,
+      retry: false,
     }
   }
 });
