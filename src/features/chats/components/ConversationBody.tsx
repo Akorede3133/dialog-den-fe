@@ -90,7 +90,7 @@ const ConversationBody = () => {
                     <img src={content} alt="" className=' object-cover rounde w-full h-full' />
                   </div>
                 }
-                { message.type === 'voice' && <VoicePlayer content={content} /> }
+                { message.type === 'voice' && <VoicePlayer content={content} isSender={isSender}  /> }
                 
               </li>
             )

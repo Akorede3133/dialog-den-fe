@@ -3,7 +3,7 @@ import { FaPause, FaPlay } from "react-icons/fa6";
 import formatDuration from "../../../utils/formatDuration";
 import WaveSurfer from "wavesurfer.js";
 
-const VoicePlayer = ({ content }: { content: string }) => {
+const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration ,setTotalDuration] = useState(0)
@@ -12,14 +12,13 @@ const VoicePlayer = ({ content }: { content: string }) => {
   const waveFormRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const waveSurfer = WaveSurfer.create({
-      container: waveFormRef.current,
-      waveColor: '#ccc',
-      progressColor: '#4a9eff',
+      container: waveFormRef.current as HTMLDivElement,
+      waveColor: `${isSender ? '#343a40'  : '#ccc'}`,
+      progressColor: `${isSender ? '#878a92' : '#4a9eff'}`,
       height: 30,
       cursorColor: '#7ae3c3',
       cursorWidth: 1,
       barWidth: 2,
-      responsive: true,
       barGap: 1,
       barRadius: 2,
       barHeight: 2,
@@ -35,17 +34,14 @@ const VoicePlayer = ({ content }: { content: string }) => {
   useEffect(() => {
     if (waveForm) {
       waveForm.load(content)
+      waveForm.on('audioprocess', () => {
+        setCurrentTime(waveForm.getCurrentTime());
+      })
+      waveForm.on('ready', () => {
+        setTotalDuration(waveForm?.getDuration() as number);
+      })
     }
   }, [waveForm, content])
-
-  useEffect(() => {
-    waveForm?.on('audioprocess', () => {
-      setCurrentTime(waveForm.getCurrentTime());
-    })
-    waveForm?.on('ready', () => {
-      setTotalDuration(waveForm?.getDuration() as number);
-    })
-  }, [waveForm])
 
   const handlePlayRecord = () => {
     waveForm?.play();
@@ -56,7 +52,7 @@ const VoicePlayer = ({ content }: { content: string }) => {
     setIsPlaying(false);
   }
   return (
-    <div className=" shadow-lg bg-white p-3 rounded space-y-2 mt-3">
+    <div  className={`${isSender ? ` mr-[3.2rem] bg-bg-silver` : `bg-[#1C9DEA] ml-[3.2rem] text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
       <div className="flex items-center gap-2">
         <div>
           {
@@ -67,7 +63,7 @@ const VoicePlayer = ({ content }: { content: string }) => {
           <div ref={waveFormRef} className="w-full mt-[-19px] bg-red" ></div>
         </div>
       </div>
-      <div className="flex justify-between text-sm">
+      <div className="flex justify-between text-[0.7rem]">
         { isPlaying ? <span>{formatDuration(currentTime)}</span> : <span>{formatDuration(totalDuration)}</span> }
         <span>7:58am</span>
       </div>
