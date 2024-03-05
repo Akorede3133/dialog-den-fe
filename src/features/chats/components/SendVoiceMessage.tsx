@@ -155,7 +155,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       }
       <div ref={waveFormRef} className="w-[160px] sm:w-60 shadow-md" hidden={isRecording} />
       {  isPlaying && <span>{formatDuration(currentTime)}</span> }
-      {  !isPlaying && <span>{formatDuration(totalDuration)}</span> }
+      { !isRecording && !isPlaying && <span>{formatDuration(totalDuration)}</span> }
       <div>
         {
           isRecording ? <FaStop onClick={handleStopRecording} className="text-red-500 text-2xl" />
