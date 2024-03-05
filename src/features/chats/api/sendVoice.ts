@@ -5,7 +5,7 @@ const sendVoice = async (file, receiverId) => {
   try {
     const formData  = new FormData();
     formData.append('voice', file);
-    const response = await fetch(`${API_URL}/sendImage/${receiverId}`, {
+    const response = await fetch(`${API_URL}/sendVoice/${receiverId}`, {
       method: 'POST',
       body: formData,
       credentials: 'include'

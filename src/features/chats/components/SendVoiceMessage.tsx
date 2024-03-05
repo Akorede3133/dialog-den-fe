@@ -2,12 +2,17 @@ import { useEffect, useRef, useState } from "react"
 import { FaMicrophone, FaPause, FaPlay, FaStop, FaTrash } from "react-icons/fa6"
 import { HiPaperAirplane } from "react-icons/hi2";
 import WaveSurfer from "wavesurfer.js";
+import useSendVoice from "../hooks/useSendVoice";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectChat } from "../redux/chatSlice";
 
 
 type VoiceMessageProps = {
   hideRecorder: () => void
 }
 const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
+  const { sendVoiceFile, isSendingVoice, error } = useSendVoice();
+  const { receiver } = useAppSelector(selectChat);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
@@ -135,6 +140,13 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     const duration = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
     return duration;
   }
+  const handleSendVoice  = () => {
+    const data = {
+      file: audioFile,
+      receiverId: receiver?.id as number
+    }
+    sendVoiceFile(data);
+  }
   return (
     <div className="flex justify-end items-center gap-10 px-4">
       <FaTrash className=" text-message-bg-blue text-xl" onClick={hideRecorder} />
@@ -162,7 +174,9 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
           : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl" />
         }
       </div>
-      <HiPaperAirplane className=" text-message-bg-blue text-2xl" />
+      <button onClick={handleSendVoice}>
+        <HiPaperAirplane className=" text-message-bg-blue text-2xl" />
+      </button>
       <audio ref={audioRef} src="" controls hidden></audio>
     </div>
   )

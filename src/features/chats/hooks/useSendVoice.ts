@@ -4,7 +4,7 @@ import sendVoice from "../api/sendVoice";
 const useSendVoice = () => {
   const queryClient = useQueryClient();
   const { mutate: sendVoiceFile, isPending: isSendingVoice, error} = useMutation({
-    mutationFn: ({ file, receiverId }) => sendVoice(file, receiverId),
+    mutationFn: ({ file, receiverId }: { file: File, receiverId: number }) => sendVoice(file, receiverId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['messages'] });
     }
