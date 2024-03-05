@@ -59,7 +59,7 @@ const ConversationBody = () => {
     <div  ref={ref} className="bg-[#EFF7FE] overflow-auto convo p-3">
       <ul className="flex flex-col gap-4">
         {
-          socketMessages.map((message: MessageProp, index: number) => {                        
+          socketMessages.map((message: MessageProp, index: number) => {                                    
             const { content, senderId, id } = message;
 
             const isSender = senderId === user?.id;
@@ -90,7 +90,7 @@ const ConversationBody = () => {
                     <img src={content} alt="" className=' object-cover rounde w-full h-full' />
                   </div>
                 }
-                { message.type === 'voice' && <VoicePlayer /> }
+                { message.type === 'voice' && <VoicePlayer content={content} /> }
                 
               </li>
             )
