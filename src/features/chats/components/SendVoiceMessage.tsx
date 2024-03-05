@@ -5,6 +5,7 @@ import WaveSurfer from "wavesurfer.js";
 import useSendVoice from "../hooks/useSendVoice";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectChat } from "../redux/chatSlice";
+import formatDuration from "../../../utils/formatDuration";
 
 
 type VoiceMessageProps = {
@@ -134,12 +135,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       waveForm?.pause();
       setIsplaying(false);
   }
-  const formatDuration = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    const duration = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    return duration;
-  }
+
   const handleSendVoice  = () => {
     const data = {
       file: audioFile,
