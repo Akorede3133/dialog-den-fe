@@ -5,7 +5,8 @@ import { selectChat } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useState } from "react"
 import useSendImage from "../hooks/useSendImage"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQueryClient } from "@tanstack/react-query";
+import Picker from "emoji-picker-react";
 
 type TextMessageProps = {
   showRecorder: () => void
@@ -17,11 +18,9 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { send, isSending } = useSendMessage();
   const { sendImageFile, isSendingImage, error } = useSendImage();
   const [message, setMessage] = useState<string>('');
-  const [image, setImage]  = useState(null)
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file, receiver);
-    sendImageFile({ file, receiverId: receiver?.id});
+    sendImageFile({ file, receiverId: receiver?.id as number});
   }
   const data = {
     content: message,
@@ -50,8 +49,17 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     target.style.height = 'auto';
     target.style.height = `${scrollHeight}px`;
   }
+
+  const onEmojiClick = (emoji, e) => {
+    setMessage((prevMessage) => (
+      `${prevMessage}${emoji.emoji}`
+    ))    
+  }
   return (
-    <div className="bg-white grid grid-cols-[1fr,auto] items-center gap-4 p-3">
+    <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3">
+      <div className=" absolute bottom-[100px] right-20">
+        <Picker onEmojiClick={onEmojiClick} />
+      </div>
       <section className="">
         <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-hidden" value={message} onChange={handleInput } onKeyDown={ adjustTextArea}  rows={1}/>
       </section>
