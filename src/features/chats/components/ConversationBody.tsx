@@ -7,6 +7,9 @@ import { formatTime } from '../../../utils/dateTime';
 import { useEffect, useRef, useState } from 'react';
 import { useSocketContext } from '../context/socketContext';
 import VoicePlayer from './VoicePlayer';
+import { FaCheckDouble } from 'react-icons/fa6';
+import { HiOutlineCheck } from 'react-icons/hi2';
+import { PiCheck, PiCheckThin, PiChecksThin } from 'react-icons/pi';
 
 export type MessageProp = {
   id: number;
@@ -78,10 +81,15 @@ const ConversationBody = () => {
                   <span>{receiver?.username}</span>
                 </div> }
                 {
-                  message.type === 'text' &&  <p className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 `}>
+                  message.type === 'text' &&  <p className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 relative`}>
                   <span className='text-sm'>{content}</span>
                 <span className={`text-[12px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(message.createdAt)}</span>
+                { isSender && <div className='absolute right-[4px] bottom-[3px]'>
+                  { false && <PiCheckThin /> }
+                  { true && <PiChecksThin /> }
+                  { false && <PiChecksThin className=' text-blue-900' /> }
 
+                </div> }
                 </p>
                 }
                 {
