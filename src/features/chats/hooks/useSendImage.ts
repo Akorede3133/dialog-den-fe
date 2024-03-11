@@ -6,7 +6,7 @@ const useSendImage = () => {
   const { mutate: sendImageFile, isPending: isSendingImage, error} = useMutation({
     mutationFn: ({ file, receiverId }: { file: File, receiverId: number }) => sendImage(file, receiverId),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ['messages'] });
+      queryClient.invalidateQueries();
     }
   })
 
