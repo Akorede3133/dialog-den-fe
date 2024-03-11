@@ -7,9 +7,7 @@ import { formatTime } from '../../../utils/dateTime';
 import { useEffect, useRef, useState } from 'react';
 import { useSocketContext } from '../context/socketContext';
 import VoicePlayer from './VoicePlayer';
-import { FaCheckDouble } from 'react-icons/fa6';
-import { HiOutlineCheck } from 'react-icons/hi2';
-import { PiCheck, PiCheckThin, PiChecksThin } from 'react-icons/pi';
+import { BsCheck2, BsCheck2All } from 'react-icons/bs';
 
 export type MessageProp = {
   id: number;
@@ -19,6 +17,7 @@ export type MessageProp = {
   receiverId: number;
   createdAt: string;
   updatedAt: string;
+  status: string;
 }
 
 const ConversationBody = () => {
@@ -63,8 +62,7 @@ const ConversationBody = () => {
       <ul className="flex flex-col gap-4">
         {
           socketMessages.map((message: MessageProp, index: number) => {                                    
-            const { content, senderId, id } = message;
-
+            const { content, senderId, id, status } = message;
             const isSender = senderId === user?.id;
 
             const senderTextClass = messages[index - 1]?.senderId == user?.id ? ' rounded-[50px_0px_50px_50px]' : 'rounded-[50px_50px_0_50px]'
@@ -81,16 +79,16 @@ const ConversationBody = () => {
                   <span>{receiver?.username}</span>
                 </div> }
                 {
-                  message.type === 'text' &&  <p className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 relative`}>
+                  message.type === 'text' &&  <div className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 relative`}>
                   <span className='text-sm'>{content}</span>
                 <span className={`text-[12px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(message.createdAt)}</span>
                 { isSender && <div className='absolute right-[4px] bottom-[3px]'>
-                  { false && <PiCheckThin /> }
-                  { true && <PiChecksThin /> }
-                  { false && <PiChecksThin className=' text-blue-900' /> }
+                  { status === 'sent' && <BsCheck2 /> }
+                  { status === 'delivered' && <BsCheck2All /> }
+                  { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
 
                 </div> }
-                </p>
+                </div>
                 }
                 {
                   message.type === 'image' && 
