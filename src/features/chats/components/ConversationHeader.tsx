@@ -1,12 +1,15 @@
+import { useContext } from "react";
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import logo from '../../../assets/logo.png';
 import { useAppSelector } from "../../../redux/hooks";
 import { selectChat } from "../redux/chatSlice";
 import { useSocketContext } from "../context/socketContext";
+import CallWindow from "./CallWindow";
 const ConversationHeader = () => {
   const { receiver } = useAppSelector(selectChat);
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(receiver?.id as number)
+  
   return (
     <div className="flex justify-between bg-white px-3 border-b">
      <section className="flex items-center gap-2">
@@ -25,14 +28,24 @@ const ConversationHeader = () => {
         </button>
       </li>
       <li>
-        <button>
-          <HiOutlinePhone className="text-xl" />
-        </button>
+        <CallWindow>
+          <CallWindow.Open callType='voice-call'>
+            <button>
+            <HiOutlinePhone className="text-xl" />
+          </button>
+        </CallWindow.Open>       
+        </CallWindow>
+       
       </li>
       <li>
-         <button>
-            <HiOutlineVideoCamera className="text-xl" />
-         </button>
+        <CallWindow>
+          <CallWindow.Open callType='video-call'>
+            <button>
+              <HiOutlineVideoCamera className="text-xl" />
+          </button>
+          </CallWindow.Open>
+        </CallWindow>
+        
       </li>
       <li>
         <button>

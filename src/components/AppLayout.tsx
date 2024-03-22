@@ -3,11 +3,21 @@ import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppSelector } from '../redux/hooks';
 import { selectChat } from '../features/chats/redux/chatSlice';
+import CallWindow from '../features/chats/components/CallWindow';
+import VoiceCall from '../features/chats/components/VoiceCall';
+import VideoCall from '../features/chats/components/VideoCall';
 
 const AppLayout = () => {
-  const { receiver } = useAppSelector(selectChat);
+  const { receiver, voiceCall, videoCall } = useAppSelector(selectChat);
   return (
     <div className='relative'>
+      {voiceCall && <CallWindow>
+          <VoiceCall />
+        </CallWindow>}
+        {videoCall && <CallWindow>
+          <VideoCall />
+        </CallWindow>}
+      {!voiceCall && !videoCall && <>
       <NavBar />
       <main className='sm:ml-[5rem] flex  bg-blu relative'>
         <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2'>
@@ -19,6 +29,8 @@ const AppLayout = () => {
           }
         </div>
       </main>
+      </>
+      }
     </div>
   )
 }

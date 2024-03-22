@@ -9,10 +9,15 @@ type ReceiverProp = {
   email: string;
 }
 type ChatStateProp = {
-  receiver: ReceiverProp | null
+  receiver: ReceiverProp | null,
+  voiceCall: boolean,
+  videoCall: boolean
+
 }
 const initialState: ChatStateProp = {
-  receiver: null
+  receiver: null,
+  voiceCall: false,
+  videoCall: false,
 }
 
 export const chatSlice = createSlice({
@@ -21,10 +26,16 @@ export const chatSlice = createSlice({
   reducers: {
     setReceiver: (state, { payload }: PayloadAction<ReceiverProp>) => {
       state.receiver = payload;
+    },
+    setVoiceCall: (state) => {
+      state.voiceCall = true;
+    },
+    setVideoCall: (state) => {
+      state.videoCall = true;
     }
   }
 })
 
-export const { setReceiver } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

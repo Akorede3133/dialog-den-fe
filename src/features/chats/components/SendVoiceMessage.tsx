@@ -122,7 +122,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     })
     mediaRecorder?.addEventListener('stop', () => {      
       const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' })
-      const audioFile = new File([audioBlob], 'recording.mp3');
+      const audioFile = new File([audioBlob], 'recording.mp3');      
       setAudioFile(audioFile);
       audioChunks = [];
     })
@@ -141,7 +141,15 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       file: audioFile,
       receiverId: receiver?.id as number
     }
-    sendVoiceFile(data);
+    sendVoiceFile(data, {
+      onSuccess: () => {
+        setIsRecording(false);
+        setCurrentTime(0);
+        setRecordingDuration(0);
+        hideRecorder();
+        setAudioFile({} as File)
+      }
+    });
   }
   return (
     <div className="flex justify-end items-center gap-10 px-4">
@@ -170,8 +178,8 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
           : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl" />
         }
       </div>
-      <button onClick={handleSendVoice}>
-        <HiPaperAirplane className=" text-message-bg-blue text-2xl" />
+      <button onClick={handleSendVoice} disabled={isRecording}>
+        <HiPaperAirplane className= 'text-message-bg-blue text-2xl' />
       </button>
       <audio ref={audioRef} src="" controls hidden></audio>
     </div>
