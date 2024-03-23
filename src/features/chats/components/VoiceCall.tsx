@@ -5,16 +5,26 @@ import useFetchVoiceMedia from '../hooks/useFetchVoiceMedia';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { selectChat, setLocalStream } from '../redux/chatSlice';
 import { useEffect, useRef } from 'react';
+import useCreateOffer from '../hooks/useCreateOffer';
+import useCreatePeerConnection from '../hooks/useCreatePeerConnection';
 
 const VoiceCall = () => {
   const { stream } = useFetchVoiceMedia();
+  const {offer} = useCreateOffer();
+  const { peerConnection } = useCreatePeerConnection();
   const dispatch = useAppDispatch();
   const { localStream } = useAppSelector(selectChat)
   const audioRef = useRef<HTMLAudioElement>(null);
   useEffect(()=> {
+    if (stream.active) {
       dispatch(setLocalStream(stream))
+    }
+    
+      // stream.getTracks().forEach((track) => {
+      //   peerConnection?.addTrack(track, stream)
+      // })
       if (audioRef.current) {
-        audioRef.current.srcObject = stream;
+        // audioRef.current.srcObject = stream;
       }
   }, [stream, dispatch, localStream])
 
