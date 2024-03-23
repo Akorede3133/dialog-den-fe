@@ -1,6 +1,6 @@
 import { cloneElement, createContext, useContext, useState } from "react"
 import { useAppDispatch } from "../../../redux/hooks";
-import { setVideoCall, setVoiceCall } from "../redux/chatSlice";
+import { setVideoCall, setVoiceCall, turnOffCalls } from "../redux/chatSlice";
 
 export const CallWindowContext = createContext(null);
 
@@ -12,13 +12,14 @@ const CallWindowOpen = ({ children, callType }) => {
   const handleCall = () => {
     setOpen(callType);
     if (callType === 'voice-call') {
+      console.log('This is voice call');
+      
       dispatch(setVoiceCall());
     }
     if (callType === 'video-call') {
       dispatch(setVideoCall());
     }
   }
-
   return (
     cloneElement(children, { onClick: handleCall})
   )
@@ -36,6 +37,20 @@ const CallWindowModal = ({ children, callType}) => {
   return null;
 
 }
+const CallClose = ({ children }) => {
+  const { open, setOpen } = useContext(CallWindowContext);
+  const dispatch = useAppDispatch()
+
+  const handleCallClose = () => {
+    setOpen('');
+    dispatch(turnOffCalls());
+  }
+
+  return (
+    cloneElement(children, { onClick: handleCallClose})
+  )
+
+}
 const CallWindow = ({ children }) => {
   const [open, setOpen] = useState('');
   return (
@@ -51,5 +66,6 @@ const CallWindow = ({ children }) => {
 
 CallWindow.Open = CallWindowOpen;
 CallWindow.Modal = CallWindowModal;
+CallWindow.Close = CallClose;
 
 export default CallWindow;

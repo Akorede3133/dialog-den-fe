@@ -32,10 +32,14 @@ export const chatSlice = createSlice({
     },
     setVideoCall: (state) => {
       state.videoCall = true;
+    },
+    turnOffCalls: (state) => {
+      state.voiceCall = false;
+      state.videoCall = false;
     }
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
