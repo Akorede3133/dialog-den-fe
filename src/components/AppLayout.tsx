@@ -28,7 +28,7 @@ const AppLayout = () => {
           <Outlet />
         </div>
         <div className='sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
-        <IncomingCallNotification />
+        { incomingVoiceCall &&<IncomingCallNotification incomingVoiceCall={incomingVoiceCall} />}
 
           {
             receiver ? <Conversation /> : 'Select a chat'
