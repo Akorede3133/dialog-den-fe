@@ -25,16 +25,16 @@ const useCreatePeerConnection = () => {
     }
     peerConnection.addEventListener('icecandidate', (e) => {
       if (e.candidate) {
-        console.log(e.candidate);
+        // console.log(e.candidate);
         
       }
     })
     peerConnection.addEventListener('track', (e) => {
-      console.log(e);
+      // console.log(e);
       
     })
     peerConnection.addEventListener('signalingstatechange', (e) => {
-      console.log(e);
+      // console.log(e);
       
     })
     peerConnectionRef.current = peerConnection

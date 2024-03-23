@@ -8,9 +8,12 @@ import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 
 const AppLayout = () => {
-  const { receiver, voiceCall, videoCall } = useAppSelector(selectChat);
+  const { receiver, voiceCall, videoCall, incomingVoiceCall } = useAppSelector(selectChat);
   return (
     <div className='relative'>
+        {incomingVoiceCall && <CallWindow>
+          <VoiceCall />
+        </CallWindow>}
       {voiceCall && <CallWindow>
           <VoiceCall />
         </CallWindow>}

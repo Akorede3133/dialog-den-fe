@@ -8,17 +8,26 @@ type ReceiverProp = {
   username: string;
   email: string;
 }
+export type callProp = {
+  username: string;
+  id: number;
+  email: string;
+
+}
 type ChatStateProp = {
   receiver: ReceiverProp | null,
   voiceCall: boolean,
   videoCall: boolean,
   localStream: MediaStream,
+  outGoingVoiceCall: callProp;
+  incomingVoiceCall: callProp;
 }
 const initialState: ChatStateProp = {
   receiver: null,
   voiceCall: false,
   videoCall: false,
-  localStream: {} as MediaStream
+  localStream: {} as MediaStream,
+  outGoingVoiceCall: {} as callProp
 }
 
 export const chatSlice = createSlice({
@@ -40,10 +49,16 @@ export const chatSlice = createSlice({
     },
     setLocalStream: (state, { payload }: PayloadAction<MediaStream>) => {
       state.localStream = payload;
-    }
+    },
+    setOutGoingVoiceCall: (state, { payload }: PayloadAction<callProp>) => {
+      state.outGoingVoiceCall = payload;
+    },
+    setIncomingVoiceCall: (state, { payload }: PayloadAction<callProp>) => {
+      state.incomingVoiceCall = payload;
+    },
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setOutGoingVoiceCall, setIncomingVoiceCall } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
