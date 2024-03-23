@@ -1,19 +1,24 @@
-import { cloneElement, createContext, useContext, useState } from "react"
+import { ReactElement, ReactNode, cloneElement, createContext, useContext, useState } from "react"
 import { useAppDispatch } from "../../../redux/hooks";
 import { setVideoCall, setVoiceCall, turnOffCalls } from "../redux/chatSlice";
 
-export const CallWindowContext = createContext(null);
+type CallWindowProp = {
+  open: string;
+  setOpen: React.Dispatch<React.SetStateAction<string>>
+} 
+type CallWindowChildrenProp = {
+  children: ReactElement;
+  callType: string;
+}
+export const CallWindowContext = createContext<CallWindowProp>({} as CallWindowProp);
 
-const CallWindowOpen = ({ children, callType }) => {
-  const { open, setOpen } = useContext(CallWindowContext);
-  console.log(open);
+const CallWindowOpen = ({ children, callType }: CallWindowChildrenProp) => {
+  const { setOpen } = useContext(CallWindowContext);
   
   const dispatch = useAppDispatch()
   const handleCall = () => {
     setOpen(callType);
     if (callType === 'voice-call') {
-      console.log('This is voice call');
-      
       dispatch(setVoiceCall());
     }
     if (callType === 'video-call') {
@@ -24,7 +29,7 @@ const CallWindowOpen = ({ children, callType }) => {
     cloneElement(children, { onClick: handleCall})
   )
 }
-const CallWindowModal = ({ children, callType}) => {
+const CallWindowModal = ({ children, callType}: CallWindowChildrenProp) => {
   const { open } = useContext(CallWindowContext);
 
   if (callType === open) {
@@ -37,10 +42,9 @@ const CallWindowModal = ({ children, callType}) => {
   return null;
 
 }
-const CallClose = ({ children }) => {
-  const { open, setOpen } = useContext(CallWindowContext);
+const CallClose = ({ children }: { children: ReactElement }) => {
+  const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-
   const handleCallClose = () => {
     setOpen('');
     dispatch(turnOffCalls());
@@ -51,7 +55,7 @@ const CallClose = ({ children }) => {
   )
 
 }
-const CallWindow = ({ children }) => {
+const CallWindow = ({ children }: { children: ReactElement }) => {
   const [open, setOpen] = useState('');
   return (
     <CallWindowContext.Provider value={{
