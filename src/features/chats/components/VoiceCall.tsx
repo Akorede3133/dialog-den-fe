@@ -17,7 +17,6 @@ const VoiceCall = ({ callInfo }) => {
     const { receiver, offer, iceCandidates, remoteStream, onGoingVoiceCall }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
-    console.log(remoteStream);
     useEffect(() => {
       if (onGoingVoiceCall) {
         const timer = setInterval(() => {

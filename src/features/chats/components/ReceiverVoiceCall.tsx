@@ -39,7 +39,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
       stream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, stream);
       })
-      await peerConnection?.setRemoteDescription(offerObj.offer);
+      await peerConnection?.setRemoteDescription(offerObj?.offer as RTCSessionDescriptionInit);
       const answer = await peerConnection.createAnswer();
       dispatch(addAnswer(answer))
       await peerConnection?.setLocalDescription(answer)
@@ -57,8 +57,8 @@ const ReceiverVoiceCall = ({ callInfo }) => {
       dispatch(setRemoteStream(rmStream))
     }
     getMedia();
-  }, [dispatch, offerObj.offer])
-  
+  }, [dispatch, offerObj?.offer])
+
   useEffect(() => {
     if (onGoingVoiceCall) {
       const timer = setInterval(() => {

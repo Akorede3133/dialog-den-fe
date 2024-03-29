@@ -14,6 +14,15 @@ export type callProp = {
   email: string;
 
 }
+export type offerObjProp = {
+  offererId: number,
+  offer: RTCSessionDescriptionInit
+  offererIceCandiates: RTCIceCandidate[],
+  answererId: number,
+  answer: RTCSessionDescriptionInit,
+  answererIceCandiates: RTCIceCandidate[],
+}
+
 type ChatStateProp = {
   receiver: ReceiverProp | null,
   voiceCall: boolean,
@@ -27,7 +36,7 @@ type ChatStateProp = {
   };
   offer: RTCSessionDescriptionInit | null;
   answer: RTCSessionDescriptionInit | null
-  offerObj: null;
+  offerObj: offerObjProp |  null;
   iceCandidates: RTCIceCandidate[];
 }
 const initialState: ChatStateProp = {

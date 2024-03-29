@@ -32,9 +32,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     });
     socket.on('cancelOutgoingVoiceCallForReceiver', () => {
-      dispatch(turnOffCalls())
-      console.log('cancel receiever call');
-      
+      dispatch(turnOffCalls())      
     });
     socket.on('sendOnGoingVoiceCall', () => {
       dispatch(setOnGoingVoiceCall(true));
