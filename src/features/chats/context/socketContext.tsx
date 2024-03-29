@@ -28,7 +28,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       setOnlineUsers(users);
     })
     socket.on('sendOutgoingVoiceCallToReceiver', (user: callProp) => {
-      console.log(user);
       dispatch(setIncomingVoiceCall(user))
 
     });
