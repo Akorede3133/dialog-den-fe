@@ -9,14 +9,14 @@ import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
 
 const AppLayout = () => {
-  const { receiver, voiceCall, videoCall, incomingVoiceCall } = useAppSelector(selectChat);
+  const { receiver, voiceCall, videoCall, incomingVoiceCall, outGoingVoiceCall } = useAppSelector(selectChat);
   return (
     <div className='relative'>
         {incomingVoiceCall && <CallWindow>
           <IncomingCallNotification incomingVoiceCall={incomingVoiceCall}/>
         </CallWindow>}
-      {voiceCall && <CallWindow>
-          <VoiceCall />
+      {voiceCall && outGoingVoiceCall && <CallWindow>
+          <VoiceCall callInfo={outGoingVoiceCall} />
         </CallWindow>}
         {videoCall && <CallWindow>
           <VideoCall />
