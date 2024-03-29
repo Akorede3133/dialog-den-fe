@@ -1,8 +1,14 @@
 import logo from '../../../assets/logo.png';
-import { callProp } from '../redux/chatSlice';
+import { useAppDispatch } from '../../../redux/hooks';
+import { callProp, setIncomingVoiceCall, setVoiceCall } from '../redux/chatSlice';
 
 const IncomingCallNotification = ({ incomingVoiceCall }: {incomingVoiceCall: callProp}) => {
   const { username } = incomingVoiceCall
+  const dispatch = useAppDispatch();
+  const handleAnswer = () => {
+    dispatch(setVoiceCall());
+    dispatch(setIncomingVoiceCall(incomingVoiceCall))
+  }
   return (
     <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver text-white rounded-lg px-4 flex items-start py-3 gap-5 ">
       <div className=' flex items-center gap-4'>
@@ -15,7 +21,7 @@ const IncomingCallNotification = ({ incomingVoiceCall }: {incomingVoiceCall: cal
           <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm'>
             Reject
           </button>
-          <button className='bg-green-500 rounded-full  px-4 py-1 text-sm text-white'>
+          <button className='bg-green-500 rounded-full  px-4 py-1 text-sm text-white' onClick={handleAnswer}>
             Accept
           </button>
         </div>

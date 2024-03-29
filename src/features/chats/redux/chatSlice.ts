@@ -24,7 +24,9 @@ type ChatStateProp = {
     stream: MediaStream | null,
     peerConnection: RTCPeerConnection | null
   };
-  offer: RTCOfferOptions | null;
+  offer: RTCSessionDescriptionInit | null;
+  answer: RTCSessionDescriptionInit | null
+  offerObj: null;
   iceCandidates: RTCIceCandidate[];
 }
 const initialState: ChatStateProp = {
@@ -34,6 +36,8 @@ const initialState: ChatStateProp = {
   outGoingVoiceCall: null,
   incomingVoiceCall: null,
   offer: null,
+  answer: null,
+  offerObj: null,
   iceCandidates: [],
   remoteStream: {
     stream: null,
@@ -75,10 +79,16 @@ export const chatSlice = createSlice({
     },
     addIce: (state, { payload }: PayloadAction<RTCIceCandidate>) => {
       state.iceCandidates.push(payload)
+    },
+    addAnswer: (state, { payload }) => {
+      state.answer = payload
+    },
+    setOfferObj: (state, { payload }) => {
+      state.offerObj = payload
     }
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setIncomingVoiceCall, addIce, addOffer } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setIncomingVoiceCall, addIce, addOffer, addAnswer, setOfferObj } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

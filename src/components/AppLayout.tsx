@@ -7,6 +7,7 @@ import CallWindow from '../features/chats/components/CallWindow';
 import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
+import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 
 const AppLayout = () => {
   const { receiver, voiceCall, videoCall, incomingVoiceCall, outGoingVoiceCall } = useAppSelector(selectChat);
@@ -17,6 +18,9 @@ const AppLayout = () => {
         </CallWindow>}
       {voiceCall && outGoingVoiceCall && <CallWindow>
           <VoiceCall callInfo={outGoingVoiceCall} />
+        </CallWindow>}
+        {voiceCall && incomingVoiceCall && <CallWindow>
+          <ReceiverVoiceCall callInfo={incomingVoiceCall} />
         </CallWindow>}
         {videoCall && <CallWindow>
           <VideoCall />
