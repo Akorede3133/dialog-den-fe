@@ -12,9 +12,9 @@ const AppLayout = () => {
   const { receiver, voiceCall, videoCall, incomingVoiceCall } = useAppSelector(selectChat);
   return (
     <div className='relative'>
-        {/* {incomingVoiceCall && <CallWindow>
-          <VoiceCall />
-        </CallWindow>} */}
+        {incomingVoiceCall && <CallWindow>
+          <IncomingCallNotification incomingVoiceCall={incomingVoiceCall}/>
+        </CallWindow>}
       {voiceCall && <CallWindow>
           <VoiceCall />
         </CallWindow>}

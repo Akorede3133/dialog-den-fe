@@ -1,7 +1,6 @@
 import { ReactElement, ReactNode, cloneElement, createContext, useContext, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { callProp, selectChat, setOutGoingVoiceCall, setVideoCall, setVoiceCall, turnOffCalls } from "../redux/chatSlice";
-import { set } from "date-fns";
 import { useSocketContext } from "../context/socketContext";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
@@ -27,7 +26,7 @@ const CallWindowOpen = ({ children, callType }: CallWindowChildrenProp) => {
     if (callType === 'voice-call') {
       dispatch(setVoiceCall());
       dispatch(setOutGoingVoiceCall(receiver as callProp))
-      socket?.emit('SendOutgoingVoiceCall', { callReceiverId: receiver?.id})
+      socket?.emit('sendOutgoingVoiceCall', { callReceiverId: receiver?.id})
       
     }
     if (callType === 'video-call') {
