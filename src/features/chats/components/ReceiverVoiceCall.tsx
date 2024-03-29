@@ -22,10 +22,9 @@ const ReceiverVoiceCall = ({ callInfo }) => {
   const { user } = useCurrentUser();
   
     const dispatch = useAppDispatch();
-    const { offerObj, answer, iceCandidates, remoteStream }   = useAppSelector(selectChat);
+    const { offerObj, answer, iceCandidates, onGoingVoiceCall }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
-    console.log(remoteStream);
 
     useEffect(() => {
       const getMedia = async () => {        
@@ -75,7 +74,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{callInfo.username}</p>
-        <span className='text-white text-sm'>calling...</span>
+        <span className='text-white text-sm'>{onGoingVoiceCall ? '00:00' : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>

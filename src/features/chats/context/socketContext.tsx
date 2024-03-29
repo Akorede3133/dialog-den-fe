@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import { Socket, io } from "socket.io-client";
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj, turnOffCalls} from '../redux/chatSlice';
+import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj, setOnGoingVoiceCall, turnOffCalls} from '../redux/chatSlice';
 interface SocketContextProps {
   socket: Socket | null;
   onlineUsers: number[];
@@ -28,6 +28,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       setOnlineUsers(users);
     })
     socket.on('sendOutgoingVoiceCallToReceiver', (user: callProp) => {
+      console.log(user);
       dispatch(setIncomingVoiceCall(user))
 
     });
@@ -36,6 +37,9 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       console.log('cancel receiever call');
       
     });
+    socket.on('sendOnGoingVoiceCall', () => {
+      dispatch(setOnGoingVoiceCall(true));
+    })
     socket.on('sendOffer', (offerObj) => {   
       dispatch(setOfferObj(offerObj))
     });

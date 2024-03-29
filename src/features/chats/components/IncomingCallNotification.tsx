@@ -1,13 +1,16 @@
 import logo from '../../../assets/logo.png';
 import { useAppDispatch } from '../../../redux/hooks';
-import { callProp, setIncomingVoiceCall, setVoiceCall } from '../redux/chatSlice';
+import { useSocketContext } from '../context/socketContext';
+import { callProp, setIncomingVoiceCall, setOnGoingVoiceCall, setVoiceCall } from '../redux/chatSlice';
 
 const IncomingCallNotification = ({ incomingVoiceCall }: {incomingVoiceCall: callProp}) => {
-  const { username } = incomingVoiceCall
+  const { username , id} = incomingVoiceCall
   const dispatch = useAppDispatch();
+  const { socket } = useSocketContext();
   const handleAnswer = () => {
     dispatch(setVoiceCall());
-    dispatch(setIncomingVoiceCall(incomingVoiceCall))
+    socket?.emit('sendOnGoingVoiceCall', { callerId: id})
+    dispatch(setOnGoingVoiceCall(true));
   }
   return (
     <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver text-white rounded-lg px-4 flex items-start py-3 gap-5 ">
