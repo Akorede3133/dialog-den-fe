@@ -26,7 +26,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     useEffect(() => {
-      const getMedia = async () => {
+      const getMedia = async () => {        
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const peerConnection = new RTCPeerConnection(peerConfiguration)
         const rmStream = new MediaStream();
@@ -46,7 +46,9 @@ const ReceiverVoiceCall = ({ callInfo }) => {
           }
         })
         peerConnection.addEventListener('track', (e) => {
-          
+          e.streams[0].getTracks().forEach((track) => {
+            rmStream.addTrack(track)
+          })
         })
         dispatch(setRemotePeerConnection(peerConnection))
         dispatch(setRemoteStream(rmStream))

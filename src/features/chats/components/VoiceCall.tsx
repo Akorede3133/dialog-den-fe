@@ -49,7 +49,9 @@ const VoiceCall = ({ callInfo }) => {
           }
         })
         peerConnection.addEventListener('track', (e) => {
-          
+          e.streams[0].getTracks().forEach((track) => {
+            rmStream.addTrack(track)
+          })
         })
         dispatch(setRemotePeerConnection(peerConnection))
         dispatch(setRemoteStream(rmStream))

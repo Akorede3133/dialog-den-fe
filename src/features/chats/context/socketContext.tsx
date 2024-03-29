@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import { Socket, io } from "socket.io-client";
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { callProp, selectChat, setIncomingVoiceCall, setOfferObj, addAnswer } from '../redux/chatSlice';
+import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj} from '../redux/chatSlice';
 interface SocketContextProps {
   socket: Socket | null;
   onlineUsers: number[];
@@ -13,11 +13,13 @@ export const SocketContext = createContext<SocketContextProps>({} as SocketConte
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket| null>(null);
+  const { remoteStream } = useAppSelector(selectChat)
   const [onlineUsers, setOnlineUsers] = useState<number[]>([])
+  // console.log(remoteStream);
+  
   const { user }  = useCurrentUser();
   const dispatch = useAppDispatch();
-  const { remoteStream } = useAppSelector(selectChat)
-
+  
   useEffect(()=> {
     const socket = io('http://localhost:3000', {
       query: {
@@ -28,19 +30,24 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       setOnlineUsers(users);
     })
     socket.on('sendOutgoingVoiceCallToReceiver', (user: callProp) => {
-      dispatch(setIncomingVoiceCall(user))      
+      dispatch(setIncomingVoiceCall(user))
+
     });
-    socket.on('sendOffer', (offerObj) => {         
+    socket.on('cancelOutgoingVoiceCallForReceiver', () => {
+      // dispatch(unsetIncomingVoiceCall())
+    });
+    socket.on('sendOffer', (offerObj) => {   
       dispatch(setOfferObj(offerObj))
     });
     socket.on('sendAnswer', async (answer) => {   
       console.log(remoteStream.peerConnection);
-      console.log(answer);
-      
       if (answer && !remoteStream.peerConnection?.currentRemoteDescription) {
         await remoteStream.peerConnection?.setRemoteDescription(answer)
       }
       dispatch(addAnswer(answer))
+    });
+    socket.on('updatedOfferWithIceCandiadates', async (ice) => {
+      await remoteStream.peerConnection?.addIceCandidate(ice)
     });
     setSocket(socket);
     return () => {
@@ -48,7 +55,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         socket.close();
       }
     };
-  }, [user])
+  }, [user, dispatch, remoteStream.peerConnection])
   return <SocketContext.Provider value={{
     socket,
     onlineUsers
