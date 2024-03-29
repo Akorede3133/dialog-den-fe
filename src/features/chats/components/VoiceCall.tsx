@@ -3,19 +3,31 @@ import logo from '../../../assets/logo.png';
 import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addIce, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSocketContext } from '../context/socketContext';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
+import formatDuration from '../../../utils/formatDuration';
 
 const VoiceCall = ({ callInfo }) => {
   const { socket } = useSocketContext();
   const { user } = useCurrentUser();
+  const [callDuration, setCallDuration] = useState(0);
 
     const dispatch = useAppDispatch();
     const { receiver, offer, iceCandidates, remoteStream, onGoingVoiceCall }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     console.log(remoteStream);
+    useEffect(() => {
+      if (onGoingVoiceCall) {
+        const timer = setInterval(() => {
+          setCallDuration((prev) => prev + 1)
+        }, 1000)
+        return () => {
+          clearInterval(timer)
+        }
+      }
+    }, [onGoingVoiceCall])
     useEffect(() => {
       const peerConfiguration = {
         iceServers:[
@@ -74,7 +86,7 @@ const VoiceCall = ({ callInfo }) => {
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{callInfo.username}</p>
-        <span className='text-white text-sm'>{onGoingVoiceCall ? '00:00' : 'calling...'}</span>
+        <span className='text-white text-sm'>{onGoingVoiceCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>

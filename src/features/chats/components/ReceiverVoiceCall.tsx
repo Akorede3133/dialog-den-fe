@@ -3,9 +3,10 @@ import logo from '../../../assets/logo.png';
 import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addAnswer, addIce, selectChat, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSocketContext } from '../context/socketContext';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
+import formatDuration from '../../../utils/formatDuration';
 
 const peerConfiguration = {
   iceServers:[
@@ -20,52 +21,64 @@ const peerConfiguration = {
 const ReceiverVoiceCall = ({ callInfo }) => {
   const { socket } = useSocketContext();
   const { user } = useCurrentUser();
-  
-    const dispatch = useAppDispatch();
-    const { offerObj, answer, iceCandidates, onGoingVoiceCall }   = useAppSelector(selectChat);
-    const localAudioRef = useRef<HTMLAudioElement>(null);
-    const remoteAudioRef = useRef<HTMLAudioElement>(null);
+  const [callDuration, setCallDuration] = useState(0);
 
-    useEffect(() => {
-      const getMedia = async () => {        
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const peerConnection = new RTCPeerConnection(peerConfiguration)
-        const rmStream = new MediaStream();
-        if (remoteAudioRef.current) {
-          remoteAudioRef.current.srcObject = rmStream;
+  const dispatch = useAppDispatch();
+  const { offerObj, answer, iceCandidates, onGoingVoiceCall }   = useAppSelector(selectChat);
+  const localAudioRef = useRef<HTMLAudioElement>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    const getMedia = async () => {        
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const peerConnection = new RTCPeerConnection(peerConfiguration)
+      const rmStream = new MediaStream();
+      if (remoteAudioRef.current) {
+        remoteAudioRef.current.srcObject = rmStream;
+      }
+      stream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, stream);
+      })
+      await peerConnection?.setRemoteDescription(offerObj.offer);
+      const answer = await peerConnection.createAnswer();
+      dispatch(addAnswer(answer))
+      await peerConnection?.setLocalDescription(answer)
+      peerConnection.addEventListener('icecandidate', (e) => {
+        if (e.candidate) {
+          dispatch(addIce(e.candidate))
         }
-        stream.getTracks().forEach((track) => {
-          peerConnection.addTrack(track, stream);
+      })
+      peerConnection.addEventListener('track', (e) => {
+        e.streams[0].getTracks().forEach((track) => {
+          rmStream.addTrack(track)
         })
-        await peerConnection?.setRemoteDescription(offerObj.offer);
-        const answer = await peerConnection.createAnswer();
-        dispatch(addAnswer(answer))
-        await peerConnection?.setLocalDescription(answer)
-        peerConnection.addEventListener('icecandidate', (e) => {
-          if (e.candidate) {
-            dispatch(addIce(e.candidate))
-          }
-        })
-        peerConnection.addEventListener('track', (e) => {
-          e.streams[0].getTracks().forEach((track) => {
-            rmStream.addTrack(track)
-          })
-        })
-        dispatch(setRemotePeerConnection(peerConnection))
-        dispatch(setRemoteStream(rmStream))
+      })
+      dispatch(setRemotePeerConnection(peerConnection))
+      dispatch(setRemoteStream(rmStream))
+    }
+    getMedia();
+  }, [dispatch, offerObj.offer])
+  
+  useEffect(() => {
+    if (onGoingVoiceCall) {
+      const timer = setInterval(() => {
+        setCallDuration((prev) => prev + 1)
+      }, 1000)
+      return () => {
+        clearInterval(timer)
       }
-      getMedia();
-    }, [dispatch, offerObj.offer])
-   
-    useEffect(() => {
-      socket?.emit('sendAnswer', {answer, offererId: offerObj?.offererId})
-    }, [answer, offerObj?.offererId, socket])
+    }
+  }, [onGoingVoiceCall])
+  
+  useEffect(() => {
+    socket?.emit('sendAnswer', {answer, offererId: offerObj?.offererId})
+  }, [answer, offerObj?.offererId, socket])
 
-    useEffect(() => {
-      if (iceCandidates.length) {
-        socket?.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
-      }
-    }, [iceCandidates, user?.id])
+  useEffect(() => {
+    if (iceCandidates.length) {
+      socket?.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
+    }
+  }, [iceCandidates, user?.id])
 
   return (
     <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-center items-center gap-20 w-full">
@@ -74,7 +87,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{callInfo.username}</p>
-        <span className='text-white text-sm'>{onGoingVoiceCall ? '00:00' : 'calling...'}</span>
+        <span className='text-white text-sm'>{onGoingVoiceCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>

@@ -66,12 +66,12 @@ export const chatSlice = createSlice({
       state.incomingVoiceCall = null;
       state.outGoingVoiceCall = null;
       state.remoteStream.stream = null;
+      state.onGoingVoiceCall = false;
       if (state.remoteStream.peerConnection) {
         state.remoteStream.peerConnection.close();
         state.remoteStream.peerConnection.onicecandidate = null;
         state.remoteStream.peerConnection.ontrack = null;
         state.remoteStream.peerConnection = null;
-
       }
       state.remoteStream.stream = null;      
     },
