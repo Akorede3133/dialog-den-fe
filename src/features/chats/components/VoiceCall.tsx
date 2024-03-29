@@ -12,10 +12,10 @@ const VoiceCall = ({ callInfo }) => {
   const { user } = useCurrentUser();
 
     const dispatch = useAppDispatch();
-    const { receiver, offer, iceCandidates }   = useAppSelector(selectChat);
+    const { receiver, offer, iceCandidates, remoteStream }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
-
+    console.log(remoteStream);
     useEffect(() => {
       const peerConfiguration = {
         iceServers:[
@@ -42,9 +42,7 @@ const VoiceCall = ({ callInfo }) => {
         dispatch(addOffer(offer))
         await peerConnection?.setLocalDescription(offer)
         peerConnection.addEventListener('icecandidate', (e) => {
-          if (e.candidate) {
-            console.log(e.candidate);
-            
+          if (e.candidate) {            
             dispatch(addIce(e.candidate))          
           }
         })
@@ -80,7 +78,7 @@ const VoiceCall = ({ callInfo }) => {
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>
-        <CallWindow.Close>
+        <CallWindow.Close remoteAudioRef={remoteAudioRef}>
           <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
             <FaPhone className=' text-white' />
           </button>

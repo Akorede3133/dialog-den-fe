@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import { Socket, io } from "socket.io-client";
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj} from '../redux/chatSlice';
+import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj, turnOffCalls} from '../redux/chatSlice';
 interface SocketContextProps {
   socket: Socket | null;
   onlineUsers: number[];
@@ -15,8 +15,6 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket| null>(null);
   const { remoteStream } = useAppSelector(selectChat)
   const [onlineUsers, setOnlineUsers] = useState<number[]>([])
-  // console.log(remoteStream);
-  
   const { user }  = useCurrentUser();
   const dispatch = useAppDispatch();
   
@@ -34,13 +32,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     });
     socket.on('cancelOutgoingVoiceCallForReceiver', () => {
-      // dispatch(unsetIncomingVoiceCall())
+      dispatch(turnOffCalls())
+      console.log('cancel receiever call');
+      
     });
     socket.on('sendOffer', (offerObj) => {   
       dispatch(setOfferObj(offerObj))
     });
     socket.on('sendAnswer', async (answer) => {   
-      console.log(remoteStream.peerConnection);
       if (answer && !remoteStream.peerConnection?.currentRemoteDescription) {
         await remoteStream.peerConnection?.setRemoteDescription(answer)
       }

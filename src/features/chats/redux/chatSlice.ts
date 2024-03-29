@@ -61,6 +61,17 @@ export const chatSlice = createSlice({
     turnOffCalls: (state) => {
       state.voiceCall = false;
       state.videoCall = false;
+      state.incomingVoiceCall = null;
+      state.outGoingVoiceCall = null;
+      state.remoteStream.stream = null;
+      if (state.remoteStream.peerConnection) {
+        state.remoteStream.peerConnection.close();
+        state.remoteStream.peerConnection.onicecandidate = null;
+        state.remoteStream.peerConnection.ontrack = null;
+        state.remoteStream.peerConnection = null;
+
+      }
+      state.remoteStream.stream = null;      
     },
     setRemoteStream: (state, { payload }: PayloadAction<MediaStream>) => {
       state.remoteStream.stream = payload;

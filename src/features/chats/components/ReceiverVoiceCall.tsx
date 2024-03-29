@@ -22,9 +22,11 @@ const ReceiverVoiceCall = ({ callInfo }) => {
   const { user } = useCurrentUser();
   
     const dispatch = useAppDispatch();
-    const { offerObj, answer, iceCandidates }   = useAppSelector(selectChat);
+    const { offerObj, answer, iceCandidates, remoteStream }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
+    console.log(remoteStream);
+
     useEffect(() => {
       const getMedia = async () => {        
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -77,7 +79,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>
-        <CallWindow.Close>
+        <CallWindow.Close remoteAudioRef={remoteAudioRef}>
           <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
             <FaPhone className=' text-white' />
           </button>
