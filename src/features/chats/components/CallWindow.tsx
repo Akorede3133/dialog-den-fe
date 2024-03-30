@@ -53,18 +53,18 @@ const CallWindowModal = ({ children, callType}: CallWindowChildrenProp) => {
 const CallClose = ({ children, remoteAudioRef }: { children: ReactElement, remoteAudioRef: React.RefObject<HTMLAudioElement> }) => {
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-  const { receiver } = useAppSelector(selectChat)
+  const { receiver, outGoingVoiceCall } = useAppSelector(selectChat)
   const {socket } = useSocketContext();
 
 
   const handleCallClose = () => {
     setOpen('');
-    console.log(receiver);
+    console.log(outGoingVoiceCall);
     dispatch(turnOffCalls());
     if (remoteAudioRef.current) {
       remoteAudioRef.current.srcObject = null;
     }
-    socket?.emit('cancelOutgoingVoiceCall', { callReceiverId: receiver?.id })
+    socket?.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id })
   }
 
   return (

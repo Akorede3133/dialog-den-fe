@@ -4,6 +4,7 @@ import { Socket, io } from "socket.io-client";
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addAnswer, callProp, selectChat, setIncomingVoiceCall, setOfferObj, setOnGoingVoiceCall, turnOffCalls} from '../redux/chatSlice';
+import { CallWindowContext } from '../components/CallWindow';
 interface SocketContextProps {
   socket: Socket | null;
   onlineUsers: number[];
@@ -13,6 +14,7 @@ export const SocketContext = createContext<SocketContextProps>({} as SocketConte
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket| null>(null);
+  const { open, setOpen } = useContext(CallWindowContext);  
   const { remoteStream } = useAppSelector(selectChat)
   const [onlineUsers, setOnlineUsers] = useState<number[]>([])
   const { user }  = useCurrentUser();
@@ -32,7 +34,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
 
     });
     socket.on('cancelOutgoingVoiceCallForReceiver', () => {
-      dispatch(turnOffCalls())      
+      dispatch(turnOffCalls())  
+      setOpen('')    
     });
     socket.on('sendOnGoingVoiceCall', () => {
       dispatch(setOnGoingVoiceCall(true));

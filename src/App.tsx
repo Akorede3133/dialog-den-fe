@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
 import { SocketProvider } from "./features/chats/context/socketContext"
+import CallWindow from "./features/chats/components/CallWindow"
 
 
 const router = createBrowserRouter(createRoutesFromElements(
@@ -34,11 +35,12 @@ const client = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={client} >
-      <SocketProvider>
+      <CallWindow>
+        <SocketProvider>
          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <RouterProvider router={router} />
-      </SocketProvider>
-     
+        </SocketProvider>
+      </CallWindow>   
     </QueryClientProvider>
   )
 }

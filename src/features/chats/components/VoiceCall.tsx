@@ -7,16 +7,32 @@ import { useEffect, useRef, useState } from 'react';
 import { useSocketContext } from '../context/socketContext';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import formatDuration from '../../../utils/formatDuration';
+import { FaMicrophoneAltSlash } from 'react-icons/fa';
+import { MdCallEnd } from 'react-icons/md';
+import { BsMicFill, BsMicMuteFill } from 'react-icons/bs';
 
 const VoiceCall = ({ callInfo }) => {
   const { socket } = useSocketContext();
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);
-
+  const [mutedAudio, setMuteAudio] = useState(false);
     const dispatch = useAppDispatch();
-    const { receiver, offer, iceCandidates, remoteStream, onGoingVoiceCall }   = useAppSelector(selectChat);
+    const { receiver, offer, iceCandidates, onGoingVoiceCall, remoteStream }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
+    const handleMuteAudio = () => {
+      remoteStream.stream?.getAudioTracks().forEach((track) => {
+        track.enabled = false;
+      })
+      setMuteAudio(true)
+    };
+    const handleUnMuteAudio = () => {
+      remoteStream.stream?.getAudioTracks().forEach((track) => {
+        track.enabled = true;
+      })
+      setMuteAudio(false)
+
+    };
     useEffect(() => {
       if (onGoingVoiceCall) {
         const timer = setInterval(() => {
@@ -79,7 +95,7 @@ const VoiceCall = ({ callInfo }) => {
     }, [iceCandidates, user?.id])
 
   return (
-    <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-center items-center gap-20 w-full">
+    <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5">
       <audio ref={localAudioRef} hidden autoPlay playsInline></audio>
       <audio ref={remoteAudioRef} hidden autoPlay playsInline></audio>
 
@@ -88,14 +104,34 @@ const VoiceCall = ({ callInfo }) => {
         <span className='text-white text-sm'>{onGoingVoiceCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
+      { !onGoingVoiceCall && 
       <CallWindow>
         <CallWindow.Close remoteAudioRef={remoteAudioRef}>
           <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
             <FaPhone className=' text-white' />
           </button>
         </CallWindow.Close>
-      
-      </CallWindow>
+      </CallWindow> 
+      }
+      {
+        onGoingVoiceCall && <div className=' w-full self-end flex justify-center items-center gap-4'>
+            <CallWindow>
+            <CallWindow.Close remoteAudioRef={remoteAudioRef}>
+              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
+                <MdCallEnd className=' text-white' />
+              </button>
+            </CallWindow.Close>
+          </CallWindow>
+           { !mutedAudio ? 
+           <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
+            <BsMicFill className=' text-white text-xl' />
+            </button> :
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleUnMuteAudio}>
+            <BsMicMuteFill className=' text-white text-xl' />
+             </button> }
+        </div>
+      }
+     
     
     </div>
   )
