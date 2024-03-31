@@ -31,8 +31,7 @@ type ChatStateProp = {
   outGoingVideoCall: callProp | null;
   incomingVoiceCall: callProp | null;
   incomingVideoCall: callProp | null;
-  onGoingVoiceCall: boolean;
-  onGoingVideoCall: boolean;
+  onGoingCall: boolean;
   remoteStream: {
     stream: MediaStream | null,
     peerConnection: RTCPeerConnection | null
@@ -50,8 +49,7 @@ const initialState: ChatStateProp = {
   outGoingVideoCall: null,
   incomingVoiceCall: null,
   incomingVideoCall: null,
-  onGoingVoiceCall: false,
-  onGoingVideoCall: false,
+  onGoingCall: false,
   offer: null,
   answer: null,
   offerObj: null,
@@ -81,7 +79,7 @@ export const chatSlice = createSlice({
       state.incomingVoiceCall = null;
       state.outGoingVoiceCall = null;
       state.remoteStream.stream = null;
-      state.onGoingVoiceCall = false;
+      state.onGoingCall = false;
       if (state.remoteStream.peerConnection) {
         state.remoteStream.peerConnection.close();
         state.remoteStream.peerConnection.onicecandidate = null;
@@ -100,13 +98,13 @@ export const chatSlice = createSlice({
       state.outGoingVoiceCall = payload;
     },
     setOutGoingVideoCall: (state, { payload }: PayloadAction<callProp | null>) => {
-      state.outGoingVoiceCall = payload;
+      state.outGoingVideoCall = payload;
     },
     setIncomingVoiceCall: (state, { payload }: PayloadAction<callProp |  null>) => {
       state.incomingVoiceCall = payload;
     },
     setIncomingVideoCall: (state, { payload }: PayloadAction<callProp |  null>) => {
-      state.incomingVoiceCall = payload;
+      state.incomingVideoCall = payload;
     },
     addOffer: (state, { payload }) => {
       state.offer = payload;
@@ -120,12 +118,12 @@ export const chatSlice = createSlice({
     setOfferObj: (state, { payload }) => {
       state.offerObj = payload
     }, 
-    setOnGoingVoiceCall: (state, { payload }) => {
-      state.onGoingVoiceCall = payload;
+    setOnGoingCall: (state, { payload }) => {
+      state.onGoingCall = payload;
     }
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingVoiceCall } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

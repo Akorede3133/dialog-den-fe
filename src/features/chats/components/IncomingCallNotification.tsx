@@ -1,15 +1,20 @@
 import logo from '../../../assets/logo.png';
 import { useAppDispatch } from '../../../redux/hooks';
 import { useSocketContext } from '../context/socketContext';
-import { callProp, setOnGoingVoiceCall, setVoiceCall } from '../redux/chatSlice';
+import { callProp, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
 
 const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) => {
   const dispatch = useAppDispatch();
   const { socket } = useSocketContext();
   const handleAnswer = () => {
-    dispatch(setVoiceCall());
-    socket?.emit('sendOnGoingVoiceCall', { callerId: incomingCall?.id})
-    dispatch(setOnGoingVoiceCall(true));
+    console.log(incomingCall);
+    socket?.emit('sendOnGoingCall', { callerId: incomingCall?.id})
+    dispatch(setOnGoingCall(true));
+    if (incomingCall.type === 'voice') {
+      dispatch(setVoiceCall());
+    } else if (incomingCall.type === 'video') {
+      dispatch(setVideoCall());
+    }
   }
   return (
     <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver text-white rounded-lg px-4 flex items-start py-3 gap-5 ">

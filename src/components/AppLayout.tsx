@@ -8,22 +8,27 @@ import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
 import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
+import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
 
 const AppLayout = () => {
-  const { receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, onGoingVoiceCall } = useAppSelector(selectChat);
+  const { receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  
   return (
     <div className='relative'>
-        {incomingVoiceCall && !onGoingVoiceCall && <CallWindow>
-          <IncomingCallNotification incomingVoiceCall={incomingVoiceCall}/>
+        {incomingVoiceCall && !onGoingCall && <CallWindow>
+          <IncomingCallNotification incomingCall={incomingVoiceCall}/>
         </CallWindow>}
       {voiceCall && outGoingVoiceCall && <CallWindow>
-          <VoiceCall callInfo={outGoingVoiceCall} />
+          <VoiceCall />
         </CallWindow>}
         {voiceCall && incomingVoiceCall && <CallWindow>
-          <ReceiverVoiceCall callInfo={incomingVoiceCall} />
+          <ReceiverVoiceCall />
         </CallWindow>}
-        {videoCall && <CallWindow>
+        {videoCall && outGoingVideoCall && <CallWindow>
           <VideoCall />
+        </CallWindow>}
+        {videoCall && incomingVideoCall && <CallWindow>
+          <ReceiverVideoCall />
         </CallWindow>}
       {!voiceCall && !videoCall && <>
       <NavBar />

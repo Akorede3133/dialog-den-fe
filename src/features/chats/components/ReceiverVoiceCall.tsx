@@ -18,13 +18,15 @@ const peerConfiguration = {
       }
   ]
 }
-const ReceiverVoiceCall = ({ callInfo }) => {
+const ReceiverVoiceCall = () => {
   const { socket } = useSocketContext();
+  const { incomingVoiceCall } = useAppSelector(selectChat);
+
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);
 
   const dispatch = useAppDispatch();
-  const { offerObj, answer, iceCandidates, onGoingVoiceCall }   = useAppSelector(selectChat);
+  const { offerObj, answer, iceCandidates, onGoingCall }   = useAppSelector(selectChat);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
 
@@ -60,7 +62,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
   }, [dispatch, offerObj?.offer])
 
   useEffect(() => {
-    if (onGoingVoiceCall) {
+    if (onGoingCall) {
       const timer = setInterval(() => {
         setCallDuration((prev) => prev + 1)
       }, 1000)
@@ -68,7 +70,7 @@ const ReceiverVoiceCall = ({ callInfo }) => {
         clearInterval(timer)
       }
     }
-  }, [onGoingVoiceCall])
+  }, [onGoingCall])
   
   useEffect(() => {
     socket?.emit('sendAnswer', {answer, offererId: offerObj?.offererId})
@@ -86,8 +88,8 @@ const ReceiverVoiceCall = ({ callInfo }) => {
       <audio ref={remoteAudioRef} hidden autoPlay playsInline></audio>
 
       <div className=' text-center'>
-        <p className=' text-2xl text-white'>{callInfo.username}</p>
-        <span className='text-white text-sm'>{onGoingVoiceCall ? formatDuration(callDuration) : 'calling...'}</span>
+        <p className=' text-2xl text-white'>{incomingVoiceCall?.username}</p>
+        <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       <CallWindow>

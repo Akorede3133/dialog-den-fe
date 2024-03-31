@@ -11,13 +11,13 @@ import { FaMicrophoneAltSlash } from 'react-icons/fa';
 import { MdCallEnd } from 'react-icons/md';
 import { BsMicFill, BsMicMuteFill } from 'react-icons/bs';
 
-const VoiceCall = ({ callInfo }) => {
+const VoiceCall = () => {
   const { socket } = useSocketContext();
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
     const dispatch = useAppDispatch();
-    const { receiver, offer, iceCandidates, onGoingVoiceCall, remoteStream }   = useAppSelector(selectChat);
+    const { receiver, offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     const handleMuteAudio = () => {
@@ -34,7 +34,7 @@ const VoiceCall = ({ callInfo }) => {
 
     };
     useEffect(() => {
-      if (onGoingVoiceCall) {
+      if (onGoingCall) {
         const timer = setInterval(() => {
           setCallDuration((prev) => prev + 1)
         }, 1000)
@@ -42,7 +42,7 @@ const VoiceCall = ({ callInfo }) => {
           clearInterval(timer)
         }
       }
-    }, [onGoingVoiceCall])
+    }, [onGoingCall])
     useEffect(() => {
       const peerConfiguration = {
         iceServers:[
@@ -100,11 +100,11 @@ const VoiceCall = ({ callInfo }) => {
       <audio ref={remoteAudioRef} hidden autoPlay playsInline></audio>
 
       <div className=' text-center'>
-        <p className=' text-2xl text-white'>{callInfo.username}</p>
-        <span className='text-white text-sm'>{onGoingVoiceCall ? formatDuration(callDuration) : 'calling...'}</span>
+        <p className=' text-2xl text-white'>{outGoingVoiceCall?.username}</p>
+        <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
-      { !onGoingVoiceCall && 
+      { !onGoingCall && 
       <CallWindow>
         <CallWindow.Close remoteAudioRef={remoteAudioRef}>
           <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
@@ -114,7 +114,7 @@ const VoiceCall = ({ callInfo }) => {
       </CallWindow> 
       }
       {
-        onGoingVoiceCall && <div className=' w-full self-end flex justify-center items-center gap-4'>
+        onGoingCall && <div className=' w-full self-end flex justify-center items-center gap-4'>
             <CallWindow>
             <CallWindow.Close remoteAudioRef={remoteAudioRef}>
               <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
