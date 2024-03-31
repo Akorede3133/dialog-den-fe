@@ -10,7 +10,7 @@ import IncomingCallNotification from '../features/chats/components/IncomingCallN
 import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 
 const AppLayout = () => {
-  const { receiver, voiceCall, videoCall, incomingVoiceCall, outGoingVoiceCall, onGoingVoiceCall } = useAppSelector(selectChat);
+  const { receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, onGoingVoiceCall } = useAppSelector(selectChat);
   return (
     <div className='relative'>
         {incomingVoiceCall && !onGoingVoiceCall && <CallWindow>
@@ -32,7 +32,8 @@ const AppLayout = () => {
           <Outlet />
         </div>
         <div className='sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
-        { incomingVoiceCall &&<IncomingCallNotification incomingVoiceCall={incomingVoiceCall} />}
+        { incomingVoiceCall &&<IncomingCallNotification incomingCall={incomingVoiceCall} />}
+        { incomingVideoCall &&<IncomingCallNotification incomingCall={incomingVideoCall} />}
 
           {
             receiver ? <Conversation /> : 'Select a chat'

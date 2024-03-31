@@ -12,7 +12,7 @@ export type callProp = {
   username: string;
   id: number;
   email: string;
-
+  type: string;
 }
 export type offerObjProp = {
   offererId: number,
@@ -28,8 +28,11 @@ type ChatStateProp = {
   voiceCall: boolean,
   videoCall: boolean,
   outGoingVoiceCall: callProp | null;
+  outGoingVideoCall: callProp | null;
   incomingVoiceCall: callProp | null;
+  incomingVideoCall: callProp | null;
   onGoingVoiceCall: boolean;
+  onGoingVideoCall: boolean;
   remoteStream: {
     stream: MediaStream | null,
     peerConnection: RTCPeerConnection | null
@@ -44,8 +47,11 @@ const initialState: ChatStateProp = {
   voiceCall: false,
   videoCall: false,
   outGoingVoiceCall: null,
+  outGoingVideoCall: null,
   incomingVoiceCall: null,
+  incomingVideoCall: null,
   onGoingVoiceCall: false,
+  onGoingVideoCall: false,
   offer: null,
   answer: null,
   offerObj: null,
@@ -93,7 +99,13 @@ export const chatSlice = createSlice({
     setOutGoingVoiceCall: (state, { payload }: PayloadAction<callProp | null>) => {
       state.outGoingVoiceCall = payload;
     },
+    setOutGoingVideoCall: (state, { payload }: PayloadAction<callProp | null>) => {
+      state.outGoingVoiceCall = payload;
+    },
     setIncomingVoiceCall: (state, { payload }: PayloadAction<callProp |  null>) => {
+      state.incomingVoiceCall = payload;
+    },
+    setIncomingVideoCall: (state, { payload }: PayloadAction<callProp |  null>) => {
       state.incomingVoiceCall = payload;
     },
     addOffer: (state, { payload }) => {
@@ -114,6 +126,6 @@ export const chatSlice = createSlice({
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setIncomingVoiceCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingVoiceCall } = chatSlice.actions;
+export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingVoiceCall } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
