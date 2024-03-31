@@ -7,7 +7,6 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
   const dispatch = useAppDispatch();
   const { socket } = useSocketContext();
   const handleAnswer = () => {
-    console.log(incomingCall);
     socket?.emit('sendOnGoingCall', { callerId: incomingCall?.id})
     dispatch(setOnGoingCall(true));
     if (incomingCall.type === 'voice') {

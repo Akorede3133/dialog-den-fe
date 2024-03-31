@@ -3,7 +3,7 @@ import { BsMicFill, BsMicMuteFill } from "react-icons/bs";
 import CallWindow from "./CallWindow";
 import { MdCallEnd } from "react-icons/md";
 import { useEffect, useRef } from "react";
-import { addAnswer, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
+import { addAnswer, addIce, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import { useSocketContext } from "../context/socketContext";
@@ -41,14 +41,12 @@ const ReceiverVideoCall = () => {
         peerConnection.addTrack(track, stream);
       })
       await peerConnection?.setRemoteDescription(offerObj?.offer as RTCSessionDescriptionInit);
-      const answer = await peerConnection.createAnswer();
-      console.log(answer);
-      
+      const answer = await peerConnection.createAnswer();      
       dispatch(addAnswer(answer))
       await peerConnection?.setLocalDescription(answer)
       peerConnection.addEventListener('icecandidate', (e) => {
         if (e.candidate) {
-          // dispatch(addIce(e.candidate))
+          dispatch(addIce(e.candidate))
         }
       })
       peerConnection.addEventListener('track', (e) => {

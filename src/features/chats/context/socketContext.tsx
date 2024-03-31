@@ -53,6 +53,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       dispatch(addAnswer(answer))
     });
     socket.on('updatedOfferWithIceCandiadates', async (ice) => {
+      console.log(ice);
       await remoteStream.peerConnection?.addIceCandidate(ice)
     });
     setSocket(socket);
