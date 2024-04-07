@@ -146,7 +146,7 @@ const VoiceCall = () => {
       {
         onGoingCall && <div className=' w-full self-end flex justify-center items-center gap-4'>
             <CallWindow>
-            <CallWindow.Close remoteAudioRef={remoteAudioRef}>
+            <CallWindow.Close callType='voice' remoteAudioRef={remoteAudioRef}>
               <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
                 <MdCallEnd className=' text-white' />
               </button>

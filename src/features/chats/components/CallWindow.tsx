@@ -50,19 +50,28 @@ const CallWindowModal = ({ children, callType}: CallWindowChildrenProp) => {
   return null;
 
 }
-const CallClose = ({ children, remoteAudioRef }: { children: ReactElement, remoteAudioRef?: React.RefObject<HTMLAudioElement> }) => {
+const CallClose = ({ children, callType, remoteAudioRef, localVideoRef }: { children: ReactElement, remoteAudioRef?: React.RefObject<HTMLAudioElement>, callType: string, localVideoRef?: React.RefObject<HTMLVideoElement> }) => {
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-  const { outGoingVoiceCall, incomingVoiceCall, socket } = useAppSelector(selectChat)
+  const { outGoingVoiceCall, incomingVoiceCall, socket, outGoingVideoCall, incomingVideoCall } = useAppSelector(selectChat)
 
 
   const handleCallClose = () => {
     setOpen('');
     dispatch(turnOffCalls());
-    if (remoteAudioRef?.current) {
-      remoteAudioRef.current.srcObject = null;
+
+    if (callType === 'voice') {
+      if (remoteAudioRef?.current) {
+        remoteAudioRef.current.srcObject = null;
+      }
+      socket?.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id || incomingVoiceCall?.id })
+    } else {
+      if (localVideoRef?.current) {
+        localVideoRef.current.srcObject = null;
+      }
+      socket?.emit('cancelOutgoingVideoCall', { callReceiverId: outGoingVideoCall?.id || incomingVideoCall?.id })
     }
-    socket?.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id || incomingVoiceCall?.id })
+   
   }
 
   return (

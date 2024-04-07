@@ -128,6 +128,7 @@ const VideoCall = () => {
   return (
     <div className=" bg-red-500 min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-20 relative overflow-hidden">
       <video ref={localVideoRef} className=" min-h-screen bg-green-500 z-1 top-0 w-full" autoPlay muted></video>
+      <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{outGoingVideoCall?.username}</p>
@@ -136,7 +137,7 @@ const VideoCall = () => {
       {
         true && <div className=' w-full self-end flex justify-center items-center gap-4'>
             <CallWindow>
-            <CallWindow.Close>
+            <CallWindow.Close callType="video" localVideoRef={localVideoRef}>
               <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
                 <MdCallEnd className=' text-white' />
               </button>
@@ -151,8 +152,6 @@ const VideoCall = () => {
              </button> }
         </div>
       }
-       <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
-
     </div>
   )
 }

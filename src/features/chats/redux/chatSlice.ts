@@ -100,11 +100,19 @@ export const chatSlice = createSlice({
       state.videoCall = false;
       state.incomingVoiceCall = null;
       state.outGoingVoiceCall = null;
+      state.incomingVideoCall = null;
+      state.outGoingVideoCall = null;
       state.remoteStream.stream = null;
       state.onGoingCall = false;
       state.answer = null;
       state.offer = null;
       state.peerIces = [];
+      state.localStream?.getTracks().forEach(track => {
+        track.stop();
+      });
+      if (state.localStream?.getTracks().length === 0) {
+        state.localStream = null;
+      }
       if (state.remoteStream.peerConnection) {
         state.remoteStream.peerConnection.close();
         state.remoteStream.peerConnection.onicecandidate = null;
