@@ -13,8 +13,10 @@ const VoiceCall = () => {
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
+  const [hasAnswer, setHasAnswer] = useState(false);
+
     const dispatch = useAppDispatch();
-    const { receiver, offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall, socket }   = useAppSelector(selectChat);
+    const { offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall, socket, answer, peerIces }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     const handleMuteAudio = () => {
@@ -64,16 +66,31 @@ const VoiceCall = () => {
         })
         const offer = await peerConnection?.createOffer();
         dispatch(addOffer(offer))
-        await peerConnection?.setLocalDescription(offer)
+        peerConnection?.setLocalDescription(offer)
         peerConnection.addEventListener('icecandidate', (e) => {
           if (e.candidate) {            
             dispatch(addIce(e.candidate))          
           }
         })
         peerConnection.addEventListener('track', (e) => {
+          console.log('===Adding Track===');
+
           e.streams[0].getTracks().forEach((track) => {
             rmStream.addTrack(track)
           })
+        })
+        peerConnection.addEventListener('signalingstatechange', () => {
+          console.log(peerConnection.signalingState);
+        })
+        peerConnection.addEventListener('icegatheringstatechange', () => {
+          console.log(peerConnection.iceGatheringState);
+        })
+        peerConnection.addEventListener('iceconnectionstatechange', () => {
+          console.log(peerConnection.iceConnectionState);
+        })
+        peerConnection.addEventListener('connectionstatechange', () => {
+          console.log(peerConnection.connectionState);
+          
         })
         dispatch(setRemotePeerConnection(peerConnection))
         dispatch(setRemoteStream(rmStream))
@@ -82,14 +99,30 @@ const VoiceCall = () => {
     }, [dispatch])
 
     useEffect(() => {
-      socket?.emit('sendOffer', {offer, receiverId: receiver?.id})
-    }, [offer, receiver?.id, socket])
+      if (answer && !hasAnswer) {        
+        remoteStream.peerConnection?.setRemoteDescription(answer);
+        setHasAnswer(true);
+      }
+    }, [answer, remoteStream.peerConnection, hasAnswer])
+    useEffect(() => {
+      socket?.emit('sendOffer', {offer, receiverId: outGoingVoiceCall?.id})
+    }, [offer, outGoingVoiceCall?.id, socket])
 
     useEffect(() => {
       if (iceCandidates.length) {
-        socket?.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
+        socket.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
       }
-    }, [iceCandidates, user?.id])
+    }, [iceCandidates, user?.id, socket])
+
+    useEffect(() => {
+      if (hasAnswer && remoteStream.peerConnection && peerIces.length) {
+        peerIces.forEach(async (ice) => {
+          await remoteStream.peerConnection?.addIceCandidate(ice);
+        })
+      }
+      
+    }, [hasAnswer, peerIces, remoteStream.peerConnection])
+
 
   return (
     <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5">

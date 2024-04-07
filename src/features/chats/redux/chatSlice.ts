@@ -100,13 +100,15 @@ export const chatSlice = createSlice({
       state.outGoingVoiceCall = null;
       state.remoteStream.stream = null;
       state.onGoingCall = false;
+      state.answer = null;
+      state.offer = null;
+      state.peerIces = [];
       if (state.remoteStream.peerConnection) {
         state.remoteStream.peerConnection.close();
         state.remoteStream.peerConnection.onicecandidate = null;
         state.remoteStream.peerConnection.ontrack = null;
         state.remoteStream.peerConnection = null;
       }
-      state.remoteStream.stream = null;      
     },
     setRemoteStream: (state, { payload }: PayloadAction<MediaStream>) => {
       state.remoteStream.stream = payload;

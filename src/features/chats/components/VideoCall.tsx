@@ -91,9 +91,11 @@ const VideoCall = () => {
   }, [iceCandidates, user?.id, socket])
 
   useEffect(() => {
-    peerIces.forEach(async (ice) => {
-      await remoteStream.peerConnection?.addIceCandidate(ice);
-    })
+    if (remoteStream.peerConnection && peerIces.length) {
+      peerIces.forEach(async (ice) => {
+        await remoteStream.peerConnection?.addIceCandidate(ice);
+      })
+    }
   }, [peerIces, remoteStream.peerConnection])
 
   return (

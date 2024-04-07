@@ -23,9 +23,8 @@ const socketListener = (socket: Socket, dispatch) => {
   socket.on('sendOffer', (offerObj: offerObjProp) => {
     dispatch(setOfferObj(offerObj))
   });
-  socket.on('sendAnswer', async (answer) => {  
+  socket.on('sendAnswer', async (answer) => {      
     dispatch(addAnswer(answer));
-    
   });
   socket.on('updatedOfferWithIceCandiadates', async ({candidate}) => {   
     dispatch(addPeerIce(candidate))
