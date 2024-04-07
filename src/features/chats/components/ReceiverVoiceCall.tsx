@@ -2,7 +2,7 @@ import { FaPhone } from 'react-icons/fa6';
 import logo from '../../../assets/logo.png';
 import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { addAnswer, addIce, selectChat, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
+import { addAnswer, addIce, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
 import { useEffect, useRef, useState } from 'react';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import formatDuration from '../../../utils/formatDuration';
@@ -27,27 +27,28 @@ const ReceiverVoiceCall = () => {
   const [callDuration, setCallDuration] = useState(0);
 
   const dispatch = useAppDispatch();
-  const { offerObj, iceCandidates, onGoingCall, peerIces, incomingVoiceCall, socket, remoteStream }   = useAppSelector(selectChat);
+  const { offerObj, iceCandidates, onGoingCall, peerIces, incomingVoiceCall, socket, remoteStream, localStream }   = useAppSelector(selectChat);
   const localAudioRef = useRef<HTMLAudioElement>(null);
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
 
   const handleMuteAudio = () => {
-    remoteStream.stream?.getAudioTracks().forEach((track) => {
+    localStream?.getAudioTracks().forEach((track) => {      
       track.enabled = false;
     })
     setMuteAudio(true)
   };
   const handleUnMuteAudio = () => {
-    remoteStream.stream?.getAudioTracks().forEach((track) => {
+    localStream?.getAudioTracks().forEach((track) => {
       track.enabled = true;
     })
     setMuteAudio(false)
-
   };
 
   useEffect(() => {
     const getMedia = async () => {        
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      dispatch(setLocalStream(stream))
+
       const peerConnection = new RTCPeerConnection(peerConfiguration)
       const rmStream = new MediaStream();
       if (remoteAudioRef.current) {
