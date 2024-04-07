@@ -39,6 +39,7 @@ type ChatStateProp = {
   incomingVoiceCall: callProp | null;
   incomingVideoCall: callProp | null;
   onGoingCall: boolean;
+  localStream: MediaStream | null;
   remoteStream: {
     stream: MediaStream | null,
     peerConnection: RTCPeerConnection | null
@@ -71,6 +72,7 @@ const initialState: ChatStateProp = {
   offerObj: null,
   peerIces: [],
   iceCandidates: [],
+  localStream: null,
   remoteStream: {
     stream: null,
     peerConnection: null
@@ -109,6 +111,9 @@ export const chatSlice = createSlice({
         state.remoteStream.peerConnection.ontrack = null;
         state.remoteStream.peerConnection = null;
       }
+    },
+    setLocalStream: (state, { payload }: PayloadAction<MediaStream>) => {
+      state.localStream = payload;
     },
     setRemoteStream: (state, { payload }: PayloadAction<MediaStream>) => {
       state.remoteStream.stream = payload;
@@ -149,6 +154,6 @@ export const chatSlice = createSlice({
   }
 })
 
-export const {setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
+export const {setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
