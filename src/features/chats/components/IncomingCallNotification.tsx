@@ -1,6 +1,7 @@
 import logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { callProp, selectChat, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
+import CallWindow from './CallWindow';
 
 const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) => {
   const dispatch = useAppDispatch();
@@ -23,9 +24,12 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
         <p className='text-sm'>{incomingCall?.username}</p>
         <p className='text-sm capitalize'>{`Incoming ${incomingCall?.type} call`}</p>
         <div className=' flex items-center gap-4'>
-          <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm'>
+          <CallWindow.Close>
+            <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm'>
             Reject
-          </button>
+            </button>
+          </CallWindow.Close>
+        
           <button className='bg-green-500 rounded-full  px-4 py-1 text-sm text-white' onClick={handleAnswer}>
             Accept
           </button>
