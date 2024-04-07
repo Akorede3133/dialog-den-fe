@@ -1,11 +1,10 @@
 import logo from '../../../assets/logo.png';
-import { useAppDispatch } from '../../../redux/hooks';
-import { useSocketContext } from '../context/socketContext';
-import { callProp, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { callProp, selectChat, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
 
 const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) => {
   const dispatch = useAppDispatch();
-  const { socket } = useSocketContext();
+  const { socket } = useAppSelector(selectChat)
   const handleAnswer = () => {
     socket?.emit('sendOnGoingCall', { callerId: incomingCall?.id})
     dispatch(setOnGoingCall(true));

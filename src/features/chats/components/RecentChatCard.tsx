@@ -1,11 +1,10 @@
 import { FaMicrophone, FaPhotoFilm } from 'react-icons/fa6';
 import logo from '../../../assets/logo.png';
-import { useAppDispatch } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
-import { setReceiver } from '../redux/chatSlice';
+import { selectChat, setReceiver } from '../redux/chatSlice';
 import { HiPhoto } from 'react-icons/hi2';
-import { useSocketContext } from '../context/socketContext';
 import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import formatDuration from '../../../utils/formatDuration';
@@ -28,13 +27,13 @@ export type ChatProp =  {
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const [totalDuration ,setTotalDuration] = useState
   (0);
+  const {onlineUsers} = useAppSelector(selectChat)  
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null) 
   
   const waveFormRef = useRef<HTMLDivElement>(null)
   
   const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
   const dispatch = useAppDispatch();
-  const { onlineUsers } = useSocketContext();
     
   const isUserOnline = onlineUsers.includes(msgReceiverId as number || msgSenderId as number);
   

@@ -5,10 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Profile from "./features/profile/page/Profile"
 import Settings from "./features/settings/Settings"
 import Contacts from "./features/contacts/page/Contacts"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
-import { SocketProvider } from "./features/chats/context/socketContext"
 import CallWindow from "./features/chats/components/CallWindow"
 
 
@@ -36,10 +34,8 @@ const App = () => {
   return (
     <QueryClientProvider client={client} >
       <CallWindow>
-        <SocketProvider>
          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <RouterProvider router={router} />
-        </SocketProvider>
       </CallWindow>   
     </QueryClientProvider>
   )

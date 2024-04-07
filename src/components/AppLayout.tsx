@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
-import { useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectChat } from '../features/chats/redux/chatSlice';
 import CallWindow from '../features/chats/components/CallWindow';
 import VoiceCall from '../features/chats/components/VoiceCall';
@@ -9,10 +9,16 @@ import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
 import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
+import { useEffect } from 'react';
+import socketListener from '../features/chats/utils/socketListener';
 
 const AppLayout = () => {
-  const { receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  const {socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  const dispatch = useAppDispatch();
   
+  useEffect(() => {
+    socketListener(socket, dispatch)
+  }, [socket, dispatch])
   return (
     <div className='relative'>
         {incomingVoiceCall && !onGoingCall && <CallWindow>

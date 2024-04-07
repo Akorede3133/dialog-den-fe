@@ -5,7 +5,6 @@ import useGetMessages from '../hooks/useGetMessages';
 import { selectChat } from '../redux/chatSlice';
 import { formatTime } from '../../../utils/dateTime';
 import { useEffect, useRef, useState } from 'react';
-import { useSocketContext } from '../context/socketContext';
 import VoicePlayer from './VoicePlayer';
 import { BsCheck2, BsCheck2All } from 'react-icons/bs';
 
@@ -21,8 +20,7 @@ export type MessageProp = {
 }
 
 const ConversationBody = () => {
-  const { receiver } = useAppSelector(selectChat);
-  const { socket } = useSocketContext();
+  const { receiver, socket } = useAppSelector(selectChat);
   const [socketMessages, setSocketMessages] = useState<MessageProp[]>([]);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
 

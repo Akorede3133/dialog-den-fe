@@ -2,23 +2,20 @@ import formatDuration from "../../../utils/formatDuration"
 import { BsMicFill, BsMicMuteFill } from "react-icons/bs";
 import CallWindow from "./CallWindow";
 import { MdCallEnd } from "react-icons/md";
-import { useEffect, useRef } from "react";
-import { addAnswer, addIce, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
+import { useEffect, useRef, useState } from "react";
+import { addAnswer, addIce, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
-import { useSocketContext } from "../context/socketContext";
 
 
 const ReceiverVideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null)
-  const remoteVideoRef = useRef<HTMLVideoElement>(null)
-  console.log('Receiever video');
-  
-  const { socket } = useSocketContext();
+  const remoteVideoRef = useRef<HTMLVideoElement>(null)  
+  const [hasAnswer, setHasAnswer] = useState(false);
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
-  const { offerObj, answer, iceCandidates, onGoingVoiceCall, remoteStream, outGoingVideoCall, incomingVideoCall }   = useAppSelector(selectChat);
-
+  const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces }   = useAppSelector(selectChat);
+  
   useEffect(() => {
     const peerConfiguration = {
       iceServers:[
@@ -30,46 +27,79 @@ const ReceiverVideoCall = () => {
           }
       ]
     }
-    const getMedia = async () => {        
+    const getMedia = async () => {   
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = stream;
       }
+     
       const peerConnection = new RTCPeerConnection(peerConfiguration)
       const rmStream = new MediaStream();
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = rmStream;
+      }
       stream.getTracks().forEach((track) => {
         peerConnection.addTrack(track, stream);
       })
-      await peerConnection?.setRemoteDescription(offerObj?.offer as RTCSessionDescriptionInit);
-      const answer = await peerConnection.createAnswer();      
-      dispatch(addAnswer(answer))
-      await peerConnection?.setLocalDescription(answer)
+      peerConnection?.setRemoteDescription(offerObj?.offer as RTCSessionDescriptionInit);
       peerConnection.addEventListener('icecandidate', (e) => {
         if (e.candidate) {
           dispatch(addIce(e.candidate))
         }
       })
       peerConnection.addEventListener('track', (e) => {
+        console.log('===Adding Track===');
         e.streams[0].getTracks().forEach((track) => {
           rmStream.addTrack(track)
         })
       })
+      peerConnection.addEventListener('signalingstatechange', () => {
+        console.log(peerConnection.signalingState);
+      })
+      peerConnection.addEventListener('icegatheringstatechange', () => {
+        console.log(peerConnection.iceGatheringState);
+      })
+      peerConnection.addEventListener('iceconnectionstatechange', () => {
+        console.log(peerConnection.iceConnectionState);
+      })
       dispatch(setRemotePeerConnection(peerConnection))
       dispatch(setRemoteStream(rmStream))
+      peerConnection.addEventListener('connectionstatechange', () => {
+        console.log(peerConnection.connectionState);
+      })
     }
     getMedia();
   }, [dispatch, offerObj?.offer])
 
-  
   useEffect(() => {
-    socket?.emit('sendAnswer', {answer, offererId: offerObj?.offererId})
-  }, [answer, offerObj?.offererId, socket])
+    const createAnswer = async () => {     
+      const answer = await remoteStream.peerConnection?.createAnswer();
+      socket.emit('sendAnswer', {answer, offererId: offerObj?.offererId})
+      dispatch(addAnswer(answer))
+      if (!hasAnswer) {
+        remoteStream.peerConnection?.setLocalDescription(answer);
+      }
+    }
+    if (offerObj?.offererId && remoteStream.peerConnection) {
+      createAnswer();
+      setHasAnswer(true);
+    }
+  }, [dispatch, offerObj?.offererId, remoteStream.peerConnection, socket, hasAnswer])
 
   useEffect(() => {
-    if (iceCandidates.length) {
-      socket?.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
+    if (iceCandidates.length && user?.id) {
+      socket.emit('sendIceCandidate',{ candidate: iceCandidates[iceCandidates.length - 1], iceCandidateOffererId: user?.id })
     }
-  }, [iceCandidates, user?.id])
+  }, [iceCandidates, user?.id, socket])
+
+
+  useEffect(() => {
+    if (remoteStream.peerConnection) {
+      peerIces.forEach(async (ice) => {
+        await remoteStream.peerConnection?.addIceCandidate(ice);
+      })
+    }    
+  }, [peerIces, remoteStream.peerConnection])
 
   return (
     <div className="bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-10 relative overflow-hidden">
@@ -97,8 +127,7 @@ const ReceiverVideoCall = () => {
              </button> }
         </div>
       }
-      <video ref={remoteVideoRef} hidden autoPlay playsInline></video>
-
+        <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
     </div>
   )
 }

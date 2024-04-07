@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from "../../../redux/store";
+import { Socket, io } from "socket.io-client";
+import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import { currentUser } from "../../auth/api/auth";
+import { UserProp } from "../../contacts/components/ContactCard";
 
 
 type ReceiverProp = {
@@ -24,6 +28,9 @@ export type offerObjProp = {
 }
 
 type ChatStateProp = {
+  socket: Socket,
+  loggedInUser: UserProp,
+  onlineUsers: number[],
   receiver: ReceiverProp | null,
   voiceCall: boolean,
   videoCall: boolean,
@@ -39,9 +46,18 @@ type ChatStateProp = {
   offer: RTCSessionDescriptionInit | null;
   answer: RTCSessionDescriptionInit | null
   offerObj: offerObjProp |  null;
+  peerIces: RTCIceCandidate[];
   iceCandidates: RTCIceCandidate[];
 }
+const user = await currentUser();
+
 const initialState: ChatStateProp = {
+  socket: io('http://localhost:3000', {
+    query: {
+      userId: user.id
+    }
+  }),
+  onlineUsers: [],
   receiver: null,
   voiceCall: false,
   videoCall: false,
@@ -53,6 +69,7 @@ const initialState: ChatStateProp = {
   offer: null,
   answer: null,
   offerObj: null,
+  peerIces: [],
   iceCandidates: [],
   remoteStream: {
     stream: null,
@@ -64,6 +81,9 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    setOnlineUsers: (state, { payload }: PayloadAction<number[]>) => {
+      state.onlineUsers = payload;
+    },
     setReceiver: (state, { payload }: PayloadAction<ReceiverProp>) => {
       state.receiver = payload;
     },
@@ -120,10 +140,13 @@ export const chatSlice = createSlice({
     }, 
     setOnGoingCall: (state, { payload }) => {
       state.onGoingCall = payload;
-    }
+    },
+    addPeerIce: (state, { payload }) => {
+      state.peerIces.push(payload);
+    },
   }
 })
 
-export const { setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall } = chatSlice.actions;
+export const {setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

@@ -4,7 +4,6 @@ import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addAnswer, addIce, selectChat, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
 import { useEffect, useRef, useState } from 'react';
-import { useSocketContext } from '../context/socketContext';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import formatDuration from '../../../utils/formatDuration';
 
@@ -19,8 +18,7 @@ const peerConfiguration = {
   ]
 }
 const ReceiverVoiceCall = () => {
-  const { socket } = useSocketContext();
-  const { incomingVoiceCall } = useAppSelector(selectChat);
+  const { incomingVoiceCall, socket } = useAppSelector(selectChat);
 
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);

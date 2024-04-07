@@ -1,7 +1,6 @@
 import { ReactElement, ReactNode, cloneElement, createContext, useContext, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { callProp, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setVideoCall, setVoiceCall, turnOffCalls } from "../redux/chatSlice";
-import { useSocketContext } from "../context/socketContext";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
 type CallWindowProp = {
@@ -17,22 +16,21 @@ export const CallWindowContext = createContext<CallWindowProp>({} as CallWindowP
 const CallWindowOpen = ({ children, callType }: CallWindowChildrenProp) => {
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-  const {socket } = useSocketContext();
   const { user } = useCurrentUser();
-  const { receiver } = useAppSelector(selectChat)
+  const { receiver, socket } = useAppSelector(selectChat)
 
   const handleCall = () => {
     setOpen(callType);
     if (callType === 'voice-call') {
       dispatch(setVoiceCall());
       dispatch(setOutGoingVoiceCall(receiver as callProp))
-      socket?.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'voice'})
+      socket.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'voice'})
       
     }
     if (callType === 'video-call') {
       dispatch(setVideoCall());
       dispatch(setOutGoingVideoCall(receiver as callProp))
-      socket?.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'video'})
+      socket.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'video'})
     }
   }
   return (
@@ -55,8 +53,7 @@ const CallWindowModal = ({ children, callType}: CallWindowChildrenProp) => {
 const CallClose = ({ children, remoteAudioRef }: { children: ReactElement, remoteAudioRef: React.RefObject<HTMLAudioElement> }) => {
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-  const { receiver, outGoingVoiceCall } = useAppSelector(selectChat)
-  const {socket } = useSocketContext();
+  const { receiver, outGoingVoiceCall, socket } = useAppSelector(selectChat)
 
 
   const handleCallClose = () => {

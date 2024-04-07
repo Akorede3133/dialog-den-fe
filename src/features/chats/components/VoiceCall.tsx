@@ -4,20 +4,17 @@ import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addIce, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
 import { useEffect, useRef, useState } from 'react';
-import { useSocketContext } from '../context/socketContext';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import formatDuration from '../../../utils/formatDuration';
-import { FaMicrophoneAltSlash } from 'react-icons/fa';
 import { MdCallEnd } from 'react-icons/md';
 import { BsMicFill, BsMicMuteFill } from 'react-icons/bs';
 
 const VoiceCall = () => {
-  const { socket } = useSocketContext();
   const { user } = useCurrentUser();
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
     const dispatch = useAppDispatch();
-    const { receiver, offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall }   = useAppSelector(selectChat);
+    const { receiver, offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall, socket }   = useAppSelector(selectChat);
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     const handleMuteAudio = () => {

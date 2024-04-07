@@ -3,11 +3,9 @@ import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingG
 import logo from '../../../assets/logo.png';
 import { useAppSelector } from "../../../redux/hooks";
 import { selectChat } from "../redux/chatSlice";
-import { useSocketContext } from "../context/socketContext";
 import CallWindow from "./CallWindow";
 const ConversationHeader = () => {
-  const { receiver } = useAppSelector(selectChat);
-  const { onlineUsers } = useSocketContext();
+  const { receiver, onlineUsers } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
   
   return (
