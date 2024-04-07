@@ -3,7 +3,7 @@ import { BsMicFill, BsMicMuteFill } from "react-icons/bs";
 import CallWindow from "./CallWindow";
 import { MdCallEnd } from "react-icons/md";
 import { useEffect, useRef, useState } from "react";
-import { addIce, addOffer, addPeerIce, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
+import { addIce, addOffer, selectChat, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
@@ -12,9 +12,21 @@ const VideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null)
   const remoteVideoRef = useRef<HTMLVideoElement>(null)
   const [hasAnswer, setHasAnswer] = useState(false);
+  const [callDuration, setCallDuration] = useState(0);
+
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
-  const { offer, iceCandidates, remoteStream, outGoingVideoCall, socket, peerIces, answer }   = useAppSelector(selectChat);
+  const { offer, iceCandidates, remoteStream, outGoingVideoCall, socket, peerIces, answer, onGoingCall }   = useAppSelector(selectChat);
+  useEffect(() => {
+    if (onGoingCall) {
+      const timer = setInterval(() => {
+        setCallDuration((prev) => prev + 1)
+      }, 1000)
+      return () => {
+        clearInterval(timer)
+      }
+    }
+  }, [onGoingCall])
     
   useEffect(() => {    
     const peerConfiguration = {
@@ -104,7 +116,7 @@ const VideoCall = () => {
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{outGoingVideoCall?.username}</p>
-        <span className='text-white text-sm'>{false ? formatDuration(0) : 'calling...'}</span>
+        <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       {
         true && <div className=' w-full self-end flex justify-center items-center gap-4'>

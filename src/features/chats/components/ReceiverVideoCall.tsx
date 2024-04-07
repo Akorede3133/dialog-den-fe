@@ -12,9 +12,21 @@ const ReceiverVideoCall = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null)
   const remoteVideoRef = useRef<HTMLVideoElement>(null)  
   const [hasAnswer, setHasAnswer] = useState(false);
+  const [callDuration, setCallDuration] = useState(0);
+
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
-  const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces }   = useAppSelector(selectChat);
+  const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces, onGoingCall }   = useAppSelector(selectChat);
+  useEffect(() => {
+    if (onGoingCall) {
+      const timer = setInterval(() => {
+        setCallDuration((prev) => prev + 1)
+      }, 1000)
+      return () => {
+        clearInterval(timer)
+      }
+    }
+  }, [onGoingCall])
   
   useEffect(() => {
     const peerConfiguration = {
@@ -107,7 +119,7 @@ const ReceiverVideoCall = () => {
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{incomingVideoCall?.username}</p>
-        <span className='text-white text-sm'>{false ? formatDuration(0) : 'calling...'}</span>
+        <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       {
         true && <div className=' w-full self-end flex justify-center items-center gap-4'>
