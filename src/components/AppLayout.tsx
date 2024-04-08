@@ -11,14 +11,20 @@ import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
 import { useEffect } from 'react';
 import socketListener from '../features/chats/utils/socketListener';
+import useCurrentUser from '../features/auth/hooks/useCurrentUser';
 
 const AppLayout = () => {
   const {socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
   
   useEffect(() => {
+    if (user) {
+      socket.emit('user', user)      
+    }
     socketListener(socket, dispatch)
-  }, [socket, dispatch])
+
+  }, [socket, dispatch, user])
   return (
     <div className='relative'>
         {incomingVoiceCall && !onGoingCall && <CallWindow>

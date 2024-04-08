@@ -5,6 +5,7 @@ import { Socket, io } from "socket.io-client";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import { currentUser } from "../../auth/api/auth";
 import { UserProp } from "../../contacts/components/ContactCard";
+import { useState } from "react";
 
 
 type ReceiverProp = {
@@ -50,14 +51,10 @@ type ChatStateProp = {
   peerIces: RTCIceCandidate[];
   iceCandidates: RTCIceCandidate[];
 }
-const user = await currentUser();
+// const user = await currentUser();
 
 const initialState: ChatStateProp = {
-  socket: io('http://localhost:3000', {
-    query: {
-      userId: user.id
-    }
-  }),
+  socket: io('http://localhost:3000'),
   onlineUsers: [],
   receiver: null,
   voiceCall: false,
