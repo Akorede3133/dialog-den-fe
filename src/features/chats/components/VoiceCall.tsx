@@ -20,16 +20,16 @@ const VoiceCall = () => {
     const localAudioRef = useRef<HTMLAudioElement>(null);
     const remoteAudioRef = useRef<HTMLAudioElement>(null);
     const handleMuteAudio = () => {
-      localStream?.getAudioTracks().forEach((track) => {      
-        track.enabled = false;
-      })
-      setMuteAudio(true)
-    };
-    const handleUnMuteAudio = () => {
-      localStream?.getAudioTracks().forEach((track) => {
-        track.enabled = true;
-      })
-      setMuteAudio(false)
+      setMuteAudio((prev) => !prev)
+      if (mutedAudio) {
+        localStream?.getAudioTracks().forEach((track) => {      
+          track.enabled = true;
+        })
+      } else {
+        localStream?.getAudioTracks().forEach((track) => {      
+          track.enabled = false;
+        })
+      }    
     };
     useEffect(() => {
       if (onGoingCall) {
@@ -156,7 +156,7 @@ const VoiceCall = () => {
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />
             </button> :
-            <button className='p-4 rounded-full bg-gray-600' onClick={handleUnMuteAudio}>
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicMuteFill className=' text-white text-xl' />
              </button> }
         </div>

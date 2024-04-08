@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { addAnswer, addIce, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import { HiMiniVideoCamera, HiMiniVideoCameraSlash } from "react-icons/hi2";
 
 
 const ReceiverVideoCall = () => {
@@ -14,24 +15,38 @@ const ReceiverVideoCall = () => {
   const [hasAnswer, setHasAnswer] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
+  const [disableVideo, setDisableVideo] = useState(false);
+
 
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
   const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces, onGoingCall, localStream }   = useAppSelector(selectChat);
 
   const handleMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {      
-      track.enabled = false;
-    })
-    
-    setMuteAudio(true)
+    setMuteAudio((prev) => !prev)
+    if (mutedAudio) {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = true;
+      })
+    } else {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = false;
+      })
+    }    
   };
-  const handleUnMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {
-      track.enabled = true;
-    })
-    setMuteAudio(false)
-  };
+
+  const handleDisableVideo = () => {
+    setDisableVideo((prev) => !prev);
+    if (disableVideo) {
+      localStream?.getVideoTracks().forEach((track) => {
+        track.enabled = true;
+      })
+    } else {
+      localStream?.getVideoTracks().forEach((track) => {
+        track.enabled = false;
+      })
+    }
+  }
   useEffect(() => {
     if (onGoingCall) {
       const timer = setInterval(() => {
@@ -152,8 +167,15 @@ const ReceiverVideoCall = () => {
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />
             </button> :
-            <button className='p-4 rounded-full bg-gray-600' onClick={handleUnMuteAudio}>
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicMuteFill className=' text-white text-xl' />
+             </button> }
+             { !disableVideo ? 
+           <button className='p-4 rounded-full bg-gray-600' onClick={handleDisableVideo}>
+            <HiMiniVideoCamera className=' text-white text-xl' />
+            </button> :
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleDisableVideo}>
+            <HiMiniVideoCameraSlash className=' text-white text-xl' />
              </button> }
         </div>
       }

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { addIce, addOffer, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import { HiMiniVideoCamera, HiMiniVideoCameraSlash } from "react-icons/hi2";
 
 
 const VideoCall = () => {
@@ -14,23 +15,36 @@ const VideoCall = () => {
   const [hasAnswer, setHasAnswer] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
+  const [disableVideo, setDisableVideo] = useState(false);
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
   const { offer, iceCandidates, remoteStream, outGoingVideoCall, socket, peerIces, answer, onGoingCall, localStream }   = useAppSelector(selectChat);
 
   const handleMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {      
-      track.enabled = false;
-    })
-    
-    setMuteAudio(true)
+    setMuteAudio((prev) => !prev)
+    if (mutedAudio) {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = true;
+      })
+    } else {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = false;
+      })
+    }    
   };
-  const handleUnMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {
-      track.enabled = true;
-    })
-    setMuteAudio(false)
-  };
+
+  const handleDisableVideo = () => {
+    setDisableVideo((prev) => !prev);
+    if (disableVideo) {
+      localStream?.getVideoTracks().forEach((track) => {
+        track.enabled = true;
+      })
+    } else {
+      localStream?.getVideoTracks().forEach((track) => {
+        track.enabled = false;
+      })
+    }
+  }
   useEffect(() => {
     if (onGoingCall) {
       const timer = setInterval(() => {
@@ -126,8 +140,8 @@ const VideoCall = () => {
   }, [peerIces, remoteStream.peerConnection])
 
   return (
-    <div className=" bg-red-500 min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-20 relative overflow-hidden">
-      <video ref={localVideoRef} className=" min-h-screen bg-green-500 z-1 top-0 w-full" autoPlay muted></video>
+    <div className=" bg-red-50 min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-20 relative overflow-hidden">
+      <video ref={localVideoRef} className=" min-h-screen bg-green-0 z-1 top-0 w-full" autoPlay muted></video>
       <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
 
       <div className=' text-center'>
@@ -147,8 +161,15 @@ const VideoCall = () => {
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />
             </button> :
-            <button className='p-4 rounded-full bg-red-600' onClick={handleUnMuteAudio}>
+            <button className='p-4 rounded-full bg-red-600' onClick={handleMuteAudio}>
             <BsMicMuteFill className=' text-white text-xl' />
+             </button> }
+             { !disableVideo ? 
+           <button className='p-4 rounded-full bg-gray-600' onClick={handleDisableVideo}>
+            <HiMiniVideoCamera className=' text-white text-xl' />
+            </button> :
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleDisableVideo}>
+            <HiMiniVideoCameraSlash className=' text-white text-xl' />
              </button> }
         </div>
       }

@@ -32,16 +32,16 @@ const ReceiverVoiceCall = () => {
   const remoteAudioRef = useRef<HTMLAudioElement>(null);
 
   const handleMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {      
-      track.enabled = false;
-    })
-    setMuteAudio(true)
-  };
-  const handleUnMuteAudio = () => {
-    localStream?.getAudioTracks().forEach((track) => {
-      track.enabled = true;
-    })
-    setMuteAudio(false)
+    setMuteAudio((prev) => !prev)
+    if (mutedAudio) {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = true;
+      })
+    } else {
+      localStream?.getAudioTracks().forEach((track) => {      
+        track.enabled = false;
+      })
+    }    
   };
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const ReceiverVoiceCall = () => {
       <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
       { !onGoingCall && 
       <CallWindow>
-        <CallWindow.Close remoteAudioRef={remoteAudioRef}>
+        <CallWindow.Close callType='voice' remoteAudioRef={remoteAudioRef}>
           <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
             <FaPhone className=' text-white' />
           </button>
@@ -161,7 +161,7 @@ const ReceiverVoiceCall = () => {
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />
             </button> :
-            <button className='p-4 rounded-full bg-gray-600' onClick={handleUnMuteAudio}>
+            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicMuteFill className=' text-white text-xl' />
              </button> }
         </div>
