@@ -54,13 +54,13 @@ const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean
   return (
     <div  className={`${isSender ? ` mr-[3.2rem] bg-bg-silver` : `bg-[#1C9DEA] ml-[3.2rem] text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
       <div className="flex items-center gap-2">
-        <div>
+        <div className="mt-5">
           {
             isPlaying ? <FaPause onClick={handlePauseRecord} /> : <FaPlay onClick={handlePlayRecord} />
           }
         </div>
         <div className="w-[200px] h-[50px] overflow-hidden">
-          <div ref={waveFormRef} className="w-full mt-[-19px] bg-red" ></div>
+          <div ref={waveFormRef} className="w-full mt-5 bg-red" ></div>
         </div>
       </div>
       <div className="flex justify-between text-[0.7rem]">
