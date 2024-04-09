@@ -147,8 +147,8 @@ const ReceiverVideoCall = () => {
 
   return (
     <div className="bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-10 relative overflow-hidden">
-      <video ref={localVideoRef} className=" min-h-screen top-0 w-full" autoPlay muted></video>
-      <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
+       <video ref={localVideoRef} className=" w-[90%] h-[60%] md:w-[700px] rounded-md object-cover absolute z-1 top-[20%]" autoPlay muted></video>
+       <video ref={remoteVideoRef} className=" absolute h-[200px] w-[200px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{incomingVideoCall?.username}</p>

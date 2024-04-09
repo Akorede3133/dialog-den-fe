@@ -1,4 +1,3 @@
-import { CiUser } from "react-icons/ci";
 import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineSun,  HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
 import logo from '../assets/logo.png';

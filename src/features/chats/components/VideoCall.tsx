@@ -140,9 +140,9 @@ const VideoCall = () => {
   }, [peerIces, remoteStream.peerConnection])
 
   return (
-    <div className=" bg-red-50 min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-20 relative overflow-hidden">
-      <video ref={localVideoRef} className=" min-h-screen bg-green-0 z-1 top-0 w-full" autoPlay muted></video>
-      <video ref={remoteVideoRef} className=" absolute h-[250px] w-[250px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
+    <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-20 relative overflow-hidden">
+      <video ref={localVideoRef} className=" w-[90%] h-[60%] md:w-[700px] rounded-md object-cover absolute z-1 top-[20%]" autoPlay muted></video>
+      <video ref={remoteVideoRef} className=" absolute h-[200px] w-[200px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
 
       <div className=' text-center'>
         <p className=' text-2xl text-white'>{outGoingVideoCall?.username}</p>
