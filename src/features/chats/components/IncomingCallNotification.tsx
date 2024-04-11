@@ -24,7 +24,7 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
         <p className='text-sm'>{incomingCall?.username}</p>
         <p className='text-sm capitalize'>{`Incoming ${incomingCall?.type} call`}</p>
         <div className=' flex items-center gap-4'>
-          <CallWindow.Close>
+          <CallWindow.Close callType={incomingCall.type}>
             <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm'>
             Reject
             </button>

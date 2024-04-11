@@ -96,7 +96,7 @@ export const chatSlice = createSlice({
     setVideoCall: (state) => {
       state.videoCall = true;
     },
-    turnOffCalls: (state) => {
+    turnOffCalls: (state) => {      
       state.voiceCall = false;
       state.videoCall = false;
       state.incomingVoiceCall = null;

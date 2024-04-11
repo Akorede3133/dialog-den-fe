@@ -27,6 +27,8 @@ const AppLayout = () => {
   }, [socket, dispatch, user])
   return (
     <div className='relative'>
+        { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />}
+        { incomingVideoCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVideoCall} />}
         {incomingVoiceCall && !onGoingCall && <CallWindow>
           <IncomingCallNotification incomingCall={incomingVoiceCall}/>
         </CallWindow>}
@@ -49,8 +51,6 @@ const AppLayout = () => {
           <Outlet />
         </div>
         <div className={` ${!showConversation && 'hidden'} sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500`}>
-        { incomingVoiceCall &&<IncomingCallNotification incomingCall={incomingVoiceCall} />}
-        { incomingVideoCall &&<IncomingCallNotification incomingCall={incomingVideoCall} />}
 
           {
             receiver ? <Conversation /> : 'Select a chat'

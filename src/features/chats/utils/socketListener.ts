@@ -15,6 +15,8 @@ const socketListener = (socket: Socket, dispatch) => {
     }
   });
   socket.on('cancelOutgoingVoiceCallForReceiver', () => {
+    console.log('Cancelling...');
+    
     dispatch(turnOffCalls())  
   });
   socket.on('cancelOutgoingVideoCallForReceiver', () => {    

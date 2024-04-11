@@ -55,21 +55,21 @@ const CallClose = ({ children, callType, remoteAudioRef, localVideoRef }: { chil
   const dispatch = useAppDispatch()
   const { outGoingVoiceCall, incomingVoiceCall, socket, outGoingVideoCall, incomingVideoCall } = useAppSelector(selectChat)
 
-
+  console.log(callType);
+  
   const handleCallClose = () => {
     setOpen('');
-    dispatch(turnOffCalls());
-
-    if (callType === 'voice') {
-      if (remoteAudioRef?.current) {
-        remoteAudioRef.current.srcObject = null;
-      }
-      socket?.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id || incomingVoiceCall?.id })
-    } else {
+    dispatch(turnOffCalls());    
+    if (callType === 'video') {
       if (localVideoRef?.current) {
         localVideoRef.current.srcObject = null;
       }
-      socket?.emit('cancelOutgoingVideoCall', { callReceiverId: outGoingVideoCall?.id || incomingVideoCall?.id })
+      socket.emit('cancelOutgoingVideoCall', { callReceiverId: outGoingVideoCall?.id || incomingVideoCall?.id })
+    } else {
+      if (remoteAudioRef?.current) {
+        remoteAudioRef.current.srcObject = null;
+      }
+      socket.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id || incomingVoiceCall?.id })
     }
    
   }
