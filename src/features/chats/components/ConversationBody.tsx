@@ -20,10 +20,13 @@ export type MessageProp = {
 }
 
 const ConversationBody = () => {
+  const [scrollToBottom, setScrollToBottom] = useState<boolean>(false);
+  const { user, isGettingUser } = useCurrentUser();
   const { receiver, socket } = useAppSelector(selectChat);
   const [socketMessages, setSocketMessages] = useState<MessageProp[]>([]);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
-
+  const ref = useRef<HTMLLIElement>(null);
+    
   useEffect(() => {
     if (messages) {
       setSocketMessages(messages)
@@ -37,16 +40,23 @@ const ConversationBody = () => {
       });
     };
 
-    socket?.on('getMessage', handleMessage);
+    socket.on('getMessage', handleMessage);
 
     return () => {
-      socket?.off('getMessage', handleMessage);
+      socket.off('getMessage', handleMessage);
     }
   }, [socket, messages])
+  useEffect(() => {
+    const scrollToBottom = () => {
+      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+    };
+    scrollToBottom();
+    if (scrollToBottom) {
+      scrollToBottom();
+      setScrollToBottom(false); 
+    }
+  }, [socketMessages, scrollToBottom]);
 
-  const { user, isGettingUser } = useCurrentUser();
-
-  const ref = useRef<HTMLDivElement>(null);  
   
   if (isPending || isGettingUser) {
     return <p>Loading...</p>
@@ -56,7 +66,7 @@ const ConversationBody = () => {
   }
     
   return (
-    <div  ref={ref} className="bg-[#EFF7FE] overflow-auto convo p-3">
+    <div className="bg-[#EFF7FE] overflow-auto convo p-3">
       <ul className="flex flex-col gap-4">
         {
           socketMessages.map((message: MessageProp, index: number) => {                                    
@@ -67,7 +77,7 @@ const ConversationBody = () => {
             const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-md rouded-[50px_50px_50px_0px] rounded-md' : 'rouded-[0px_50px_50px_50px]';
 
             return (
-              <li key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
+              <li  ref={ref} key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
                 { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end'>
                   <span>{user?.username}</span>
                   <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />
