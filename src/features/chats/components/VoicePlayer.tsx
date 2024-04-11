@@ -52,7 +52,7 @@ const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean
     setIsPlaying(false);
   }
   return (
-    <div  className={`${isSender ? ` mr-[3.2rem] bg-bg-silver` : `bg-[#1C9DEA] ml-[3.2rem] text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
+    <div  className={`${isSender ? ` mr-[rem] bg-bg-silver` : `bg-[#1C9DEA] ml-[3.2rem] text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
       <div className="flex items-center gap-2">
         <div className="mt-5">
           {

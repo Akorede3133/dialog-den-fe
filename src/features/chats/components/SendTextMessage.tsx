@@ -44,10 +44,12 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   }
 
   const adjustTextArea = (e) => {
-    const { target } = e;
+    const { target } = e;    
     const scrollHeight = target.scrollHeight;
     target.style.height = 'auto';
-    target.style.height = `${scrollHeight}px`;
+    if (scrollHeight < 100) {
+      target.style.height = `${scrollHeight}px`;
+    }
   }
 
   const onEmojiClick = (emoji, e) => {
@@ -73,12 +75,12 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     setShowEmoji((prev) => !prev)
   }
   return (
-    <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3">
+    <div className="bg-whit relative grid grid-cols-[1fr,auto] items-center gap-4 p-3">
       { showEmoji && <div ref={emojiRef} className=" absolute bottom-[100px] right-20">
         <Picker onEmojiClick={onEmojiClick} /> 
       </div> }
       <section className="">
-        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-hidden" value={message} onChange={handleInput } onKeyDown={ adjustTextArea}  rows={1}/>
+        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-auto text-area" value={message} onChange={handleInput }   rows={1}/>
       </section>
       <section className="flex gap-5 items-center">
         <button onClick={handleEmoji}>

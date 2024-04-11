@@ -5,15 +5,18 @@
 .recent--chats::-webkit-scrollbar,
 .profile::-webkit-scrollbar,
 .contacts::-webkit-scrollbar,
-.convo::-webkit-scrollbar {
+.convo::-webkit-scrollbar,
+.text-area::-webkit-scrollbar {
   width: 6px;
 }
 .recent--chats::-webkit-scrollbar-thumb,
 .profile::-webkit-scrollbar-thumb,
 .contacts::-webkit-scrollbar-thumb,
-.convo::-webkit-scrollbar-thumb {
+.convo::-webkit-scrollbar-thumb,
+.text-area::-webkit-scrollbar-thumb {
   background-color: #c9d1e1;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 /* ::-webkit-scrollbar {
@@ -41,4 +44,11 @@
   --color--sender--background--dark: #262E35;
   --color--message--cirle: #523B49;
   --color--message--text: #EF4669;
+}
+
+
+.wrap-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
 }

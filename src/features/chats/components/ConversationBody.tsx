@@ -63,30 +63,35 @@ const ConversationBody = () => {
             const { content, senderId, id, status } = message;
             const isSender = senderId === user?.id;
 
-            const senderTextClass = messages[index - 1]?.senderId == user?.id ? ' rounded-[50px_0px_50px_50px]' : 'rounded-[50px_50px_0_50px]'
-            const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-[50px_50px_50px_0px]' : 'rounded-[0px_50px_50px_50px]';
+            const senderTextClass = messages[index - 1]?.senderId == user?.id ? ' rouded-[50px_0px_50px_50px]' : 'rouded-[50px_50px_0_50px]'
+            const receiverTextClass = messages[0] === message || messages[index - 1]?.receiverId == receiver?.id ? 'rounded-md rouded-[50px_50px_50px_0px] rounded-md' : 'rouded-[0px_50px_50px_50px]';
 
             return (
-              <li key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col`}>
-                { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-15px] text-sm self-end'>
+              <li key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
+                { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end'>
                   <span>{user?.username}</span>
                   <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />
                 </div> }
                 { !isSender && (!messages[index - 1 ] || messages[index - 1]?.senderId == user?.id ) && <div className='flex items-start self-start gap-3 text-sm mb-[-15px]'>
-                  <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />
+                  <img src={logo} alt="" className='h-[40px] w-[40px]  rounded-full' />
                   <span>{receiver?.username}</span>
                 </div> }
                 {
-                  message.type === 'text' &&  <div className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} p-3 flex items-center gap-2 relative`}>
-                  <span className='text-sm'>{content}</span>
-                <span className={`text-[12px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(message.createdAt)}</span>
-                { isSender && <div className='absolute right-[4px] bottom-[3px]'>
-                  { status === 'sent' && <BsCheck2 /> }
-                  { status === 'delivered' && <BsCheck2All /> }
-                  { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
+                  message.type === 'text' &&  
+                  <div className={`${isSender ? `${senderTextClass} mr-[3.2rem] bg-bg-silver`  : `bg-[#1C9DEA] ${receiverTextClass} ml-[3.2rem] text-white`} px-1 py-3 flex flex-col gap-2 relative w-full`}>
+                    <span className='text-sm wrap-text mb-2'>{content}</span>
+                    <div className='flex gap-1 items-center absolute bottom-[1%] right-[5%]'>
+                      <span className={`text-[10px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(message.createdAt)}</span>
+                      { isSender && 
+                          <div className=''>
+                            { status === 'sent' && <BsCheck2 /> }
+                            { status === 'delivered' && <BsCheck2All /> }
+                            { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
 
-                </div> }
-                </div>
+                          </div> 
+                      }
+                    </div>
+                  </div>
                 }
                 {
                   message.type === 'image' && 

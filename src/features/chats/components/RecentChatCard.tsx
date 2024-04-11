@@ -68,7 +68,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
         <div className="flex flex-col">
           <span>{senderUsername || receiverUsername}</span>
           {
-            type === 'text' && <span className="text-sm text-text-gray">{content}</span>
+            type === 'text' && <span className="text-sm text-text-gray line-clamp-2">{content.length > 50 ?content.replace(/\n/g, '').slice(0, 35) +'...' : content}</span>
           }
 
           {
