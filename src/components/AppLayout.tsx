@@ -9,12 +9,12 @@ import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
 import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import socketListener from '../features/chats/utils/socketListener';
 import useCurrentUser from '../features/auth/hooks/useCurrentUser';
 
 const AppLayout = () => {
-  const {socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
   
@@ -44,11 +44,11 @@ const AppLayout = () => {
         </CallWindow>}
       {!voiceCall && !videoCall && <>
       <NavBar />
-      <main className='sm:ml-[5rem] flex  bg-blu relative'>
+      <main className='sm:ml-[5rem] flex  bg-blu relative overflow-hidden'>
         <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2'>
           <Outlet />
         </div>
-        <div className='sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500'>
+        <div className={` ${!showConversation && 'hidden'} sm:block min-h-screen absolute w-full sm:w-[70%] sm:static left-0 bg-blue-500`}>
         { incomingVoiceCall &&<IncomingCallNotification incomingCall={incomingVoiceCall} />}
         { incomingVideoCall &&<IncomingCallNotification incomingCall={incomingVideoCall} />}
 

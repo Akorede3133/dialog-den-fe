@@ -1,17 +1,18 @@
 import { useContext } from "react";
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import logo from '../../../assets/logo.png';
-import { useAppSelector } from "../../../redux/hooks";
-import { selectChat } from "../redux/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { displayCoversation, selectChat } from "../redux/chatSlice";
 import CallWindow from "./CallWindow";
 const ConversationHeader = () => {
   const { receiver, onlineUsers } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
+  const dispatch  = useAppDispatch();
   
   return (
     <div className="flex justify-between bg-white px-3 border-b">
      <section className="flex items-center gap-2">
-      <button className="sm:hidden">
+      <button className="sm:hidden" onClick={() => dispatch(displayCoversation(false))}>
         <HiOutlineChevronLeft />
       </button>
         <img src={logo} alt="" className="w-[35px] h-[35px] rounded-full" />

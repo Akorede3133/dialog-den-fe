@@ -3,7 +3,7 @@ import logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
-import { selectChat, setReceiver } from '../redux/chatSlice';
+import { displayCoversation, selectChat, setReceiver } from '../redux/chatSlice';
 import { HiPhoto } from 'react-icons/hi2';
 import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
@@ -43,6 +43,11 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     username: senderUsername || receiverUsername
   } as UserProp;
 
+  const handleSelectChat = () => {
+    dispatch(setReceiver(user));
+    dispatch(displayCoversation(true));
+  }
+
   useEffect(() => {
     if (waveForm) {
       waveForm.load(content)
@@ -59,7 +64,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     setWaveForm(waveSurfer)
   }, [])
   return (
-    <li className="flex cursor-pointer justify-between items-center"  onClick={() => dispatch(setReceiver(user))}>
+    <li className="flex cursor-pointer justify-between items-center" onClick={handleSelectChat}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
           <img src={logo} alt="" className='w-fu;ll h-full rounded-full'/>

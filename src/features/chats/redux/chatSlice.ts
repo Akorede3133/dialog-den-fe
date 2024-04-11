@@ -29,12 +29,12 @@ export type offerObjProp = {
 }
 
 type ChatStateProp = {
-  socket: Socket,
-  loggedInUser: UserProp,
-  onlineUsers: number[],
-  receiver: ReceiverProp | null,
-  voiceCall: boolean,
-  videoCall: boolean,
+  socket: Socket;
+  onlineUsers: number[];
+  showConversation: boolean;
+  receiver: ReceiverProp | null;
+  voiceCall: boolean;
+  videoCall: boolean;
   outGoingVoiceCall: callProp | null;
   outGoingVideoCall: callProp | null;
   incomingVoiceCall: callProp | null;
@@ -56,6 +56,7 @@ type ChatStateProp = {
 const initialState: ChatStateProp = {
   socket: io('http://localhost:3000'),
   onlineUsers: [],
+  showConversation: false,
   receiver: null,
   voiceCall: false,
   videoCall: false,
@@ -80,6 +81,9 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    displayCoversation: (state, { payload }: PayloadAction<boolean>) => {
+      state.showConversation = payload
+    },
     setOnlineUsers: (state, { payload }: PayloadAction<number[]>) => {
       state.onlineUsers = payload;
     },
@@ -159,6 +163,6 @@ export const chatSlice = createSlice({
   }
 })
 
-export const {setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
+export const {displayCoversation, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
