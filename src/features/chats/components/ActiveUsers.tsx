@@ -1,37 +1,51 @@
 import { useEffect, useRef, useState } from "react"
 import ActiveUserCard from "./ActiveUserCard"
+import { useAppSelector } from "../../../redux/hooks"
+import { selectChat } from "../redux/chatSlice"
+import useGetUsers from "../../auth/hooks/useGetUsers"
+import { UserProp } from "../../contacts/components/ContactCard"
+import useCurrentUser from "../../auth/hooks/useCurrentUser"
+import ActiveUsersList from "./ActiveUsersList"
 
 const ActiveUsers = () => {
-  const ref = useRef<HTMLUListElement>(null)
-  const [isDragging, setIsDragging] = useState(false);
-  const handleScroll = (e) => {
-    if (!isDragging) {
-      return;
-    }
-    const { currentTarget } = e;
-    currentTarget.scrollLeft -= e.movementX;
-  }
+  const { onlineUsers: onlineUsersIds } = useAppSelector(selectChat)
+  
+  const [activeUsers, setActiveUsers] = useState<UserProp[]>([]);
+  const [appUsers, setappUsers] = useState<UserProp[]>([]);
+  const { user: currentUser, isGettingUser } = useCurrentUser();  
+  const { users, isGettingUsers } = useGetUsers();
+
 
   useEffect(() => {
-    document.addEventListener('mouseover', (e) => {
-      if (e?.target?.contains(ref.current)) {
-        setIsDragging(false);
+    if (users) {
+      for (const key in users) {
+        const onlineUsersPerCat = users[key];
+        onlineUsersPerCat.forEach((user: UserProp) => {
+          setappUsers((users) => ([...users, user]));
+        })
       }
-    })
-  }, [])
-  return (
-    <ul onMouseMove={handleScroll} onMouseDown={() => setIsDragging(true)} onMouseUp={() => setIsDragging(false)} ref={ref} className='flex overflow-hidden items-center gap-4 py-5 cursor-grab select-none'>
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
-      <ActiveUserCard />
+    }
 
-    </ul>
-  )
+  }, [users])
+
+
+  useEffect(() => {
+    const users = appUsers.filter((user) => onlineUsersIds.includes(user.id) && user.id !== currentUser?.id);
+    setActiveUsers(users)
+  }, [appUsers, onlineUsersIds, currentUser?.id])
+
+  if (isGettingUsers && isGettingUser) {
+    return <p>Loading...</p>
+  }
+  if (activeUsers.length) {
+    return (
+      <ActiveUsersList activeUsers={activeUsers} />
+    )
+  }
+  if (!activeUsers.length) {
+    return <p className="text-xl text-text-primary text-center py-2">No active users</p>
+  }
+ 
 }
 
 export default ActiveUsers

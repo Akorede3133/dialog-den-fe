@@ -46,7 +46,7 @@ const AppLayout = () => {
         </CallWindow>}
       {!voiceCall && !videoCall && <>
       <NavBar />
-      <main className='sm:ml-[5rem] flex relative overflow-hidden max-h-screen'>
+      <main className='sm:ml-[5rem] flex relative overflow-hidden max-h-screen bg-sidebar-light'>
         <div className=' w-full sm:w-[35%] bg-sidebar-ligh min-h-screen px-2'>
           <Outlet />
         </div>

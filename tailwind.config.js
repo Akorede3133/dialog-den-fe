@@ -20,6 +20,9 @@ export default {
         'bg-silver': '#e6ebf5',
         'text-gray': '#878a92',
         'icon-active-bg': '#f7f7ff'
+      },
+      fontFamily: {
+        'roboto-condensed': ['Roboto Condensed', 'sans-serif'],
       }
     },
   },

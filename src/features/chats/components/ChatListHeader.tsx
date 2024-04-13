@@ -7,7 +7,7 @@ const ChatListHeader = () => {
       <PagesHeader text="Chat" />
       <PagesSearch placeholder="Search messages or users" />
       <ActiveUsers />
-      <h2 className=" bg-inherit">Recents</h2>
+      <h2 className=" font-roboto-condensed text-text-primary font-medium text-sm">Recent</h2>
     </div>
   )
 }
