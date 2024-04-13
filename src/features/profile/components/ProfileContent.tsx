@@ -2,7 +2,7 @@ import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineUser } from "react-i
 
 const ProfileContent = () => {
   return (
-    <div  className="px-5 mb-5 overflow-auto profile">
+    <div  className="px-5 mb- max-h-[350px] overflow-auto profile">
       <section className="bg-white py-2 px-4 shadow-md">
         <div className=" flex justify-between items-center">
           <div className="flex items-center gap-2">
@@ -25,6 +25,42 @@ const ProfileContent = () => {
             <p>Patricia Smith</p>
           </li>
           <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>
+          <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li> <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li> <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li> <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li> <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li> 
+          <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>
+          <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>  <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>  <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>  <li>
+            <p>Name</p>
+            <p>Patricia Smith</p>
+          </li>  <li>
             <p>Name</p>
             <p>Patricia Smith</p>
           </li>

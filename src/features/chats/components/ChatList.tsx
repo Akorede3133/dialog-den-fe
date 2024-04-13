@@ -1,4 +1,3 @@
-import ActiveUsers from "./ActiveUsers"
 import ChatListHeader from "./ChatListHeader"
 import RecentChats from "./RecentChats"
 

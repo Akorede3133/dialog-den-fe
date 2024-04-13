@@ -17,7 +17,7 @@ const RecentChats = () => {
           chats.map((chat: ChatProp) => (
             <RecentChatCard key={chat.messageId} chat={chat} />
           ))
-        }
+        }  
       </ul>
     </div>
   )
