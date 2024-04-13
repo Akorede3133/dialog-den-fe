@@ -1,18 +1,20 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateProfile } from "../api/updateProfile"
 
 const useUpdateProfile = () => {
-  const { data, isPending: isUpdatingProfile, error } = useMutation({
-    mutationFn: ({ userId, data }) => updateProfile(userId, data),
+  const queryClient = useQueryClient();
+  const { mutate: updateUserProfile, isPending: isUpdatingProfile, error } = useMutation({
+    mutationFn: ({ userId, data }: { userId: number, data: { photo: File } }) => updateProfile(userId, data),
     onSuccess: () => {
       console.log('Succces');
+      queryClient.invalidateQueries({ queryKey: ['user'] })
       
     },
     onError: (error) =>  {
       console.log(error);
     },
   })
-  return { data, isUpdatingProfile, error }
+  return { updateUserProfile, isUpdatingProfile, error }
 }
 
 export default useUpdateProfile;

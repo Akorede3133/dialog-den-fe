@@ -2,18 +2,22 @@ import PagesHeader from "../../../components/PagesHeader"
 import { HiCamera, HiOutlineEllipsisVertical } from "react-icons/hi2";
 import { useRef } from "react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import useUpdateProfile from "../hooks/useUpdateProfile";
 
 const ProfileHeader = () => {
   const photoRef = useRef<HTMLInputElement>(null)
   const { user } = useCurrentUser();
+  const { updateUserProfile, isUpdatingProfile, error } = useUpdateProfile();
 
   const handlePhotoUpload = (e) => {
-    const file = e.target.files[0];
-    console.log(file);
-    
-    
-  }
+    const file: File = e.target.files[0];
+    const data: { photo: File, username: string } = {
+      photo: file,
+      username: user?.username as string,
+    }
 
+    updateUserProfile({ userId: user?.id as number, data })
+  }
   return (
     <div className="px-5">
       <section className="flex justify-between">

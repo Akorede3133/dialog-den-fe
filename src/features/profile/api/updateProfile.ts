@@ -7,13 +7,14 @@ export const updateProfile = async (userId, data) => {
     formData.append('photo', data.photo);
     formData.append('password', data.password);
     formData.append('passwordConfirmation', data.passwordConfirmation);
-    const response = await fetch(`${API_URL}/updateUser${userId}`, {
+    const response = await fetch(`${API_URL}/updateUser/${userId}`, {
       method: 'PUT',
       credentials: 'include',
       body: formData
     });
-    const result = await response.json();
     
+    const result = await response.json();
+
     if (!response.ok) {
       throw new Error(result.message);
     }
