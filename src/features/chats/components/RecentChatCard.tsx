@@ -67,7 +67,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     <li className="flex cursor-pointer justify-between items-center" onClick={handleSelectChat}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
-          <img src={logo} alt="" className='w-fu;ll h-full rounded-full'/>
+          <img src={logo} alt="" className='w-full h-full rounded-full'/>
           { isUserOnline && <span className='bg-green-500 h-[10px] w-[10px] rounded-full border border-white absolute top-[50%] right-0'></span> }
         </div>
         <div className="flex flex-col">

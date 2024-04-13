@@ -8,7 +8,8 @@ type CategoryProp = {
 export type UserProp = {
   id: number;
   username: string;
-  email: string
+  email: string;
+  photo: string;
 }
 const ContactCard = ({ category, users }: CategoryProp) => {  
   const dispatch = useAppDispatch();

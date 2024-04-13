@@ -1,8 +1,19 @@
 import PagesHeader from "../../../components/PagesHeader"
-import logo from '../../../assets/logo.png';
-import { HiOutlineEllipsisVertical } from "react-icons/hi2";
+import { HiCamera, HiOutlineEllipsisVertical } from "react-icons/hi2";
+import { useRef } from "react";
+import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
 const ProfileHeader = () => {
+  const photoRef = useRef<HTMLInputElement>(null)
+  const { user } = useCurrentUser();
+
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    console.log(file);
+    
+    
+  }
+
   return (
     <div className="px-5">
       <section className="flex justify-between">
@@ -12,9 +23,23 @@ const ProfileHeader = () => {
       </button>
       </section>
       <section className="overflow-hidden flex justify-center flex-col items-center gap-3">
-        <img src={logo} alt="" className="w-[100px] h-[100px] rounded-full " />
+        <div className="relative">
+          <img src={user?.photo} alt="" className="w-[100px] h-[100px] rounded-full object-cover" />
+          <button className=" absolute right-[10%] top-[75%]">
+            <HiCamera className=" text-text-primary text-xl" />
+          </button>
+          <input onChange={handlePhotoUpload} ref={photoRef} type="file" hidden/>
+          <ul className=" absolute top-[20%] right-[-90%] bg-white shadow-lg w-[120px] rounded-md text-text-primary text-sm">
+            <li className=" hover:bg-bg-silver">
+              <button className="w-full p-3 text-left">Camera</button>
+            </li>
+            <li className=" hover:bg-bg-silver">
+              <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
+            </li>
+          </ul>
+        </div>
         <div className="flex flex-col justify-center items-center">
-          <p className=" text-text-primary font-medium">Patricia Smith</p>
+          <p className=" text-text-primary font-medium">{user?.username}</p>
           <p className=" text-text-gray">Active</p>
         </div>
       </section>
