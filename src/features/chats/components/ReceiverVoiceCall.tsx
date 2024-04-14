@@ -1,5 +1,4 @@
 import { FaPhone } from 'react-icons/fa6';
-import logo from '../../../assets/logo.png';
 import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { addAnswer, addIce, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
@@ -138,7 +137,7 @@ const ReceiverVoiceCall = () => {
         <p className=' text-2xl text-white'>{incomingVoiceCall?.username}</p>
         <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
-      <img src={logo} alt="" className='w-[150px] h-[150px] rounded-full' />
+      <img src={incomingVoiceCall?.photo} alt="" className='w-[150px] h-[150px] rounded-full object-cover' />
       { !onGoingCall && 
       <CallWindow>
         <CallWindow.Close callType='voice' remoteAudioRef={remoteAudioRef}>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { UserProp } from "../../contacts/components/ContactCard";
 import ActiveUserCard from "./ActiveUserCard";
 
-const ActiveUsersList = ({ activeUsers }: { activeUsers: UserProp[] }) => {
+const ActiveUsersList = ({ activeUsers }: { activeUsers: UserProp[] }) => {  
   const enoughActiveUsers = activeUsers.length > 3;
   const ref = useRef<HTMLUListElement>(null)
   const [isDragging, setIsDragging] = useState(false);

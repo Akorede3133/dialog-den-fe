@@ -2,21 +2,19 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from "../../../redux/store";
 import { Socket, io } from "socket.io-client";
-import useCurrentUser from "../../auth/hooks/useCurrentUser";
-import { currentUser } from "../../auth/api/auth";
-import { UserProp } from "../../contacts/components/ContactCard";
-import { useState } from "react";
 
 
 type ReceiverProp = {
   id: number;
   username: string;
   email: string;
+  photo: string;
 }
 export type callProp = {
   username: string;
   id: number;
   email: string;
+  photo: string;
   type: string;
 }
 export type offerObjProp = {

@@ -1,4 +1,3 @@
-import logo from '../../../assets/logo.png';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { callProp, selectChat, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
 import CallWindow from './CallWindow';
@@ -18,7 +17,7 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
   return (
     <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver text-white rounded-lg px-4 flex items-start py-3 gap-5 ">
       <div className=' flex items-center gap-4'>
-        <img src={logo} alt="" className="w-[50px] object-cover h-[50px] rounded-full" />
+        <img src={incomingCall?.photo} alt="" className="w-[50px] object-cover h-[50px] rounded-full" />
       </div>
       <div className='flex text-text-primary flex-col gap-1 items-start '>
         <p className='text-sm'>{incomingCall?.username}</p>

@@ -1,11 +1,13 @@
-import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineSun,  HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
+import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
 import logo from '../assets/logo.png';
 import { useAppSelector } from "../redux/hooks";
 import { selectChat } from "../features/chats/redux/chatSlice";
+import useCurrentUser from "../features/auth/hooks/useCurrentUser";
 
 const NavBar = () => {
   const { showConversation } = useAppSelector(selectChat)
+  const { user } = useCurrentUser();
   return (
     <header className={`fixed ${!showConversation && 'z-[1]'} bottom-0 sm:top-0 left-0 w-full sm:w-[5rem] bg-white drop-shadow-xl shadow-inner`}>
       <section className="hidden sm:block my-10 px-3">
@@ -23,7 +25,7 @@ const NavBar = () => {
             </button>
           </li>
           <li>
-            <img src={logo} alt="" className="w-[30px] h-[30px] rounded-full" />
+            <img src={user?.photo} alt="" className="w-[30px] h-[30px] rounded-full" />
           </li>
         </ul>
       </nav>

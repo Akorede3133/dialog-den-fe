@@ -4,7 +4,7 @@ import ConversationHeader from "./ConversationHeader"
 
 const Conversation = () => {
   return (
-    <div className="min-h-screen grid grid-rows-[auto,470px,auto]">
+    <div className="h-full flex flex-col">
       <ConversationHeader />
       <ConversationBody />
       <ConversationFooter />

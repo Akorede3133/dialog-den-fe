@@ -1,5 +1,4 @@
-import { FaMicrophone, FaPhotoFilm } from 'react-icons/fa6';
-import logo from '../../../assets/logo.png';
+import { FaMicrophone } from 'react-icons/fa6';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
@@ -23,6 +22,8 @@ export type ChatProp =  {
   receiverUsername?: string;
   senderEmail?: string;
   receiverEmail?: string;
+  senderPhoto?: string;
+  receiverPhoto?: string;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const [totalDuration ,setTotalDuration] = useState
@@ -32,7 +33,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   
   const waveFormRef = useRef<HTMLDivElement>(null)
   
-  const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, createdAt } = chat;
+  const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, senderPhoto, receiverPhoto,createdAt } = chat;
   const dispatch = useAppDispatch();
     
   const isUserOnline = onlineUsers.includes(msgReceiverId as number || msgSenderId as number);
@@ -40,7 +41,8 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const user = {
     id: msgSenderId || msgReceiverId,
     email: senderEmail || receiverEmail,
-    username: senderUsername || receiverUsername
+    username: senderUsername || receiverUsername,
+    photo: senderPhoto || receiverPhoto,
   } as UserProp;
 
   const handleSelectChat = () => {
@@ -67,7 +69,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     <li className="flex cursor-pointer justify-between items-center" onClick={handleSelectChat}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
-          <img src={logo} alt="" className='w-full h-full rounded-full'/>
+          <img src={user.photo} alt="" className='w-full h-full rounded-full object-cover'/>
           { isUserOnline && <span className='bg-green-500 h-[10px] w-[10px] rounded-full border border-white absolute top-[50%] right-0'></span> }
         </div>
         <div className="flex flex-col">

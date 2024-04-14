@@ -1,4 +1,3 @@
-import logo from '../../../assets/logo.png';
 import { useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
@@ -59,14 +58,14 @@ const ConversationBody = () => {
 
   
   if (isPending || isGettingUser) {
-    return <p>Loading...</p>
+    return <p className='min-h-screen'>Loading...</p>
   }
   if (error) {
     return <p>{error.message}</p>
   }
     
   return (
-    <div className="bg-[#EFF7FE] overflow-auto convo p-3">
+    <div className="bg-[#EFF7FE] overflow-auto flex-1 convo p-3">
       <ul className="flex flex-col gap-4">
         {
           socketMessages.map((message: MessageProp, index: number) => {                                    
@@ -80,10 +79,10 @@ const ConversationBody = () => {
               <li  ref={ref} key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
                 { isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) && <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end'>
                   <span>{user?.username}</span>
-                  <img src={logo} alt="" className='h-[40px] w-[40px] rounded-full' />
+                  <img src={user?.photo} alt="" className='h-[40px] w-[40px] rounded-full object-cover' />
                 </div> }
                 { !isSender && (!messages[index - 1 ] || messages[index - 1]?.senderId == user?.id ) && <div className='flex items-start self-start gap-3 text-sm mb-[-15px]'>
-                  <img src={logo} alt="" className='h-[40px] w-[40px]  rounded-full' />
+                  <img src={user?.photo} alt="" className='h-[40px] w-[40px]  rounded-full object-cover' />
                   <span>{receiver?.username}</span>
                 </div> }
                 {
