@@ -47,7 +47,7 @@ const AppLayout = () => {
       {!voiceCall && !videoCall && <>
       <NavBar />
       <main className='sm:ml-[5rem] flex relative overflow-hidden max-h-screen bg-sidebar-light'>
-        <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2'>
+        <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2 relative'>
           <Outlet />
         </div>
         <div className={` ${!showConversation && ' translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]'} sm:block sm:h-screen min-h-screen h-full absolute w-full sm:w-[70%] sm:static overflow-hidden left-0 bg-blue-500`}>

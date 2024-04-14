@@ -1,12 +1,16 @@
 import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineUser } from "react-icons/hi2"
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { format } from "date-fns"
 
 const ProfileContent = () => {
   const { user } = useCurrentUser()
+  
+  const aboutRef = useRef<HTMLUListElement>(null);
   const [time, setTime] = useState<string>(new Date().toLocaleTimeString());
-
+  const [showABout, setShowAbout] = useState(false);
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  
   useEffect(() => {
     const interval = setInterval(() => {
       const currenTime = format(new Date(), 'h:mm a')
@@ -20,30 +24,35 @@ const ProfileContent = () => {
   
   return (
     <div  className="px-5 pb-4 h-[200px] max-h-[450px] overflow-auto profile">
-      <section className="bg-white py-2 px-4 shadow-md">
-        <div className=" flex justify-between items-center">
+      <section  onClick={() => setShowAbout((prev) => !prev)} className=" bg-bg-silver pt-2 shadow-md">
+        <button className="w-full flex justify-between items-center px-4">
           <div className="flex items-center gap-2">
             <HiOutlineUser />
             <span className="text-sm">About</span>
           </div>
-          <button>
-            {false && <HiOutlineChevronUp />}
-            <HiOutlineChevronDown />
+          <div>
+            {
+            showABout ? <HiOutlineChevronUp /> : <HiOutlineChevronDown />
+            }
 
-          </button>
-        </div>
-        <ul className="space-y-4 my-3">
+          </div>
+        </button>
+        <ul ref={aboutRef} className={` ${!showABout ? 'h-[0px]' : 'h-auto py-2' } overflow-hidden space-y-4 my-3 transition-all duration-[0.3s] bg-white px-4`}>
           <li>
-            <p>Name</p>
-            <p>{user?.username}</p>
+            <p className="text-sm text-text-gray">Name</p>
+            <p className=" font-medium text-sm">{user?.username}</p>
           </li>
           <li>
-            <p>Email</p>
-            <p>{user?.email}</p>
+            <p className="text-sm text-text-gray">Email</p>
+            <p className=" font-medium text-sm">{user?.email}</p>
           </li>
           <li>
-            <p>Time</p>
-            <p>{time}</p>
+            <p className="text-sm text-text-gray">Time</p>
+            <p className=" font-medium text-sm">{time}</p>
+          </li>
+          <li>
+            <p className="text-sm text-text-gray">TimeZone</p>
+            <p className=" font-medium text-sm">{timezone}</p>
           </li>
         </ul>
       </section>
