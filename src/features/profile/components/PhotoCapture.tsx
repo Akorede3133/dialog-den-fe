@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { FaCheck } from "react-icons/fa6";
 import { HiOutlineXMark } from "react-icons/hi2";
+import useUpdateProfile from "../hooks/useUpdateProfile";
+import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
 const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -8,7 +10,23 @@ const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
   const [photoTaken, setPhotoTaken] = useState(false);
   const [imgFile, setImgFile] = useState<File>();
   const [imgUrl, setImgUrl] = useState('');
+  const { updateUserProfile, isUpdatingProfile, error } = useUpdateProfile();
+  const { user } = useCurrentUser();
+
   
+
+  const handlePhotoUpload = (e) => {
+    const data: { photo: File, username: string } = {
+      photo: imgFile as File,
+      username: user?.username as string,
+    }
+
+    updateUserProfile({ userId: user?.id as number, data }, {
+      onSuccess: () => {
+        hideCapture();
+      }
+    })
+  }
   const capturePhoto = () => {
     if (videoRef.current) {
       const context = canvasRef.current?.getContext('2d');
@@ -60,7 +78,7 @@ const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
         <button className=" bg-bg-dark h-[50px] w-[50px] flex justify-center items-center rounded-full" onClick={hideCapture}>
           <HiOutlineXMark className="text-2xl text-white" />
         </button>
-        { photoTaken && <button  className=" bg-bg-dark h-[50px] w-[50px] flex justify-center items-center rounded-full">
+        { photoTaken && <button  className=" bg-bg-dark h-[50px] w-[50px] flex justify-center items-center rounded-full" onClick={handlePhotoUpload}>
           <FaCheck className="text-2xl text-white" />
         </button>}
         { photoTaken ||  <button className=" w-[50px] h-[50px] rounded-full overflow-hidden hover:opacity-65 my-2" onClick={capturePhoto}>
