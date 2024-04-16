@@ -92,20 +92,11 @@ const ReceiverVideoCall = () => {
         }
       })
       peerConnection.addEventListener('track', (e) => {
-        console.log('===Adding Track===');
         e.streams[0].getTracks().forEach((track) => {
           rmStream.addTrack(track)
         })
       })
-      peerConnection.addEventListener('signalingstatechange', () => {
-        console.log(peerConnection.signalingState);
-      })
-      peerConnection.addEventListener('icegatheringstatechange', () => {
-        console.log(peerConnection.iceGatheringState);
-      })
-      peerConnection.addEventListener('iceconnectionstatechange', () => {
-        console.log(peerConnection.iceConnectionState);
-      })
+   
       dispatch(setRemotePeerConnection(peerConnection))
       dispatch(setRemoteStream(rmStream))
       peerConnection.addEventListener('connectionstatechange', () => {

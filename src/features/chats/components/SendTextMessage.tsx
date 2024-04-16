@@ -17,12 +17,13 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const queryClient = useQueryClient();
   const emojiRef = useRef<HTMLDivElement>(null)
   const { send, isSending } = useSendMessage();
-  const { sendImageFile, isSendingImage, error } = useSendImage();
+  const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
     sendImageFile({ file, receiverId: receiver?.id as number});
-  }
+}
+
   const data = {
     content: message,
     type: 'text'
@@ -43,25 +44,18 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     }
   }
 
-  const adjustTextArea = (e) => {
-    const { target } = e;    
-    const scrollHeight = target.scrollHeight;
-    target.style.height = 'auto';
-    if (scrollHeight < 100) {
-      target.style.height = `${scrollHeight}px`;
-    }
-  }
 
-  const onEmojiClick = (emoji, e) => {
+  const onEmojiClick = (emoji: { emoji: string }) => {
+    console.log(emoji);
+    
     setMessage((prevMessage) => (
       `${prevMessage}${emoji.emoji}`
     ))    
   }
 
   useEffect(() => {
-    const emojiEvent = (e) => {
-      if (emojiRef.current && !emojiRef.current.contains(e.target)) {
-        console.log('event');
+    const emojiEvent = (e: MouseEvent) => {
+      if (emojiRef.current && !emojiRef.current.contains(e.target as Node)) {
         setShowEmoji(false);
       }
     }

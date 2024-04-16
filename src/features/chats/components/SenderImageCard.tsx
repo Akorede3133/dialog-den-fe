@@ -1,4 +1,6 @@
-const SenderImageCard = ({ user }) => {
+import { UserProp } from "../../contacts/components/ContactCard"
+
+const SenderImageCard = ({ user }: { user: UserProp }) => {
 
   return (
     <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end'>

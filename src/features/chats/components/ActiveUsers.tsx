@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react"
-import ActiveUserCard from "./ActiveUserCard"
+import { useEffect, useState } from "react"
 import { useAppSelector } from "../../../redux/hooks"
 import { selectChat } from "../redux/chatSlice"
 import useGetUsers from "../../auth/hooks/useGetUsers"

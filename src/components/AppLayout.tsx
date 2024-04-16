@@ -9,7 +9,7 @@ import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
 import ReceiverVoiceCall from '../features/chats/components/ReceiverVoiceCall';
 import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import socketListener from '../features/chats/utils/socketListener';
 import useCurrentUser from '../features/auth/hooks/useCurrentUser';
 

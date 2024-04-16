@@ -6,23 +6,26 @@ const ActiveUsersList = ({ activeUsers }: { activeUsers: UserProp[] }) => {
   const enoughActiveUsers = activeUsers.length > 3;
   const ref = useRef<HTMLUListElement>(null)
   const [isDragging, setIsDragging] = useState(false);
-  const handleScroll = (e) => {
+  const handleScroll = (e: React.MouseEvent<HTMLUListElement>) => {
     if (!isDragging) {
       return;
     }
     const { currentTarget } = e;
-    currentTarget.scrollLeft -= e.movementX;
+    if (currentTarget) {
+      currentTarget.scrollLeft -= e.movementX;
+    }
   }
 
   useEffect(() => {
     document.addEventListener('mouseover', (e) => {
-      if (e?.target?.contains(ref.current)) {
+      const target = e.target as Node;
+      if (target && ref.current?.contains(target)) {
         setIsDragging(false);
       }
-    })
+    });
   }, [])
   return (
-    <ul onMouseMove={handleScroll} onMouseDown={() => setIsDragging(true)} onMouseUp={() => setIsDragging(false)} ref={ref} className={`flex overflow-hidden items-center gap-4 py-5 ${enoughActiveUsers && 'cursor-grab'} select-none`}>
+    <ul onMouseMove={handleScroll} onMouseDown={() => setIsDragging(true)} onMouseUp={() => setIsDragging(false)} ref={ref} className={`flex overflow-hidden items-center gap-4 py-5 ${enoughActiveUsers && 'cursor-grab'} cursor-grab select-none`}>
     {
       activeUsers.map((user) => (
         <ActiveUserCard key={user.id} user={user} />
@@ -32,4 +35,4 @@ const ActiveUsersList = ({ activeUsers }: { activeUsers: UserProp[] }) => {
   )
 }
 
-export default ActiveUsersList
+export default ActiveUsersList;

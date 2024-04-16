@@ -28,7 +28,7 @@ const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean
     waveSurfer.on('finish', () => {
       setIsPlaying(false);
     })
-  }, [])
+  }, [isSender])
   
 
   useEffect(() => {

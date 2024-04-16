@@ -1,7 +1,8 @@
 import { Socket } from "socket.io-client";
 import { addAnswer, addPeerIce, offerObjProp, setIncomingVideoCall, setIncomingVoiceCall, setOfferObj, setOnGoingCall, setOnlineUsers, turnOffCalls } from "../redux/chatSlice";
+import { AppDispatch } from "../../../redux/store";
 
-const socketListener = (socket: Socket, dispatch) => {  
+const socketListener = (socket: Socket, dispatch: AppDispatch) => {  
   socket.on('getOnlineUsers', (users: number[]) => {
     dispatch(setOnlineUsers(users))
   })

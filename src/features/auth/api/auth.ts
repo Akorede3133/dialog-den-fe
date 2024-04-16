@@ -1,10 +1,14 @@
+import { API_URL } from "../../../utils/constants";
 import { UserProp } from "../../contacts/components/ContactCard";
 
-const API_URL = import.meta.env.VITE_BASE_URL;
 
 type RegisterProp = {
   username: string;
   email: string;
+  password: string;
+}
+type LoginProp = {
+  username: string;
   password: string;
 }
 
@@ -31,7 +35,7 @@ export const register = async (data: RegisterProp) => {
  
 }
 
-export const login = async (data: RegisterProp) => {
+export const login = async (data: LoginProp) => {
   try {
     const response = await fetch(`${API_URL}/login`, {
       method: 'POST',

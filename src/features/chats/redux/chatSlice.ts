@@ -49,7 +49,6 @@ type ChatStateProp = {
   peerIces: RTCIceCandidate[];
   iceCandidates: RTCIceCandidate[];
 }
-// const user = await currentUser();
 
 const initialState: ChatStateProp = {
   socket: io('http://localhost:3000'),

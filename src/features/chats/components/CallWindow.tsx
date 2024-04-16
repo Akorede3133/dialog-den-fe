@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, cloneElement, createContext, useContext, useState } from "react"
+import { ReactElement, cloneElement, createContext, useContext, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { callProp, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setVideoCall, setVoiceCall, turnOffCalls } from "../redux/chatSlice";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
@@ -16,7 +16,7 @@ export const CallWindowContext = createContext<CallWindowProp>({} as CallWindowP
 const CallWindowOpen = ({ children, callType }: CallWindowChildrenProp) => {
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
-  const { user } = useCurrentUser();
+  useCurrentUser();
   const { receiver, socket } = useAppSelector(selectChat)
 
   const handleCall = () => {
@@ -54,8 +54,6 @@ const CallClose = ({ children, callType, remoteAudioRef, localVideoRef }: { chil
   const { setOpen } = useContext(CallWindowContext);
   const dispatch = useAppDispatch()
   const { outGoingVoiceCall, incomingVoiceCall, socket, outGoingVideoCall, incomingVideoCall } = useAppSelector(selectChat)
-
-  console.log(callType);
   
   const handleCallClose = () => {
     setOpen('');

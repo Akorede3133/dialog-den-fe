@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { FaMicrophone, FaPause, FaPlay, FaStop, FaTrash } from "react-icons/fa6"
 import { HiPaperAirplane } from "react-icons/hi2";
 import WaveSurfer from "wavesurfer.js";
@@ -12,22 +12,53 @@ type VoiceMessageProps = {
   hideRecorder: () => void
 }
 const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
-  const { sendVoiceFile, isSendingVoice, error } = useSendVoice();
+  const { sendVoiceFile, isSendingVoice } = useSendVoice();
   const { receiver } = useAppSelector(selectChat);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
-  // const [recordedAudio, setRecordedAudio] = useState<HTMLAudioElement | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
-  const [audioFile, setAudioFile] = useState<File>({} as File)
+  const [audioFile, setAudioFile] = useState<File | null>(null)
 
   const waveFormRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null)
+
+  const handleStartRecording = useCallback(async () => {
+    setIsRecording(true);
+    setRecordingDuration(0);
+  
+    if (navigator.mediaDevices) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        setMediaRecorder(mediaRecorder);
+        if (audioRef.current) {
+          audioRef.current.srcObject = stream;
+        }
+        const chunks: Blob[] = [];
+        mediaRecorder.ondataavailable = (e) => {
+          chunks.push(e.data);
+        }
+        
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });       
+          const audioURL = URL.createObjectURL(blob);
+          waveForm?.load(audioURL);
+        }
+        mediaRecorder.start();
+        
+      } catch (error) {
+        console.error(`The following getUserMedia error occurred: ${error}`);
+      }
+    }
+  }, [setIsRecording, setRecordingDuration, audioRef, waveForm]);
+  
   
   useEffect(() => {
+    if (!waveFormRef.current) return;
     const waveSurfer = WaveSurfer.create({
       container: waveFormRef.current,
       waveColor: '#ccc',
@@ -36,7 +67,6 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       cursorColor: '#7ae3c3',
       cursorWidth: 1,
       barWidth: 2,
-      responsive: true,
       barGap: 1,
       barRadius: 2,
       barHeight: 2,
@@ -56,7 +86,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     if (waveForm) {
       handleStartRecording();
     }
-  }, [waveForm])
+  }, [waveForm, handleStartRecording])
   useEffect(() => {
     if (isRecording) {
       const interval = setInterval(() => {
@@ -80,37 +110,6 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     }
   }, [waveForm, currentTime])
 
-  const handleStartRecording = async () => {
-    setIsRecording(true);
-    setRecordingDuration(0);
-
-    if (navigator.mediaDevices) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const mediaRecorder = new MediaRecorder(stream);
-        setMediaRecorder(mediaRecorder);
-        if (audioRef.current) {
-          audioRef.current.srcObject = stream;
-        }
-        const chunks: Blob[] = [];
-        mediaRecorder.ondataavailable = (e) => {
-          chunks.push(e.data);
-        }
-        
-        mediaRecorder.onstop = () => {
-          const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });       
-          const audioURL = URL.createObjectURL(blob);
-          // const audio = new Audio(audioURL);
-          // setRecordedAudio(audio);          
-          waveForm?.load(audioURL);
-        }
-        mediaRecorder.start();
-        
-      } catch (error) {
-        console.error(`The following getUserMedia error occurred: ${error}`);
-      }
-    }
-  }
   const handleStopRecording = () => {
     setIsRecording(false);
 
@@ -136,20 +135,23 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       setIsplaying(false);
   }
 
-  const handleSendVoice  = () => {
-    const data = {
-      file: audioFile,
-      receiverId: receiver?.id as number
-    }
-    sendVoiceFile(data, {
-      onSuccess: () => {
-        setIsRecording(false);
-        setCurrentTime(0);
-        setRecordingDuration(0);
-        hideRecorder();
-        setAudioFile({} as File)
+  const handleSendVoice  = () => {   
+    if (audioFile) {
+      const data = {
+        file: audioFile as File,
+        receiverId: receiver?.id as number
       }
-    });
+      sendVoiceFile(data, {
+        onSuccess: () => {
+          setIsRecording(false);
+          setCurrentTime(0);
+          setRecordingDuration(0);
+          hideRecorder();
+          setAudioFile({} as File)
+        }
+      });
+    }
+
   }
   return (
     <div className="flex justify-end items-center gap-10 px-4">
@@ -178,10 +180,10 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
           : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl" />
         }
       </div>
-      <button onClick={handleSendVoice} disabled={isRecording}>
-        <HiPaperAirplane className= 'text-message-bg-blue text-2xl' />
+      <button onClick={handleSendVoice} disabled={isRecording || isSendingVoice}>
+        <HiPaperAirplane className={` text-message-bg-blue text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' }`} />
       </button>
-      <audio ref={audioRef} src="" controls hidden></audio>
+      <audio ref={audioRef} controls hidden></audio>
     </div>
   )
 }

@@ -35,8 +35,8 @@ const ContextWindow = ({ children, type }: { children: React.ReactNode, type: st
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClose = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+    const handleClose = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
         close();
       }
     }

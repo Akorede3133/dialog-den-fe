@@ -1,7 +1,6 @@
-const API_URL = import.meta.env.VITE_BASE_URL;
+import { API_URL } from "../../../utils/constants";
 
-
-const sendImage = async (file, receiverId) => {
+const sendImage = async (file: File, receiverId: number) => {
   try {
     const formData  = new FormData();
     formData.append('image', file);

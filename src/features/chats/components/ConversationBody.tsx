@@ -46,7 +46,7 @@ const ConversationBody = () => {
         {
           socketMessages.map((message: MessageProp, index: number) => {                                    
             return (
-              <MessageCard message={message} messages={socketMessages} index={index} />
+              <MessageCard key={index} message={message} messages={socketMessages} index={index} />
             )
           })
         }

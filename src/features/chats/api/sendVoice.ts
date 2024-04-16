@@ -1,9 +1,7 @@
-const API_URL = import.meta.env.VITE_BASE_URL;
-
+import { API_URL } from "../../../utils/constants";
 
 const sendVoice = async (file: File, receiverId: number) => {
   try {
-    console.log(file);
     const formData  = new FormData();
     formData.append('voice', file);
     const response = await fetch(`${API_URL}/sendVoice/${receiverId}`, {
