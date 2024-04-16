@@ -16,7 +16,7 @@ const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
   
 
   const handlePhotoUpload = () => {
-    const data: { photo: File, username: string } = {
+    const data: { username: string, photo: File } = {
       photo: imgFile as File,
       username: user?.username as string,
     }
