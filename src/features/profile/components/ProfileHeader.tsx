@@ -8,15 +8,14 @@ import ContextMenu from "../../../context/ContextMenu";
 
 const ProfileHeader = () => {
   const photoRef = useRef<HTMLInputElement>(null)
-  const listRef = useRef<HTMLUListElement>(null)
   const { user } = useCurrentUser();
-  const { updateUserProfile, isUpdatingProfile, error } = useUpdateProfile();
+  const { updateUserProfile } = useUpdateProfile();
   const [takePhoto, setTakePhoto] = useState(false);
 
-  const handlePhotoUpload = (e) => {
-    const file: File = e.target.files[0];
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target?.files?.[0];
     const data: { photo: File, username: string } = {
-      photo: file,
+      photo: file as File,
       username: user?.username as string,
     }
 
@@ -55,18 +54,6 @@ const ProfileHeader = () => {
           </ContextMenu>
          
           <input onChange={handlePhotoUpload} ref={photoRef} type="file" hidden/>
-          {/* <ContextMenu>
-            <ContextMenu.Window type="profile">
-              <ul ref={listRef} className=" absolute top-[20%] right-[-90%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
-                <li className=" hover:bg-bg-silver">
-                  <button className="w-full p-3 text-left" onClick={() => setTakePhoto(true)}>Camera</button>
-                </li>
-                <li className=" hover:bg-bg-silver">
-                  <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
-                </li>
-              </ul>
-            </ContextMenu.Window>
-          </ContextMenu> */}
         </div>
         <div className="flex flex-col justify-center items-center">
           <p className=" text-text-primary font-medium">{user?.username}</p>

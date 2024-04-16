@@ -1,6 +1,6 @@
 import { API_URL } from "../../../utils/constants"
 
-export const updateProfile = async (userId, data) => {
+export const updateProfile = async (userId: number, data: { username: string, photo: File, password: string, passwordConfirmation: string }) => {
   try {
     const formData = new FormData();
     formData.append('username', data.username);
@@ -19,10 +19,8 @@ export const updateProfile = async (userId, data) => {
       throw new Error(result.message);
     }
   } catch (error) {
-    if (error) {
-      throw new Error(error.message);
-
+    if (error instanceof Error) {
+      throw new Error(error.message)
     }
-    
   }
 }

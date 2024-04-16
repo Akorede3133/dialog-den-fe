@@ -10,12 +10,12 @@ const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
   const [photoTaken, setPhotoTaken] = useState(false);
   const [imgFile, setImgFile] = useState<File>();
   const [imgUrl, setImgUrl] = useState('');
-  const { updateUserProfile, isUpdatingProfile, error } = useUpdateProfile();
+  const { updateUserProfile } = useUpdateProfile();
   const { user } = useCurrentUser();
 
   
 
-  const handlePhotoUpload = (e) => {
+  const handlePhotoUpload = () => {
     const data: { photo: File, username: string } = {
       photo: imgFile as File,
       username: user?.username as string,
@@ -40,13 +40,10 @@ const PhotoCapture = ({ hideCapture }: { hideCapture: () => void }) => {
       setPhotoTaken(true);
       canvasRef.current?.toBlob((blob) => {
         const file = new File([blob as Blob], 'image.jpg', { type: 'image/jpeg' });
-        console.log(file);
         setImgFile(file);
         
       })
-    }
-    
-    
+    }    
   }
   useEffect(() => {
     let stream = new MediaStream();
