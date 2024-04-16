@@ -4,9 +4,11 @@ import { useRef, useState } from "react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import PhotoCapture from "./PhotoCapture";
+import ContextMenu from "../../../context/ContextMenu";
 
 const ProfileHeader = () => {
   const photoRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
   const { user } = useCurrentUser();
   const { updateUserProfile, isUpdatingProfile, error } = useUpdateProfile();
   const [takePhoto, setTakePhoto] = useState(false);
@@ -32,18 +34,39 @@ const ProfileHeader = () => {
       <section className="overflow-hidden flex justify-center flex-col items-center gap-3">
         <div className="relative">
           <img src={user?.photo} alt="" className="w-[100px] h-[100px] rounded-full object-cover" />
-          <button className=" bg-message-bg-blue absolute right-[10%] top-[75%]">
-            <HiCamera className=" text-text-primary text-xl" />
-          </button>
+          <ContextMenu>
+            <>
+            <ContextMenu.Open type="profile">
+              <button className=" bg-message-bg-blue absolute right-[10%] top-[75%] rounded-md p-[1px]">
+                <HiCamera className=" text-text-primary text-xl" />
+              </button>
+            </ContextMenu.Open>
+            <ContextMenu.Window type="profile">
+              <ul className=" absolute top-[20%] right-[-90%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
+                <li className=" hover:bg-bg-silver">
+                  <button className="w-full p-3 text-left" onClick={() => setTakePhoto(true)}>Camera</button>
+                </li>
+                <li className=" hover:bg-bg-silver">
+                  <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
+                </li>
+              </ul>
+            </ContextMenu.Window>
+            </>
+          </ContextMenu>
+         
           <input onChange={handlePhotoUpload} ref={photoRef} type="file" hidden/>
-          <ul className=" absolute top-[20%] right-[-90%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
-            <li className=" hover:bg-bg-silver">
-              <button className="w-full p-3 text-left" onClick={() => setTakePhoto(true)}>Camera</button>
-            </li>
-            <li className=" hover:bg-bg-silver">
-              <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
-            </li>
-          </ul>
+          {/* <ContextMenu>
+            <ContextMenu.Window type="profile">
+              <ul ref={listRef} className=" absolute top-[20%] right-[-90%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
+                <li className=" hover:bg-bg-silver">
+                  <button className="w-full p-3 text-left" onClick={() => setTakePhoto(true)}>Camera</button>
+                </li>
+                <li className=" hover:bg-bg-silver">
+                  <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
+                </li>
+              </ul>
+            </ContextMenu.Window>
+          </ContextMenu> */}
         </div>
         <div className="flex flex-col justify-center items-center">
           <p className=" text-text-primary font-medium">{user?.username}</p>
