@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../../../redux/hooks";
-import { setReceiver } from "../../chats/redux/chatSlice";
+import { displayCoversation, setReceiver } from "../../chats/redux/chatSlice";
 
 type CategoryProp = {
   category: string;
@@ -11,15 +11,21 @@ export type UserProp = {
   email: string;
   photo: string;
 }
+
+
 const ContactCard = ({ category, users }: CategoryProp) => {  
   const dispatch = useAppDispatch();
+  const handleSelectChat = (user: UserProp) => {
+    dispatch(setReceiver(user));
+    dispatch(displayCoversation(true));
+  }
   return ( 
     <li className="space-y-4">
       <h2 className="text-primary-blue font-medium">{category}</h2>
       <ul className="space-y-4">
         {users.map((user) => (
           <li className="w-full" key={user.id}>
-            <button className="w-full text-left" onClick={() => dispatch(setReceiver(user))}>{user.username}</button>
+            <button className="w-full text-left" onClick={() => handleSelectChat(user)}>{user.username}</button>
           </li>
         ))}
       </ul>
