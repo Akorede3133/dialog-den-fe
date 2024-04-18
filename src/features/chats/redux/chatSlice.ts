@@ -51,7 +51,7 @@ type ChatStateProp = {
 }
 
 const initialState: ChatStateProp = {
-  socket: io('http://localhost:3000'),
+  socket: io(import.meta.env.VITE_SOCKET_URL),
   onlineUsers: [],
   showConversation: false,
   receiver: null,
