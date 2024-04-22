@@ -154,7 +154,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
 
   }
   return (
-    <div className="flex justify-end items-center gap-10 px-4">
+    <div className="flex justify-end items-center gap-10 px-4 h-full p-3">
       <FaTrash className=" text-message-bg-blue text-xl" onClick={hideRecorder} />
       { isRecording ? 
           <div className=" animate-pulse text-sm text-text-primary">
@@ -180,8 +180,8 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
           : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl" />
         }
       </div>
-      <button onClick={handleSendVoice} disabled={isRecording || isSendingVoice}>
-        <HiPaperAirplane className={` text-message-bg-blue text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' }`} />
+      <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSendVoice} disabled={isRecording || isSendingVoice}>
+        <HiPaperAirplane className={` text-white text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' }`} />
       </button>
       <audio ref={audioRef} controls hidden></audio>
     </div>

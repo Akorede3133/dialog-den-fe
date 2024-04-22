@@ -8,22 +8,26 @@ import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import formatDuration from '../../../utils/formatDuration';
 
+export type MessageSenderProp = {
+  senderId: number;
+  senderUsername: string;
+  senderEmail: string;
+  senderPhoto: string;
+}
+export type MessageReceiverProp = {
+  receiverId: number;
+  receiverUsername: string;
+  receiverEmail: string;
+  receiverPhoto: string;
+}
 export type ChatProp =  {
   messageId: number;
   content: string;
+  id: number;
   type: string;
   createdAt: string;
   updatedAt: string;
-  senderId: number;
-  receiverId: number;
-  msgSenderId?: number;
-  msgReceiverId?: number;
-  senderUsername?: string;
-  receiverUsername?: string;
-  senderEmail?: string;
-  receiverEmail?: string;
-  senderPhoto?: string;
-  receiverPhoto?: string;
+  user: MessageSenderProp & MessageReceiverProp;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const [totalDuration ,setTotalDuration] = useState
@@ -33,20 +37,23 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   
   const waveFormRef = useRef<HTMLDivElement>(null)
   
-  const { senderUsername, receiverUsername, content, type, msgSenderId, msgReceiverId, senderEmail, receiverEmail, senderPhoto, receiverPhoto,createdAt } = chat;
+  const { content, type, user, createdAt } = chat;
   const dispatch = useAppDispatch();
+
+  const { receiverId, receiverUsername, receiverEmail, receiverPhoto, senderId, senderUsername, senderEmail, senderPhoto } = user;
+
     
-  const isUserOnline = onlineUsers.includes(msgReceiverId as number || msgSenderId as number);
-  
-  const user = {
-    id: msgSenderId || msgReceiverId,
+  const isUserOnline = onlineUsers.includes(receiverId as number || senderId as number);
+    
+  const convo = {
+    id: senderId | receiverId,
     email: senderEmail || receiverEmail,
     username: senderUsername || receiverUsername,
     photo: senderPhoto || receiverPhoto,
   } as UserProp;
 
   const handleSelectChat = () => {
-    dispatch(setReceiver(user));
+    dispatch(setReceiver(convo));
     dispatch(displayCoversation(true));
   }
 
@@ -69,7 +76,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     <li className="flex cursor-pointer justify-between items-center" onClick={handleSelectChat}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
-          <img src={user.photo} alt="" className='w-full h-full rounded-full object-cover'/>
+          <img src={convo.photo} alt="" className='w-full h-full rounded-full object-cover'/>
           { isUserOnline && <span className='bg-green-500 h-[10px] w-[10px] rounded-full border border-white absolute top-[50%] right-0'></span> }
         </div>
         <div className="flex flex-col">

@@ -3,7 +3,7 @@ import ContactsHeader from "./ContactsHeader"
 
 const ContactsList = () => {
   return (
-    <div className="">
+    <div className="flex flex-col h-full">
       <ContactsHeader />
       <ContactItems />
     </div>

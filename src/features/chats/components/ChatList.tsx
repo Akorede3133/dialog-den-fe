@@ -3,7 +3,7 @@ import RecentChats from "./RecentChats"
 
 const ChatList = () => {
   return (
-    <div className="">
+    <div className="h-full flex flex-col">
       <ChatListHeader />
       <RecentChats />
     </div>

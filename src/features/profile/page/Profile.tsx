@@ -3,7 +3,7 @@ import ProfileHeader from "../components/ProfileHeader"
 
 const Profile = () => {
   return (
-    <div>
+    <div className="h-full flex flex-col">
       <ProfileHeader />
       <ProfileContent />
     </div>

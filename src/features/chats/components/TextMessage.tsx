@@ -1,5 +1,6 @@
 import { BsCheck2, BsCheck2All } from 'react-icons/bs'
 import { formatTime } from '../../../utils/dateTime'
+import { HiOutlineClock } from 'react-icons/hi2';
 
 type TextMessageProp = {
   isSender: boolean;
@@ -18,6 +19,9 @@ const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) 
             { status === 'sent' && <BsCheck2 /> }
             { status === 'delivered' && <BsCheck2All /> }
             { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
+            { status === 'sending' && <HiOutlineClock className='' /> }
+
+
 
           </div> 
       }

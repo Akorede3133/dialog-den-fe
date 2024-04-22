@@ -7,13 +7,13 @@ import TextMessage from "./TextMessage";
 import VoicePlayer from "./VoicePlayer";
 
 export type MessageProp = {
-  id: number;
+  id?: number;
   content: string;
   type: string;
   senderId: number;
   receiverId: number;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   status: string;
 }
 
@@ -23,8 +23,6 @@ type MessageCardProp = {
   index: number;
 }
 const MessageCard = ({ message, messages, index }: MessageCardProp) => {
-  const [scrollToBottom, setScrollToBottom] = useState<boolean>(false);
-
   const ref = useRef<HTMLLIElement>(null);
 
   const { user } = useCurrentUser();
@@ -34,16 +32,12 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
   const issenderImageCard = isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) ;
   const isReceiverImageCard = !isSender && (!messages[index - 1 ] || messages[index - 1]?.senderId == user?.id );
 
-  useEffect(() => {
+  useEffect(() => {    
     const scrollToBottom = () => {
-      ref.current?.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+      ref.current?.scrollIntoView({ behavior: 'smooth'});
     };
     scrollToBottom();
-    if (scrollToBottom) {
-      scrollToBottom();
-      setScrollToBottom(false); 
-    }
-  }, [messages, scrollToBottom]);
+  }, [messages]);
 
 
   return (

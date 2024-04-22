@@ -12,9 +12,12 @@ import ReceiverVideoCall from '../features/chats/components/ReceiverVideoCall';
 import { useEffect } from 'react';
 import socketListener from '../features/chats/utils/socketListener';
 import useCurrentUser from '../features/auth/hooks/useCurrentUser';
+import EmptyChat from '../features/chats/components/EmptyChat';
 
 const AppLayout = () => {
   const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  console.log(voiceCall, outGoingVoiceCall);
+  
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
   
@@ -26,12 +29,10 @@ const AppLayout = () => {
 
   }, [socket, dispatch, user])
   return (
-    <div className='relative'>
-        { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />}
+    <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full  bg-blue-500 overflow-hidden relative'>
+       { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 
         { incomingVideoCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVideoCall} />}
-        {incomingVoiceCall && !onGoingCall && <CallWindow>
-          <IncomingCallNotification incomingCall={incomingVoiceCall}/>
-        </CallWindow>}
+
       {voiceCall && outGoingVoiceCall && <CallWindow>
           <VoiceCall />
         </CallWindow>}
@@ -44,21 +45,27 @@ const AppLayout = () => {
         {videoCall && incomingVideoCall && <CallWindow>
           <ReceiverVideoCall />
         </CallWindow>}
-      {!voiceCall && !videoCall && <>
-      <NavBar />
-      <main className='sm:ml-[5rem] flex relative overflow-hidden max-h-screen bg-sidebar-light'>
-        <div className=' w-full sm:w-[35%] bg-sidebar-light min-h-screen px-2 relative'>
+      {/* {!voiceCall && !videoCall && <> */}
+        <NavBar />
+        <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light sm:order-1">
           <Outlet />
         </div>
-        <div className={` ${!showConversation && ' translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]'} sm:block sm:h-screen min-h-screen h-full absolute w-full sm:w-[70%] sm:static overflow-hidden left-0 bg-blue-500`}>
+        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full conversation absolute top-0 right-0 bg-green-500 sm:static order-3`}>
+          {
+            receiver ? <Conversation /> : <EmptyChat />
+          }
+        </div>
+       
+      {/* <main className=' bg-sidebar-light'> */}
+        {/* <div className={` ${!showConversation && ' translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]'} sm:block sm:h-screen min-h-screen h-full absolute w-full sm:w-[70%] sm:static overflow-hidden left-0 bg-blue-500`}>
 
           {
             receiver ? <Conversation /> : 'Select a chat'
           }
-        </div>
-      </main>
-      </>
-      }
+        </div> */}
+      {/* </main> */}
+      {/* </> */}
+      {/* } */}
     </div>
   )
 }

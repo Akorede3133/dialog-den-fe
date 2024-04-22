@@ -23,7 +23,7 @@ const ProfileContent = () => {
   
   
   return (
-    <div  className="px-5 pb-4 h-[200px] max-h-[450px] overflow-auto profile">
+    <div  className="px-5 pb-4 h-full overflow-auto profile">
       <section  onClick={() => setShowAbout((prev) => !prev)} className=" bg-bg-silver pt-2 shadow-md">
         <button className="w-full flex justify-between items-center px-4">
           <div className="flex items-center gap-2">
@@ -37,7 +37,7 @@ const ProfileContent = () => {
 
           </div>
         </button>
-        <ul ref={aboutRef} className={` ${!showABout ? 'h-[0px]' : 'h-auto py-2' } overflow-hidden space-y-4 my-3 transition-all duration-[0.3s] bg-white px-4`}>
+        <ul ref={aboutRef} className={`${!showABout ? 'h-[0px]' : 'h-auto py-2' } overflow-hidden space-y-4 my-3 transition-all duration-[0.3s] bg-white px-4`}>
           <li>
             <p className="text-sm text-text-gray">Name</p>
             <p className=" font-medium text-sm">{user?.username}</p>

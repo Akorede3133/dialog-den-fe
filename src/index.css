@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+.conversation {
+  width: 100%;
+}
+
+@media (min-width: 648px) {
+  .conversation {
+    width: calc(100% - 490px);
+  }
+}
+
+
 
 .recent--chats::-webkit-scrollbar,
 .profile::-webkit-scrollbar,

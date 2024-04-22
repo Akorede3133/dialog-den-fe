@@ -1,19 +1,23 @@
 import { HiOutlineEmojiHappy } from "react-icons/hi"
 import { HiOutlineMicrophone, HiOutlinePhoto, HiPaperAirplane } from "react-icons/hi2"
-import { useAppSelector } from "../../../redux/hooks"
-import { selectChat } from "../redux/chatSlice"
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
+import { selectChat, setConversationMessages } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useEffect, useRef, useState } from "react"
 import useSendImage from "../hooks/useSendImage"
 import { useQueryClient } from "@tanstack/react-query";
 import Picker from "emoji-picker-react";
+import useCurrentUser from "../../auth/hooks/useCurrentUser"
+import { MessageProp } from "./MessageCard"
 
 type TextMessageProps = {
   showRecorder: () => void
 }
 const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
+  const dispatch = useAppDispatch();
   const [showEmoji, setShowEmoji] = useState(false);
-  const { receiver } = useAppSelector(selectChat);
+  const { receiver, conversationMessages } = useAppSelector(selectChat);
+  const { user } = useCurrentUser();
   const queryClient = useQueryClient();
   const emojiRef = useRef<HTMLDivElement>(null)
   const { send, isSending } = useSendMessage();
@@ -24,9 +28,13 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     sendImageFile({ file, receiverId: receiver?.id as number});
 }
 
-  const data = {
+  const data: MessageProp = {
     content: message,
-    type: 'text'
+    type: 'text',
+    senderId: user?.id as number,
+    receiverId: receiver?.id as number,
+    status: 'sending',
+    createdAt: new Date().toISOString(),
   };
 
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -34,10 +42,14 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   }
 
   const handleSend = () => {
+    if (!message.trim()) return;
+    dispatch(setConversationMessages([...conversationMessages, data]));
+    
     if (receiver) {
       send({ data, receiverId: receiver?.id }, {
         onSuccess: () => {
           queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
+          queryClient.invalidateQueries({queryKey: ['recentChats']});
         }
       });
       setMessage('');
@@ -69,7 +81,7 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     setShowEmoji((prev) => !prev)
   }
   return (
-    <div className="bg-whit relative grid grid-cols-[1fr,auto] items-center gap-4 p-3">
+    <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3 w-full">
       { showEmoji && <div ref={emojiRef} className=" absolute bottom-[100px] right-20">
         <Picker onEmojiClick={onEmojiClick} /> 
       </div> }

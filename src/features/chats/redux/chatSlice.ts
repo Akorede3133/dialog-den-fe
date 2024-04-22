@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from "../../../redux/store";
 import { Socket, io } from "socket.io-client";
+import { MessageProp } from "../components/MessageCard";
 
 
 type ReceiverProp = {
@@ -29,6 +30,7 @@ export type offerObjProp = {
 type ChatStateProp = {
   socket: Socket;
   onlineUsers: number[];
+  conversationMessages: MessageProp[];
   showConversation: boolean;
   receiver: ReceiverProp | null;
   voiceCall: boolean;
@@ -53,6 +55,7 @@ type ChatStateProp = {
 const initialState: ChatStateProp = {
   socket: io(import.meta.env.VITE_SOCKET_URL),
   onlineUsers: [],
+  conversationMessages: [],
   showConversation: false,
   receiver: null,
   voiceCall: false,
@@ -83,6 +86,9 @@ export const chatSlice = createSlice({
     },
     setOnlineUsers: (state, { payload }: PayloadAction<number[]>) => {
       state.onlineUsers = payload;
+    },
+    setConversationMessages: (state, { payload }: PayloadAction<MessageProp[]>) => {
+      state.conversationMessages = payload;
     },
     setReceiver: (state, { payload }: PayloadAction<ReceiverProp>) => {
       state.receiver = payload;
@@ -160,6 +166,6 @@ export const chatSlice = createSlice({
   }
 })
 
-export const {displayCoversation, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

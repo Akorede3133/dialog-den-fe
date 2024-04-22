@@ -109,7 +109,7 @@ const VoiceCall = () => {
 
 
   return (
-    <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5">
+    <div className=" bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 absolute z-30">
       <audio ref={localAudioRef} hidden autoPlay playsInline></audio>
       <audio ref={remoteAudioRef} hidden autoPlay playsInline></audio>
 

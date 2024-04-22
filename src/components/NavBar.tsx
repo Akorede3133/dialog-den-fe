@@ -9,8 +9,8 @@ const NavBar = () => {
   const { showConversation } = useAppSelector(selectChat)
   const { user } = useCurrentUser();
   return (
-    <header className={`fixed ${!showConversation && 'z-[1]'} bottom-0 sm:top-0 left-0 w-full sm:w-[5rem] bg-white drop-shadow-xl shadow-inner`}>
-      <section className="hidden sm:block my-10 px-3">
+    <header className={`w-full sm:w-[90px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1`}>
+      <section className="hidden sm:block my-5 px-3">
         <img src={logo} className=" w-[70px] h-auto object-cover rounded-md" alt="" />
       </section>
       <nav>

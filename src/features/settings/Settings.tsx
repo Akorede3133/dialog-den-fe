@@ -1,6 +1,6 @@
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <div className="h-screen overflow-hidden sm:order-2">Settings</div>
   )
 }
 

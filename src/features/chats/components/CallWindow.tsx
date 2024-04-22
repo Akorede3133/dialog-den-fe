@@ -39,10 +39,12 @@ const CallWindowOpen = ({ children, callType }: CallWindowChildrenProp) => {
 }
 const CallWindowModal = ({ children, callType}: CallWindowChildrenProp) => {
   const { open } = useContext(CallWindowContext);
+  console.log(open, callType);
+  
 
   if (callType === open) {
     return (
-      <div className="absolute w-full top-0 left-0 bg-black min-h-screen">
+      <div className="absolute z-20 w-full top-0 left-0 bg-black min-h-screen">
         { children }
       </div>
     )

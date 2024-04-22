@@ -1,28 +1,30 @@
-import { useAppSelector } from '../../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
-import { selectChat } from '../redux/chatSlice';
-import { useEffect, useState } from 'react';
+import { selectChat, setConversationMessages } from '../redux/chatSlice';
+import { useEffect } from 'react';
 import MessageCard, { MessageProp } from './MessageCard';
+import { useQueryClient } from '@tanstack/react-query';
 
 
 const ConversationBody = () => {
+  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+
   const { isGettingUser } = useCurrentUser();
-  const { receiver, socket } = useAppSelector(selectChat);
-  const [socketMessages, setSocketMessages] = useState<MessageProp[]>([]);
+  const { receiver, socket, conversationMessages } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
     
   useEffect(() => {
     if (messages) {
-      setSocketMessages(messages)
+      dispatch(setConversationMessages(messages))
     }
-  }, [messages])
+  }, [messages, dispatch])
 
   useEffect(() => {    
     const handleMessage = (message: MessageProp) => {
-      setSocketMessages((prevMessage) => {
-        return [...prevMessage, message];
-      });
+      dispatch(setConversationMessages([...conversationMessages, message]))
+      queryClient.invalidateQueries({ queryKey: ['recentChats']})
     };
 
     socket.on('getMessage', handleMessage);
@@ -30,7 +32,7 @@ const ConversationBody = () => {
     return () => {
       socket.off('getMessage', handleMessage);
     }
-  }, [socket, messages])
+  }, [socket, dispatch, conversationMessages, queryClient])
  
   
   if (isPending || isGettingUser) {
@@ -41,12 +43,12 @@ const ConversationBody = () => {
   }
     
   return (
-    <div className="bg-[#EFF7FE] overflow-auto flex-1 convo p-3">
+    <div className="bg-[#EFF7FE] overflow-auto flex-grow convo p-3">
       <ul className="flex flex-col gap-4">
         {
-          socketMessages.map((message: MessageProp, index: number) => {                                    
+          conversationMessages.map((message: MessageProp, index: number) => {                                    
             return (
-              <MessageCard key={index} message={message} messages={socketMessages} index={index} />
+              <MessageCard key={index} message={message} messages={conversationMessages} index={index} />
             )
           })
         }

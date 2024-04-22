@@ -6,15 +6,12 @@ type MessageProp = {
   receiverId: number;
 }
 const useSendMessage = () => {
-  const queryClient = useQueryClient();
-  const { mutate: send, isPending: isSending} = useMutation({
+  const { mutate: send, isPending: isSending, data: message} = useMutation({
     mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
-    onSuccess: () => {
-      queryClient.invalidateQueries()
-    }
+    // onSuccess: (messg) => 
   })
 
-  return { send, isSending }
+  return { send, isSending, message }
 }
 
 export default useSendMessage;
