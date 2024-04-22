@@ -46,7 +46,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const isUserOnline = onlineUsers.includes(receiverId as number || senderId as number);
     
   const convo = {
-    id: senderId | receiverId,
+    id: senderId || receiverId,
     email: senderEmail || receiverEmail,
     username: senderUsername || receiverUsername,
     photo: senderPhoto || receiverPhoto,
