@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import ImageMessage from "./ImageMessage";
 import ReceiverImageCard from "./ReceiverImageCard";

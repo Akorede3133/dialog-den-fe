@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import sendMessage, { DataProp } from "../api/sendMessage"
 
 type MessageProp = {
@@ -8,7 +8,6 @@ type MessageProp = {
 const useSendMessage = () => {
   const { mutate: send, isPending: isSending, data: message} = useMutation({
     mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
-    // onSuccess: (messg) => 
   })
 
   return { send, isSending, message }

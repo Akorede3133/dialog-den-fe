@@ -1,12 +1,9 @@
 import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
 import logo from '../assets/logo.png';
-import { useAppSelector } from "../redux/hooks";
-import { selectChat } from "../features/chats/redux/chatSlice";
 import useCurrentUser from "../features/auth/hooks/useCurrentUser";
 
 const NavBar = () => {
-  const { showConversation } = useAppSelector(selectChat)
   const { user } = useCurrentUser();
   return (
     <header className={`w-full sm:w-[90px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1`}>
