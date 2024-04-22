@@ -40,16 +40,16 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const { content, type, user, createdAt } = chat;
   const dispatch = useAppDispatch();
 
-  const { receiverId, receiverUsername, receiverEmail, receiverPhoto, senderId, senderUsername, senderEmail, senderPhoto } = user;
+  // const { receiverId, receiverUsername, receiverEmail, receiverPhoto, senderId, senderUsername, senderEmail, senderPhoto } = user;
 
     
-  const isUserOnline = onlineUsers.includes(receiverId as number || senderId as number);
+  const isUserOnline = onlineUsers.includes(user?.receiverId as number || user?.senderId as number);
     
   const convo = {
-    id: senderId || receiverId,
-    email: senderEmail || receiverEmail,
-    username: senderUsername || receiverUsername,
-    photo: senderPhoto || receiverPhoto,
+    id: user?.senderId || user?.receiverId,
+    email: user?.senderEmail || user?.receiverEmail,
+    username: user?.senderUsername || user?.receiverUsername,
+    photo: user?.senderPhoto || user?.receiverPhoto,
   } as UserProp;
 
   const handleSelectChat = () => {
@@ -80,7 +80,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
           { isUserOnline && <span className='bg-green-500 h-[10px] w-[10px] rounded-full border border-white absolute top-[50%] right-0'></span> }
         </div>
         <div className="flex flex-col">
-          <span>{senderUsername || receiverUsername}</span>
+          <span>{user?.senderUsername || user?. receiverUsername}</span>
           {
             type === 'text' && <span className="text-sm text-text-gray line-clamp-2">{content.length > 50 ?content.replace(/\n/g, '').slice(0, 35) +'...' : content}</span>
           }
