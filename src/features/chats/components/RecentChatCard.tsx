@@ -30,7 +30,7 @@ export type ChatProp =  {
   user: MessageSenderProp & MessageReceiverProp;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
-  const [totalDuration ,setTotalDuration] = useState
+  const [totalDuration, setTotalDuration] = useState
   (0);
   const {onlineUsers} = useAppSelector(selectChat)  
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null) 
@@ -51,7 +51,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     username: user?.senderUsername || user?.receiverUsername,
     photo: user?.senderPhoto || user?.receiverPhoto,
   } as UserProp;
-
+  
   const handleSelectChat = () => {
     dispatch(setReceiver(convo));
     dispatch(displayCoversation(true));

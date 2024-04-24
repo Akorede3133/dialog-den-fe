@@ -14,7 +14,7 @@ const ConversationBody = () => {
   const { isGettingUser } = useCurrentUser();
   const { receiver, socket, conversationMessages } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
-    
+      
   useEffect(() => {
     if (messages) {
       dispatch(setConversationMessages(messages))

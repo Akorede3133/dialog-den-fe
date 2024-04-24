@@ -2,8 +2,8 @@ import useGetRecentChats from "../hooks/useGetRecentChats"
 import RecentChatCard, { ChatProp } from "./RecentChatCard"
 
 const RecentChats = () => {
-  const { chats, isGettingChats, error } = useGetRecentChats();  
-
+  const { chats, isGettingChats, error } = useGetRecentChats();    
+  
   if (isGettingChats) {
     return <p>Loading...</p>
   }
@@ -15,7 +15,7 @@ const RecentChats = () => {
       <ul className="space-y-5 px-5">
         {
           chats.map((chat: ChatProp) => (
-            <RecentChatCard key={chat.messageId} chat={chat} />
+            <RecentChatCard key={chat.id} chat={chat} />
           ))
         }  
       </ul>

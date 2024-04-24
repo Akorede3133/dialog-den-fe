@@ -93,11 +93,11 @@ export const chatSlice = createSlice({
     setReceiver: (state, { payload }: PayloadAction<ReceiverProp>) => {
       state.receiver = payload;
     },
-    setVoiceCall: (state) => {
-      state.voiceCall = true;
+    setVoiceCall: (state, { payload }: PayloadAction<boolean>) => {
+      state.voiceCall = payload;
     },
-    setVideoCall: (state) => {
-      state.videoCall = true;
+    setVideoCall: (state, { payload }: PayloadAction<boolean>) => {
+      state.videoCall = payload;
     },
     turnOffCalls: (state) => {      
       state.voiceCall = false;

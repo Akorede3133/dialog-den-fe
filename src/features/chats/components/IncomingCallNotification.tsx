@@ -1,17 +1,23 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { callProp, selectChat, setOnGoingCall, setVideoCall, setVoiceCall } from '../redux/chatSlice';
-import CallWindow from './CallWindow';
-
+import { callProp, selectChat, setOnGoingCall, setVideoCall, setVoiceCall, turnOffCalls } from '../redux/chatSlice';
 const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) => {
   const dispatch = useAppDispatch();
-  const { socket } = useAppSelector(selectChat)
+  const { socket, incomingVoiceCall, incomingVideoCall } = useAppSelector(selectChat)
   const handleAnswer = () => {
     socket?.emit('sendOnGoingCall', { callerId: incomingCall?.id})
     dispatch(setOnGoingCall(true));
     if (incomingCall.type === 'voice') {
-      dispatch(setVoiceCall());
+      dispatch(setVoiceCall(true));
     } else if (incomingCall.type === 'video') {
-      dispatch(setVideoCall());
+      dispatch(setVideoCall(true));
+    }
+  }
+  const handleRejectCall = () => {
+    dispatch(turnOffCalls());
+    if (incomingCall.type === 'voice') {
+      socket.emit('cancelOutgoingVoiceCall', { callReceiverId: incomingVoiceCall?.id })
+    } else if (incomingCall.type === 'video') {
+    socket.emit('cancelOutgoingVideoCall', { callReceiverId: incomingVideoCall?.id })
     }
   }
   return (
@@ -23,11 +29,9 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
         <p className='text-sm'>{incomingCall?.username}</p>
         <p className='text-sm capitalize'>{`Incoming ${incomingCall?.type} call`}</p>
         <div className=' flex items-center gap-4'>
-          <CallWindow.Close callType={incomingCall.type}>
-            <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm'>
+            <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm' onClick={handleRejectCall}>
             Reject
             </button>
-          </CallWindow.Close>
         
           <button className='bg-green-500 rounded-full  px-4 py-1 text-sm text-white' onClick={handleAnswer}>
             Accept

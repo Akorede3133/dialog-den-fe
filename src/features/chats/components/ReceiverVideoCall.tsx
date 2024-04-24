@@ -1,9 +1,8 @@
 import formatDuration from "../../../utils/formatDuration"
 import { BsMicFill, BsMicMuteFill } from "react-icons/bs";
-import CallWindow from "./CallWindow";
 import { MdCallEnd } from "react-icons/md";
 import { useEffect, useRef, useState } from "react";
-import { addAnswer, addIce, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from "../redux/chatSlice";
+import { addAnswer, addIce, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream, turnOffCalls } from "../redux/chatSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import { HiMiniVideoCamera, HiMiniVideoCameraSlash } from "react-icons/hi2";
@@ -20,7 +19,7 @@ const ReceiverVideoCall = () => {
 
   const { user } = useCurrentUser();
   const dispatch = useAppDispatch();
-  const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces, onGoingCall, localStream }   = useAppSelector(selectChat);
+  const { offerObj, iceCandidates, remoteStream, incomingVideoCall, socket, peerIces, onGoingCall, localStream, outGoingVideoCall }   = useAppSelector(selectChat);
 
   const handleMuteAudio = () => {
     setMuteAudio((prev) => !prev)
@@ -46,6 +45,11 @@ const ReceiverVideoCall = () => {
         track.enabled = false;
       })
     }
+  }
+
+  const handleEndVideoCall = () => {
+    dispatch(turnOffCalls());    
+    socket.emit('cancelOutgoingVideoCall', { callReceiverId: outGoingVideoCall?.id || incomingVideoCall?.id })
   }
   useEffect(() => {
     if (onGoingCall) {
@@ -137,7 +141,7 @@ const ReceiverVideoCall = () => {
   }, [peerIces, remoteStream.peerConnection])
 
   return (
-    <div className="bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 z-10 relative overflow-hidden">
+    <div className="bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 relativ overflow-hidden absolute z-30">
        <video ref={localVideoRef} className=" w-[90%] h-[60%] md:w-[700px] rounded-md object-cover absolute z-1 top-[20%]" autoPlay muted></video>
        <video ref={remoteVideoRef} className=" absolute h-[200px] w-[200px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
 
@@ -147,13 +151,9 @@ const ReceiverVideoCall = () => {
       </div>
       {
         true && <div className=' w-full self-end flex justify-center items-center gap-4'>
-            <CallWindow>
-            <CallWindow.Close callType="video" localVideoRef={localVideoRef}>
-              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
+              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full' onClick={handleEndVideoCall}>
                 <MdCallEnd className=' text-white' />
               </button>
-            </CallWindow.Close>
-          </CallWindow>
           { !mutedAudio ? 
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />

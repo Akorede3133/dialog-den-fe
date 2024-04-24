@@ -1,7 +1,6 @@
 import { FaPhone } from 'react-icons/fa6';
-import CallWindow from './CallWindow';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { addIce, addOffer, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream } from '../redux/chatSlice';
+import { addIce, addOffer, selectChat, setLocalStream, setRemotePeerConnection, setRemoteStream, turnOffCalls } from '../redux/chatSlice';
 import { useEffect, useRef, useState } from 'react';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import formatDuration from '../../../utils/formatDuration';
@@ -14,11 +13,11 @@ const VoiceCall = () => {
   const [mutedAudio, setMuteAudio] = useState(false);
   const [hasAnswer, setHasAnswer] = useState(false);
 
-    const dispatch = useAppDispatch();
-    const { offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall, socket, answer, peerIces, localStream }   = useAppSelector(selectChat);
-    const localAudioRef = useRef<HTMLAudioElement>(null);
-    const remoteAudioRef = useRef<HTMLAudioElement>(null);
-    const handleMuteAudio = () => {
+  const dispatch = useAppDispatch();
+  const { offer, iceCandidates, onGoingCall, remoteStream, outGoingVoiceCall, socket, answer, peerIces, localStream, incomingVoiceCall }   = useAppSelector(selectChat);
+  const localAudioRef = useRef<HTMLAudioElement>(null);
+  const remoteAudioRef = useRef<HTMLAudioElement>(null);
+  const handleMuteAudio = () => {
       setMuteAudio((prev) => !prev)
       if (mutedAudio) {
         localStream?.getAudioTracks().forEach((track) => {      
@@ -29,7 +28,11 @@ const VoiceCall = () => {
           track.enabled = false;
         })
       }    
-    };
+  };
+  const handleEndCall = () => {
+    dispatch(turnOffCalls());
+    socket.emit('cancelOutgoingVoiceCall', { callReceiverId: outGoingVoiceCall?.id || incomingVoiceCall?.id })
+  }
     useEffect(() => {
       if (onGoingCall) {
         const timer = setInterval(() => {
@@ -119,23 +122,15 @@ const VoiceCall = () => {
       </div>
       <img src={outGoingVoiceCall?.photo} alt="" className='w-[150px] h-[150px] rounded-full object-cover' />
       { !onGoingCall && 
-      <CallWindow>
-        <CallWindow.Close callType='voice' remoteAudioRef={remoteAudioRef}>
-          <button className='bg-red-500 p-4 rounded-full  animate-pulse'>
-            <FaPhone className=' text-white' />
-          </button>
-        </CallWindow.Close>
-      </CallWindow> 
+        <button className='bg-red-500 p-4 rounded-full  animate-pulse' onClick={handleEndCall}>
+          <FaPhone className=' text-white' />
+        </button>
       }
       {
         onGoingCall && <div className=' w-full self-end flex justify-center items-center gap-4'>
-            <CallWindow>
-            <CallWindow.Close callType='voice' remoteAudioRef={remoteAudioRef}>
-              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full'>
+              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full' onClick={handleEndCall}>
                 <MdCallEnd className=' text-white' />
               </button>
-            </CallWindow.Close>
-          </CallWindow>
            { !mutedAudio ? 
            <button className='p-4 rounded-full bg-gray-600' onClick={handleMuteAudio}>
             <BsMicFill className=' text-white text-xl' />

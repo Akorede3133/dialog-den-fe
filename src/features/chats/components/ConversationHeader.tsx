@@ -1,11 +1,21 @@
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { displayCoversation, selectChat } from "../redux/chatSlice";
-import CallWindow from "./CallWindow";
+import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 const ConversationHeader = () => {
-  const { receiver, onlineUsers } = useAppSelector(selectChat);
+  const { receiver, onlineUsers, socket } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
   const dispatch  = useAppDispatch();
+  const handleVoiceCall  = () => {
+    dispatch(setVoiceCall(true));
+    dispatch(setOutGoingVoiceCall(receiver as callProp))
+    socket.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'voice'})
+  }
+
+  const handleVideoCall = () => {
+    dispatch(setVideoCall(true));
+    dispatch(setOutGoingVideoCall(receiver as callProp))
+    socket.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'video'})
+  }
   
   return (
     <div className="flex justify-between bg-white px-3 py-3 border-b">
@@ -25,24 +35,14 @@ const ConversationHeader = () => {
         </button>
       </li>
       <li>
-        <CallWindow>
-          <CallWindow.Open callType='voice-call'>
-            <button>
-            <HiOutlinePhone className="text-xl" />
-          </button>
-        </CallWindow.Open>       
-        </CallWindow>
-       
+        <button onClick={handleVoiceCall}>
+          <HiOutlinePhone className="text-xl" />
+        </button>
       </li>
       <li>
-        <CallWindow>
-          <CallWindow.Open callType='video-call'>
-            <button>
-              <HiOutlineVideoCamera className="text-xl" />
-          </button>
-          </CallWindow.Open>
-        </CallWindow>
-        
+        <button onClick={handleVideoCall}>
+          <HiOutlineVideoCamera className="text-xl" />
+        </button>
       </li>
       <li>
         <button>

@@ -3,7 +3,6 @@ import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectChat } from '../features/chats/redux/chatSlice';
-import CallWindow from '../features/chats/components/CallWindow';
 import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
@@ -16,7 +15,6 @@ import EmptyChat from '../features/chats/components/EmptyChat';
 
 const AppLayout = () => {
   const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
-  console.log(voiceCall, outGoingVoiceCall);
   
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
@@ -30,22 +28,12 @@ const AppLayout = () => {
   }, [socket, dispatch, user])
   return (
     <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full  bg-blue-500 overflow-hidden relative'>
-       { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 
+        { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 
         { incomingVideoCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVideoCall} />}
-
-      {voiceCall && outGoingVoiceCall && <CallWindow>
-          <VoiceCall />
-        </CallWindow>}
-        {voiceCall && incomingVoiceCall && <CallWindow>
-          <ReceiverVoiceCall />
-        </CallWindow>}
-        {videoCall && outGoingVideoCall && <CallWindow>
-          <VideoCall />
-        </CallWindow>}
-        {videoCall && incomingVideoCall && <CallWindow>
-          <ReceiverVideoCall />
-        </CallWindow>}
-      {/* {!voiceCall && !videoCall && <> */}
+        { voiceCall &&  outGoingVoiceCall &&  <VoiceCall /> }
+        { voiceCall && incomingVoiceCall &&  <ReceiverVoiceCall /> }
+        { videoCall && outGoingVideoCall &&  <VideoCall /> }
+        { videoCall && incomingVideoCall && <ReceiverVideoCall /> }
         <NavBar />
         <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light sm:order-1">
           <Outlet />
