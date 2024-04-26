@@ -15,6 +15,8 @@ const ReceiverVideoCall = () => {
   const [callDuration, setCallDuration] = useState(0);
   const [mutedAudio, setMuteAudio] = useState(false);
   const [disableVideo, setDisableVideo] = useState(false);
+  const [callerBigDisplay, setCallerBigDisplay] = useState(true);
+
 
 
   const { user } = useCurrentUser();
@@ -50,6 +52,10 @@ const ReceiverVideoCall = () => {
   const handleEndVideoCall = () => {
     dispatch(turnOffCalls());    
     socket.emit('cancelOutgoingVideoCall', { callReceiverId: outGoingVideoCall?.id || incomingVideoCall?.id })
+  }
+
+  const toggleBigDisplay = () => {
+    setCallerBigDisplay((prev) => !prev);
   }
   useEffect(() => {
     if (onGoingCall) {
@@ -140,18 +146,21 @@ const ReceiverVideoCall = () => {
     }    
   }, [peerIces, remoteStream.peerConnection])
 
-  return (
-    <div className="bg-message-bg-blue min-h-screen flex flex-col justify-between items-center gap-20 w-full py-5 relativ overflow-hidden absolute z-30">
-       <video ref={localVideoRef} className=" w-[90%] h-[60%] md:w-[700px] rounded-md object-cover absolute z-1 top-[20%]" autoPlay muted></video>
-       <video ref={remoteVideoRef} className=" absolute h-[200px] w-[200px] object-cover bg-black bottom-[20%] right-[5%]" autoPlay playsInline></video>
+  const bigDisplayClass = 'md:w-[700px] rounded-md object-cover absolute z-1 top-0 w-full h-full';
+  const smallDisplayClass = 'absolute h-[150px] w-[150px] object-cover bg-black rounded-md cursor-pointer bottom-[20%] z-10 right-[5%]'
 
-      <div className=' text-center'>
-        <p className=' text-2xl text-white'>{incomingVideoCall?.username}</p>
-        <span className='text-white text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
+  return (
+    <div className=" bg-message-bg-blu bg-white h-screen lg:h-[25rem] flex flex-col justify-between lg:justify-star items-center gap-4 w-full lg:w-[30rem] lg:right-[10px] lg:top-[10px] lg:rounded-[1rem] overflow-hidden  py-5 absolute z-30 shadow-[0_0_10px_rgba(0,0,0,0.2)]">
+      <video ref={localVideoRef}  className={callerBigDisplay ? bigDisplayClass : smallDisplayClass} autoPlay muted onClick={!callerBigDisplay ? toggleBigDisplay : () => null}></video>
+      <video ref={remoteVideoRef} className={callerBigDisplay ? smallDisplayClass : bigDisplayClass} autoPlay playsInline hidden={!onGoingCall} onClick={callerBigDisplay ? toggleBigDisplay : () => null}></video>
+
+      <div className=' text-center absolute'>
+        <p className=' text-2xl text-text-primary'>{incomingVideoCall?.username}</p>
+        <span className=' text-text-primary text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       {
-        true && <div className=' w-full self-end flex justify-center items-center gap-4'>
-              <button className='bg-red-500 h-[50px] w-[50px] flex justify-center items-center rounded-full' onClick={handleEndVideoCall}>
+        true && <div className=' w-full self-end flex justify-between px-10 items-center gap-4 absolute bottom-0 py-3 bg-bg-dark'>
+              <button className='bg-red-500 h-[40px] w-[40px] flex justify-center items-center rounded-full' onClick={handleEndVideoCall}>
                 <MdCallEnd className=' text-white' />
               </button>
           { !mutedAudio ? 

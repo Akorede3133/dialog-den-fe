@@ -27,7 +27,7 @@ const AppLayout = () => {
 
   }, [socket, dispatch, user])
   return (
-    <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full  bg-blue-500 overflow-hidden relative'>
+    <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full overflow-hidden relative'>
         { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 
         { incomingVideoCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVideoCall} />}
         { voiceCall &&  outGoingVoiceCall &&  <VoiceCall /> }
