@@ -41,9 +41,9 @@ const ActiveUsers = () => {
       <ActiveUsersList activeUsers={activeUsers} />
     )
   }
-  if (!activeUsers.length) {
+  // if (!activeUsers.length) {
     return <p className="text-xl text-text-primary text-center py-2">No active users</p>
-  }
+  // }
  
 }
 

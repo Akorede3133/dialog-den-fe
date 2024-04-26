@@ -5,7 +5,7 @@ import { HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineUser } from "react-i
 
 const OtherUserProfile = () => {
   const aboutRef = useRef<HTMLUListElement>(null);
-  const [time, setTime] = useState<string>(new Date().toLocaleTimeString());
+  const [time] = useState<string>(new Date().toLocaleTimeString());
   const [showABout, setShowAbout] = useState(false);
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const { receiver } = useAppSelector(selectChat)
