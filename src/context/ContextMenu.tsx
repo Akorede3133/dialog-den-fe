@@ -8,11 +8,10 @@ type ContextMenuProp = {
 
 const ContextMenuContext = createContext<ContextMenuProp>({} as ContextMenuProp);
 
-const ContextMenu = ({ children }: { children: React.ReactElement }) => {
+const ContextMenu = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = useState('');
   const close = () => setOpen('');
   
-
   return (
     <ContextMenuContext.Provider value={{ open, setOpen, close }}>
       {children}
