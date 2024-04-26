@@ -23,11 +23,8 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { send, isSending } = useSendMessage();
   const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] as File;
-    sendImageFile({ file, receiverId: receiver?.id as number});
-}
-
+  const [imageUrl, setImageUrl] = useState<string>('')
+ 
   const data: MessageProp = {
     content: message,
     type: 'text',
@@ -37,8 +34,35 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     createdAt: new Date().toISOString(),
   };
 
+
   const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
+    const blob = new Blob([file], { type: 'image/jpeg'});
+    const url = URL.createObjectURL(blob);
+    const imageData: MessageProp = {
+      content: url,
+      type: 'image',
+      senderId: user?.id as number,
+      receiverId: receiver?.id as number,
+      status: 'sending',
+      createdAt: new Date().toISOString(),
+    };
+    
+    dispatch(setConversationMessages([...conversationMessages, imageData]));
+       
+    if (receiver) {
+      sendImageFile({ file, receiverId: receiver?.id as number}, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
+          queryClient.invalidateQueries({queryKey: ['recentChats']});
+        }
+      });
+    }
+   
   }
 
   const handleSend = () => {

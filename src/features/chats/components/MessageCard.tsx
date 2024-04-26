@@ -45,7 +45,7 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
       { issenderImageCard && <SenderImageCard user={user} /> }
       { isReceiverImageCard && <ReceiverImageCard /> }
       { message.type === 'text' && <TextMessage isSender={isSender} content={content} createdAt={createdAt} status={status} /> }
-      { message.type === 'image' && <ImageMessage content={content} isSender={isSender} /> }
+      { message.type === 'image' && <ImageMessage content={content} isSender={isSender} status={status} /> }
       { message.type === 'voice' && <VoicePlayer content={content} isSender={isSender}  /> }
     </li>
   )
