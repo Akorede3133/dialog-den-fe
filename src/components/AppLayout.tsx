@@ -12,9 +12,10 @@ import { useEffect } from 'react';
 import socketListener from '../features/chats/utils/socketListener';
 import useCurrentUser from '../features/auth/hooks/useCurrentUser';
 import EmptyChat from '../features/chats/components/EmptyChat';
+import OtherUserProfilePage from '../features/profile/components/OtherUserProfilePage';
 
 const AppLayout = () => {
-  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall } = useAppSelector(selectChat);
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile } = useAppSelector(selectChat);
   
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
@@ -38,11 +39,17 @@ const AppLayout = () => {
         <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light sm:order-1">
           <Outlet />
         </div>
-        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full conversation absolute top-0 right-0 bg-green-500 sm:static order-3`}>
+        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full ${showOtherUserProfile ? 'half--conversation': 'conversation'} absolute top-0 right-0 bg-green-500 sm:static order-3`}>
           {
             receiver ? <Conversation /> : <EmptyChat />
           }
         </div>
+        {
+          receiver  && showOtherUserProfile &&
+          <div className={`translate-x-[100% sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s] sm:block h-full z-30 half--conversation absolute top-0 right-0 bg-white sm:static order-4`}>
+          <OtherUserProfilePage />
+        </div>
+        }
        
       {/* <main className=' bg-sidebar-light'> */}
         {/* <div className={` ${!showConversation && ' translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]'} sm:block sm:h-screen min-h-screen h-full absolute w-full sm:w-[70%] sm:static overflow-hidden left-0 bg-blue-500`}>

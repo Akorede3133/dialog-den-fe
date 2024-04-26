@@ -30,6 +30,7 @@ export type offerObjProp = {
 type ChatStateProp = {
   socket: Socket;
   onlineUsers: number[];
+  showOtherUserProfile: boolean;
   conversationMessages: MessageProp[];
   showConversation: boolean;
   receiver: ReceiverProp | null;
@@ -55,6 +56,7 @@ type ChatStateProp = {
 const initialState: ChatStateProp = {
   socket: io(import.meta.env.VITE_SOCKET_URL),
   onlineUsers: [],
+  showOtherUserProfile: false,
   conversationMessages: [],
   showConversation: false,
   receiver: null,
@@ -163,9 +165,12 @@ export const chatSlice = createSlice({
     addPeerIce: (state, { payload }) => {
       state.peerIces.push(payload);
     },
+    setShowOtherUserProfile: (state, { payload }) => {
+      state.showOtherUserProfile = payload;
+    }
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

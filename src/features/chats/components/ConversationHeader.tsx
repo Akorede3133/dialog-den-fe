@@ -1,6 +1,6 @@
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineTrash, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setVideoCall, setVoiceCall } from "../redux/chatSlice";
+import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 import ContextMenu from "../../../context/ContextMenu";
 const ConversationHeader = () => {
   const { receiver, onlineUsers, socket } = useAppSelector(selectChat);
@@ -46,7 +46,7 @@ const ConversationHeader = () => {
         </button>
       </li>
       <li className="hidden md:block">
-        <button>
+        <button onClick={() => dispatch(setShowOtherUserProfile(true))}>
           <HiOutlineUser className="text-xl" />
         </button>
       </li>
@@ -61,7 +61,7 @@ const ConversationHeader = () => {
         <ContextMenu.Window type="chat-header">
           <ul className="absolute top-[70px] right-[10px] bg-white shadow-lg rounded-md text-text-primary z-10  text-sm">
             <li className="flex hover:bg-bg-silver items-center gap-3 p-3 md:hidden">
-              <button className="w-full text-left pl-3">View Profile</button>
+              <button className="w-full text-left pl-3" onClick={() => dispatch(setShowOtherUserProfile(true))}>View Profile</button>
               <HiOutlineUser className="text-xl" />
             </li>
             <li className="flex hover:bg-bg-silver items-center gap-3 p-3">

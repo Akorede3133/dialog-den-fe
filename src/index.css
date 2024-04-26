@@ -7,10 +7,16 @@
 .conversation {
   width: 100%;
 }
+.half--conversation {
+
+}
 
 @media (min-width: 648px) {
   .conversation {
     width: calc(100% - 490px);
+  }
+  .half--conversation {
+    width: calc(100% - 490px - 400px);
   }
 }
 
