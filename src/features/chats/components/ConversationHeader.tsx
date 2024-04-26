@@ -1,6 +1,6 @@
 import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineTrash, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
+import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 import ContextMenu from "../../../context/ContextMenu";
 const ConversationHeader = () => {
   const { receiver, onlineUsers, socket } = useAppSelector(selectChat);
@@ -17,11 +17,16 @@ const ConversationHeader = () => {
     dispatch(setOutGoingVideoCall(receiver as callProp))
     socket.emit('sendOutgoingCall', { callReceiverId: receiver?.id, type: 'video'})
   }
+
+  const handleCloseConversation = () => {
+    dispatch(displayCoversation(false));
+    dispatch(setReceiver(null));
+  }
   
   return (
     <div className="flex justify-between bg-white px-3 py-3 border-b relative">
      <section className="flex items-center gap-2">
-      <button className="sm:hidden" onClick={() => dispatch(displayCoversation(false))}>
+      <button className="sm:hidden" onClick={handleCloseConversation}>
         <HiOutlineChevronLeft />
       </button>
         <img src={receiver?.photo} alt="" className="w-[35px] h-[35px] rounded-full object-cover" />

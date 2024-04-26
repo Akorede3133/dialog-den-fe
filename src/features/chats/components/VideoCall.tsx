@@ -144,8 +144,8 @@ const VideoCall = () => {
       <video ref={remoteVideoRef} className={callerBigDisplay ? smallDisplayClass : bigDisplayClass} autoPlay playsInline hidden={!onGoingCall} onClick={callerBigDisplay ? toggleBigDisplay : () => null}></video>
 
       <div className=' text-center absolute'>
-        <p className=' text-2xl text-text-primary'>{outGoingVideoCall?.username}</p>
-        <span className=' text-text-primary text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
+        <p className={`text-2xl ${callerBigDisplay ? 'text-text-primary' : ' text-white'}`}>{outGoingVideoCall?.username}</p>
+        <span className={`text-sm ${callerBigDisplay ? 'text-text-primary' : ' text-white'}`}>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       {
         true && <div className=' w-full self-end flex justify-between px-10 items-center gap-4 absolute bottom-0 py-3 bg-bg-dark'>

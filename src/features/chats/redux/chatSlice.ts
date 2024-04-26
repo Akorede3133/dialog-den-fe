@@ -92,7 +92,7 @@ export const chatSlice = createSlice({
     setConversationMessages: (state, { payload }: PayloadAction<MessageProp[]>) => {
       state.conversationMessages = payload;
     },
-    setReceiver: (state, { payload }: PayloadAction<ReceiverProp>) => {
+    setReceiver: (state, { payload }: PayloadAction<ReceiverProp | null>) => {
       state.receiver = payload;
     },
     setVoiceCall: (state, { payload }: PayloadAction<boolean>) => {

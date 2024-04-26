@@ -6,7 +6,6 @@ const socketListener = (socket: Socket, dispatch: AppDispatch) => {
   socket.on('getOnlineUsers', (users: number[]) => {
     dispatch(setOnlineUsers(users))
   })
-
   socket.on('sendOutgoingCallToReceiver', (caller) => {
     if (caller.type === 'voice') {
       dispatch(setIncomingVoiceCall(caller))
