@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -15,10 +15,12 @@ import EmptyChat from '../features/chats/components/EmptyChat';
 import OtherUserProfilePage from '../features/profile/components/OtherUserProfilePage';
 
 const AppLayout = () => {
-  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile } = useAppSelector(selectChat);  
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile, isAuthenticated } = useAppSelector(selectChat);  
+  const navigate = useNavigate();
   
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
+  
   
   useEffect(() => {
     if (user) {
@@ -27,6 +29,12 @@ const AppLayout = () => {
     socketListener(socket, dispatch)
 
   }, [socket, dispatch, user])
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/login')
+    }
+  }, [isAuthenticated, navigate])
   return (
     <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full overflow-hidden relative'>
         { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 

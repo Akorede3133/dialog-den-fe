@@ -3,17 +3,21 @@ import { FaMicrophone, FaPause, FaPlay, FaStop, FaTrash } from "react-icons/fa6"
 import { HiPaperAirplane } from "react-icons/hi2";
 import WaveSurfer from "wavesurfer.js";
 import useSendVoice from "../hooks/useSendVoice";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectChat } from "../redux/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectChat, setConversationMessages } from "../redux/chatSlice";
 import formatDuration from "../../../utils/formatDuration";
+import { MessageProp } from "./MessageCard";
+import useCurrentUser from "../../auth/hooks/useCurrentUser";
 
 
 type VoiceMessageProps = {
   hideRecorder: () => void
 }
 const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
+  const dispatch = useAppDispatch();
   const { sendVoiceFile, isSendingVoice } = useSendVoice();
-  const { receiver } = useAppSelector(selectChat);
+  const { user } = useCurrentUser();
+  const { receiver, conversationMessages } = useAppSelector(selectChat);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
@@ -141,15 +145,22 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
         file: audioFile as File,
         receiverId: receiver?.id as number
       }
-      sendVoiceFile(data, {
-        onSuccess: () => {
-          setIsRecording(false);
-          setCurrentTime(0);
-          setRecordingDuration(0);
-          hideRecorder();
-          setAudioFile({} as File)
-        }
-      });
+      const url = URL.createObjectURL(audioFile);
+      const voiceData: MessageProp = {
+        content: url,
+        type: 'voice',
+        senderId: user?.id as number,
+        receiverId: receiver?.id as number,
+        status: 'sending',
+        createdAt: new Date().toISOString(),
+      };
+      dispatch(setConversationMessages([...conversationMessages, voiceData]))
+      setIsRecording(false);
+      setCurrentTime(0);
+      setRecordingDuration(0);
+      hideRecorder();
+      setAudioFile({} as File)
+      sendVoiceFile(data);
     }
 
   }

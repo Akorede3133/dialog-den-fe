@@ -1,6 +1,4 @@
 import { LoaderIcon } from "react-hot-toast";
-import { BiLoader } from "react-icons/bi";
-import { VscLoading } from "react-icons/vsc";
 
 type ImageMessageProp = {
   content: string;

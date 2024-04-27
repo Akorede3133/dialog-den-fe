@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react"
 import { FaPause, FaPlay } from "react-icons/fa6";
 import formatDuration from "../../../utils/formatDuration";
 import WaveSurfer from "wavesurfer.js";
+import { LoaderIcon } from "react-hot-toast";
 
-const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean }) => {
+const VoicePlayer = ({ content, isSender, status }: { content: string, isSender: boolean }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration ,setTotalDuration] = useState(0)
@@ -67,6 +68,9 @@ const VoicePlayer = ({ content, isSender }: { content: string, isSender: boolean
         { isPlaying ? <span>{formatDuration(currentTime)}</span> : <span>{formatDuration(totalDuration)}</span> }
         <span>7:58am</span>
       </div>
+      { status === 'sending' &&  <div className="flex justify-end">
+        <LoaderIcon />
+      </div> }
     </div>
   )
 }

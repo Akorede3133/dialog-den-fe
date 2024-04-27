@@ -2,8 +2,11 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { HiOutlineLockClosed, HiOutlineUser } from "react-icons/hi2"
 import { Link } from "react-router-dom"
 import useLogin from "../hooks/useLogin";
+import { useAppDispatch } from "../../../redux/hooks";
+import { setAuthenticated } from "../../chats/redux/chatSlice";
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
   type Input = {
     username: string;
     password: string;
@@ -14,7 +17,11 @@ const LoginForm = () => {
   const { loginUser, isLogginIn } = useLogin();
 
   const onSubmit: SubmitHandler<Input> = (data) => {
-    loginUser(data);
+    loginUser(data, {
+      onSuccess: () => {
+        dispatch(setAuthenticated(true));
+      }
+    });
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
