@@ -34,7 +34,6 @@ const ProfileHeader = () => {
         <div className="relative">
           <img src={user?.photo} alt="" className="w-[100px] h-[100px] rounded-full object-cover" />
           <ContextMenu>
-            <>
             <ContextMenu.Open type="profile">
               <button className=" bg-message-bg-blue absolute right-[10%] top-[75%] rounded-md p-[1px]">
                 <HiCamera className=" text-text-primary text-xl" />
@@ -50,7 +49,6 @@ const ProfileHeader = () => {
                 </li>
               </ul>
             </ContextMenu.Window>
-            </>
           </ContextMenu>
          
           <input onChange={handlePhotoUpload} ref={photoRef} type="file" hidden/>
