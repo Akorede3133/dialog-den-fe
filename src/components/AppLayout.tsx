@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';

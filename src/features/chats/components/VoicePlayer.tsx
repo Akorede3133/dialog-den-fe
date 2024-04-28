@@ -4,7 +4,7 @@ import formatDuration from "../../../utils/formatDuration";
 import WaveSurfer from "wavesurfer.js";
 import { LoaderIcon } from "react-hot-toast";
 
-const VoicePlayer = ({ content, isSender, status }: { content: string, isSender: boolean }) => {
+const VoicePlayer = ({ content, isSender, status }: { content: string, isSender: boolean, status: string }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration ,setTotalDuration] = useState(0)

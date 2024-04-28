@@ -23,7 +23,6 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { send, isSending } = useSendMessage();
   const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
-  const [imageUrl, setImageUrl] = useState<string>('')
  
   const data: MessageProp = {
     content: message,
