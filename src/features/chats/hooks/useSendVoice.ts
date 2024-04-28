@@ -7,6 +7,7 @@ const useSendVoice = () => {
     mutationFn: ({ file, receiverId }: { file: File, receiverId: number }) => sendVoice(file, receiverId),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['messages'] });
+      queryClient.invalidateQueries({queryKey: ['recentChats'] });
     }
   })
 

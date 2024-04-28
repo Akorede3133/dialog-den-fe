@@ -22,6 +22,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
+  const [recordStream, setRecordStream] = useState<MediaStream>(new MediaStream());
   const [recordingDuration, setRecordingDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
@@ -37,6 +38,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     if (navigator.mediaDevices) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        setRecordStream(stream);
         const mediaRecorder = new MediaRecorder(stream);
         setMediaRecorder(mediaRecorder);
         if (audioRef.current) {
@@ -115,8 +117,10 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   }, [waveForm, currentTime])
 
   const handleStopRecording = () => {
-    setIsRecording(false);
-
+    setIsRecording(false);    
+    recordStream.getTracks().forEach((track) => {
+      track.stop();
+    })
     mediaRecorder?.stop();
     waveForm?.stop();
     let audioChunks: Blob[] = [];

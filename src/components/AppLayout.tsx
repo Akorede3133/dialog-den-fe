@@ -15,8 +15,7 @@ import EmptyChat from '../features/chats/components/EmptyChat';
 import OtherUserProfilePage from '../features/profile/components/OtherUserProfilePage';
 
 const AppLayout = () => {
-  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile, isAuthenticated } = useAppSelector(selectChat);  
-  const navigate = useNavigate();
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile } = useAppSelector(selectChat);  
   
   const {user} = useCurrentUser();
   const dispatch = useAppDispatch();
@@ -30,11 +29,6 @@ const AppLayout = () => {
 
   }, [socket, dispatch, user])
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login')
-    }
-  }, [isAuthenticated, navigate])
   return (
     <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full overflow-hidden relative'>
         { incomingVoiceCall && !onGoingCall && <IncomingCallNotification incomingCall={incomingVoiceCall} />} 
@@ -58,17 +52,6 @@ const AppLayout = () => {
           <OtherUserProfilePage />
         </div>
         }
-       
-      {/* <main className=' bg-sidebar-light'> */}
-        {/* <div className={` ${!showConversation && ' translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]'} sm:block sm:h-screen min-h-screen h-full absolute w-full sm:w-[70%] sm:static overflow-hidden left-0 bg-blue-500`}>
-
-          {
-            receiver ? <Conversation /> : 'Select a chat'
-          }
-        </div> */}
-      {/* </main> */}
-      {/* </> */}
-      {/* } */}
     </div>
   )
 }
