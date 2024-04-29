@@ -35,8 +35,10 @@ const ContextWindow = ({ children, type }: { children: React.ReactNode, type: st
 
   useEffect(() => {
     const handleClose = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        close();
+      if (ref.current && (!ref.current.contains(e.target as Node) || ref.current.contains(e.target as Node  ))) {
+        setTimeout(() => {
+          close();
+        }, 0)
       }
     }
     document.addEventListener('click', handleClose, true);
