@@ -5,6 +5,8 @@ import ReceiverImageCard from "./ReceiverImageCard";
 import SenderImageCard from "./SenderImageCard";
 import TextMessage from "./TextMessage";
 import VoicePlayer from "./VoicePlayer";
+import { useAppSelector } from "../../../redux/hooks";
+import { selectChat } from "../redux/chatSlice";
 
 export type MessageProp = {
   id?: number;
@@ -24,9 +26,9 @@ type MessageCardProp = {
 }
 const MessageCard = ({ message, messages, index }: MessageCardProp) => {
   const ref = useRef<HTMLLIElement>(null);
-
   const { user } = useCurrentUser();
- 
+  const { searchMatches, messageSearchText, currentSearchedMessageIndex } = useAppSelector(selectChat)
+
   const { content, senderId, id, status, createdAt } = message;
   const isSender = senderId === user?.id;
   const issenderImageCard = isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) ;
@@ -38,10 +40,49 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
     };
     scrollToBottom();
   }, [messages]);
+  useEffect(() => {
+    const messagesId = searchMatches.map((msg) =>  msg.id);    
+    messages.forEach((msg) => {
+      if (messagesId.includes(msg.id)) {
+        const elem = document.querySelector(`[data-id='${msg.id}']`) as Element
+        const text = Array.from(elem.querySelectorAll('.letter'));
+        text.forEach((txt) => {
+          const txtContent = txt.textContent?.toLowerCase();
+          if (txtContent && txtContent.includes(messageSearchText.toLowerCase())) {
+            txt.classList.add('search--text');
+          }
+        });
+
+        // let messageIndex = 0;
+        // text.forEach((txt) => {
+        //   const txtContent = txt.textContent?.toLowerCase() as string;
+        //   for (let i = 0; i < txtContent.length; i++) {
+        //     const txtChar = txtContent[i];
+        //     if (txtChar === messageSearchText[messageIndex]?.toLowerCase()) {
+        //       txt.classList.add('search--text');
+        //       messageIndex++;              
+        //       if (messageIndex === messageSearchText.length) {
+        //         break;
+        //       }
+        //     }
+        //   }
+        // });
+      }
+    })
+  }, [searchMatches, messages, messageSearchText])
+
+
+  useEffect(() => {
+    if (searchMatches.length) {
+      const firstElem = document.querySelector(`[data-id='${searchMatches[currentSearchedMessageIndex].id}']`) as Element
+      firstElem.scrollIntoView({ behavior: 'smooth'});
+    }
+  }, [currentSearchedMessageIndex, searchMatches])
+        
 
 
   return (
-    <li  ref={ref} key={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
+    <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
       { issenderImageCard && <SenderImageCard user={user} /> }
       { isReceiverImageCard && <ReceiverImageCard /> }
       { message.type === 'text' && <TextMessage isSender={isSender} content={content} createdAt={createdAt} status={status} /> }

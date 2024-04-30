@@ -9,9 +9,17 @@ type TextMessageProp = {
   status: string;
 }
 const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) => {
+  const contentArr = content.trim().split(' ');
+    
   return (
     <div className={`${isSender ?  'mr-[3.2rem] bg-bg-silver'  : `bg-[#1C9DEA]  ml-[3.2rem] text-white`} px-1 py-3 flex flex-col gap-2 relative w-full rounded-md`}>
-    <span className='text-sm wrap-text mb-2'>{content}</span>
+    <p className='text-sm wrap-text flex gap-1 mb-2 w-full overflow-hidden'>{
+      contentArr.map((letter) => {
+        return (
+          <span className='letter'>{letter}</span>
+        )
+      })
+    }</p>
     <div className='flex gap-1 items-center absolute bottom-[1%] right-[5%]'>
       <span className={`text-[10px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(createdAt)}</span>
       { isSender && 

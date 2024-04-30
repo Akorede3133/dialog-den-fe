@@ -52,6 +52,10 @@ type ChatStateProp = {
   offerObj: offerObjProp |  null;
   peerIces: RTCIceCandidate[];
   iceCandidates: RTCIceCandidate[];
+  searchMatches: MessageProp[];
+  messageSearchMode: boolean;
+  messageSearchText: string;
+  currentSearchedMessageIndex: number;
 }
 
 const initialState: ChatStateProp = {
@@ -78,7 +82,11 @@ const initialState: ChatStateProp = {
   remoteStream: {
     stream: null,
     peerConnection: null
-  }
+  },
+  searchMatches: [],
+  messageSearchMode: false,
+  messageSearchText: '',
+  currentSearchedMessageIndex: 0,
 }
 
 export const chatSlice = createSlice({
@@ -172,10 +180,22 @@ export const chatSlice = createSlice({
     },
     setAuthenticated: (state, { payload}: PayloadAction<boolean>) => {
       state.isAuthenticated = payload;
+    },
+    setSearchMatches: (state, { payload }: PayloadAction<MessageProp[]>) => {
+      state.searchMatches = payload;
+    },
+    setMessageSearchMode: (state, { payload }: PayloadAction<boolean>) => {
+      state.messageSearchMode = payload;
+    },
+    setMessageSearchText: (state, { payload }: PayloadAction<string>) => {
+      state.messageSearchText = payload;
+    },
+    setCurrentSearchedMessageIndex: (state, { payload }: PayloadAction<number>) => {
+      state.currentSearchedMessageIndex = payload;
     }
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

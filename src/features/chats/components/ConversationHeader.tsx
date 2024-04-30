@@ -1,12 +1,14 @@
-import { HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineTrash, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
+import { HiOutlineArrowDown, HiOutlineArrowUp, HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineTrash, HiOutlineUser, HiOutlineVideoCamera } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { callProp, displayCoversation, selectChat, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
+import { callProp, displayCoversation, selectChat, setCurrentSearchedMessageIndex, setMessageSearchMode, setMessageSearchText, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setSearchMatches, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 import ContextMenu from "../../../context/ContextMenu";
-import { useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { HiArrowCircleDown, HiArrowCircleUp } from "react-icons/hi";
 const ConversationHeader = () => {
-  const [search, setSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchText, setSearchText] = useState('');
   const searchRef = useRef<HTMLFormElement>(null);
-  const { receiver, onlineUsers, socket } = useAppSelector(selectChat);
+  const { receiver, onlineUsers, socket, conversationMessages, searchMatches, currentSearchedMessageIndex } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
   const dispatch  = useAppDispatch();
   const handleVoiceCall  = () => {
@@ -25,25 +27,54 @@ const ConversationHeader = () => {
     dispatch(displayCoversation(false));
     dispatch(setReceiver(null));
   }
-  const showSearch = () => {
-    setSearch(true);
+  const showSearchForm = () => {
+    setShowSearch(true);
+    dispatch(setMessageSearchMode(true));
   }
 
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    const matches = conversationMessages.filter((msg) => msg.content.toLowerCase().includes(searchText.toLowerCase()));
+    dispatch(setMessageSearchText(searchText))
+    dispatch(setSearchMatches(matches))
+  }
+  const navigateSearchDownward = () => {
+    if (searchMatches.length - 1 > currentSearchedMessageIndex) {
+      dispatch(setCurrentSearchedMessageIndex(currentSearchedMessageIndex + 1));
+    }
+  }
+  const navigateSearchUpward = () => {
+    if (currentSearchedMessageIndex > 0) {
+      dispatch(setCurrentSearchedMessageIndex(currentSearchedMessageIndex - 1));
+    }
+  }
   useEffect(() => {
     const closeSearch = (e: MouseEvent) => {      
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setSearch(false);
+        setShowSearch(false);
+        dispatch(setMessageSearchMode(false));
+
       }
     }
     document.addEventListener('click', closeSearch, true);
     return () => {
       document.removeEventListener('click', closeSearch, true)
     }
-  }, [])
+  }, [dispatch])
+  const disableDownButtonSearchedMessagesNavigator = searchMatches.length - 1 === currentSearchedMessageIndex;
+
   return (
     <div className="flex justify-between bg-white px-3 py-3 border-b relative w-full">
-      { search &&  <form ref={searchRef} className="absolute rounded-lg bg-white z-10 p-2 left-[50%] top-[50px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)]">
-        <input type="text" className=" bg-bg-silver p-2 w-full outline-none text-sm" placeholder="Search..." />
+      { showSearch &&  <form onSubmit={handleSearch} ref={searchRef} className="absolute rounded-lg bg-white z-10 p-2 left-[50%] top-[20px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex  gap-3">
+        <input type="text" className=" bg-bg-silver p-2 w-full outline-none text-sm" placeholder="Search..." value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+        <div className=" flex items-center gap-3">
+          <button onClick={navigateSearchDownward} disabled={disableDownButtonSearchedMessagesNavigator}>
+            <HiOutlineArrowDown className={`text-sm `}  />
+          </button>
+          <button onClick={navigateSearchUpward} disabled={currentSearchedMessageIndex === 0}>
+            <HiOutlineArrowUp className="text-sm" />
+          </button>
+        </div>
       </form> }
      <section className="flex items-center gap-2">
       <button className="sm:hidden" onClick={handleCloseConversation}>
@@ -56,7 +87,7 @@ const ConversationHeader = () => {
 
      <ul className="flex items-center px-3">
       <li className=" hidden md:block mr-10">
-        <button onClick={showSearch}>
+        <button onClick={() => setShowSearch(true)}>
           <HiOutlineMagnifyingGlass className="text-xl" />
         </button>
         </li>
@@ -93,7 +124,7 @@ const ConversationHeader = () => {
               <button className="w-full text-left pl-3">Delete</button>
               <HiOutlineTrash className="text-xl" />
             </li>
-            <li className="flex hover:bg-bg-silver items-center gap-3 p-3" onClick={showSearch}>
+            <li className="flex hover:bg-bg-silver items-center gap-3 p-3" onClick={() => setShowSearch(true)}>
               <button className="w-full text-left pl-3">Search Messages</button>
                 <HiOutlineMagnifyingGlass className="text-xl" />
             </li>
