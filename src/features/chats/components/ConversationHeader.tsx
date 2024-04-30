@@ -34,6 +34,8 @@ const ConversationHeader = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+    dispatch(setSearchMatches([]))
+    dispatch(setCurrentSearchedMessageIndex(0));
     const matches = conversationMessages.filter((msg) => msg.content.toLowerCase().includes(searchText.toLowerCase()));
     dispatch(setMessageSearchText(searchText))
     dispatch(setSearchMatches(matches))

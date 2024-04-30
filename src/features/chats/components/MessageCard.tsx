@@ -41,7 +41,8 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
     scrollToBottom();
   }, [messages]);
   useEffect(() => {
-    const messagesId = searchMatches.map((msg) =>  msg.id);    
+    if (searchMatches.length) {
+      const messagesId = searchMatches.map((msg) =>  msg.id);    
     messages.forEach((msg) => {
       if (messagesId.includes(msg.id)) {
         const elem = document.querySelector(`[data-id='${msg.id}']`) as Element
@@ -52,23 +53,10 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
             txt.classList.add('search--text');
           }
         });
-
-        // let messageIndex = 0;
-        // text.forEach((txt) => {
-        //   const txtContent = txt.textContent?.toLowerCase() as string;
-        //   for (let i = 0; i < txtContent.length; i++) {
-        //     const txtChar = txtContent[i];
-        //     if (txtChar === messageSearchText[messageIndex]?.toLowerCase()) {
-        //       txt.classList.add('search--text');
-        //       messageIndex++;              
-        //       if (messageIndex === messageSearchText.length) {
-        //         break;
-        //       }
-        //     }
-        //   }
-        // });
       }
-    })
+    })  
+    }
+    
   }, [searchMatches, messages, messageSearchText])
 
 

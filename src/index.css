@@ -7,12 +7,9 @@
 .conversation {
   width: 100%;
 }
-.half--conversation {
-
-}
 
 .search--text {
-  color: #EF4669;
+  background-color: #EF4669;
 }
 
 @media (min-width: 648px) {
