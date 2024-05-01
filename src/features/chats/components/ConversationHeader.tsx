@@ -58,6 +58,8 @@ const ConversationHeader = () => {
   }
 
   const disableDownButtonSearchedMessagesNavigator = searchMatches.length - 1 === currentSearchedMessageIndex;
+  console.log(showSearch);
+  
 
   return (
     <div className="flex justify-between bg-white px-3 py-3 border-b relative w-full">
