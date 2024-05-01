@@ -1,9 +1,8 @@
 import { HiOutlineArrowDown, HiOutlineArrowUp, HiOutlineChevronLeft, HiOutlineEllipsisHorizontal, HiOutlineMagnifyingGlass, HiOutlinePhone, HiOutlineTrash, HiOutlineUser, HiOutlineVideoCamera, HiOutlineXMark } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { callProp, displayCoversation, selectChat, setCurrentSearchedMessageIndex, setMessageSearchMode, setMessageSearchText, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setSearchMatches, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
+import { callProp, displayCoversation, selectChat, setCurrentSearchedMessageIndex, setMessageSearchText, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setSearchMatches, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 import ContextMenu from "../../../context/ContextMenu";
-import { FormEvent, useEffect, useRef, useState } from "react";
-import { HiArrowCircleDown, HiArrowCircleUp } from "react-icons/hi";
+import { FormEvent, useRef, useState } from "react";
 const ConversationHeader = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState('');

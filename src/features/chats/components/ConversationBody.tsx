@@ -12,7 +12,7 @@ const ConversationBody = () => {
   const queryClient = useQueryClient();
 
   const { isGettingUser } = useCurrentUser();
-  const { receiver, socket, conversationMessages, searchMatches, messageSearchMode } = useAppSelector(selectChat);
+  const { receiver, socket, conversationMessages } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
       
   useEffect(() => {
