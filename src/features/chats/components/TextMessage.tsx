@@ -14,9 +14,9 @@ const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) 
   return (
     <div className={`${isSender ?  'mr-[3.2rem] bg-bg-silver'  : `bg-[#1C9DEA]  ml-[3.2rem] text-white`} px-1 py-3 flex flex-col gap-2 relative w-full rounded-md`}>
     <p className='text-sm wrap-text flex gap-1 mb-2 w-full overflow-hidden'>{
-      contentArr.map((letter) => {
+      contentArr.map((letter, index) => {
         return (
-          <span className='letter'>{letter}</span>
+          <span className='letter' key={index}>{letter}</span>
         )
       })
     }</p>

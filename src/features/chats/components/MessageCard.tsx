@@ -40,9 +40,13 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
     };
     scrollToBottom();
   }, [messages]);
-  useEffect(() => {
+  useEffect(() => {    
     if (searchMatches.length) {
-      const messagesId = searchMatches.map((msg) =>  msg.id);    
+      const messagesId = searchMatches.map((msg) =>  msg.id);
+      const text = Array.from(document.querySelectorAll('.letter'));  
+      text.forEach((txt) => {
+        txt.classList.remove('search--text');
+      })  
     messages.forEach((msg) => {
       if (messagesId.includes(msg.id)) {
         const elem = document.querySelector(`[data-id='${msg.id}']`) as Element
