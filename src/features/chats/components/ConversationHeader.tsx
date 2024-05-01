@@ -58,9 +58,7 @@ const ConversationHeader = () => {
   }
 
   const disableDownButtonSearchedMessagesNavigator = searchMatches.length - 1 === currentSearchedMessageIndex;
-  console.log(showSearch);
   
-
   return (
     <div className="flex justify-between bg-white px-3 py-3 border-b relative w-full">
       { showSearch &&  <form onSubmit={handleSearch} ref={searchRef} className="absolute rounded-lg bg-white z-10 p-2 left-[50%] top-[20px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex  gap-3">
