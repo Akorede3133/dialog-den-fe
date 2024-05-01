@@ -31,6 +31,8 @@ const ConversationHeader = () => {
   const hideSearchForm = () => {
     setShowSearch(false);
     setSearchText('');
+    dispatch(setSearchMatches([]))
+    dispatch(setCurrentSearchedMessageIndex(0));
     const text = Array.from(document.querySelectorAll('.letter'));  
     text.forEach((txt) => {
       txt.classList.remove('search--text');
@@ -69,7 +71,13 @@ const ConversationHeader = () => {
           <div className=" flex items-center gap-1">
             <button type="button" onClick={navigateSearchDownward} disabled={disableDownButtonSearchedMessagesNavigator}>
               <HiOutlineArrowDown className={`text-sm `}  />
-              </button>
+            </button>
+            { searchMatches.length ? <div className="text-[12px]">
+              <span>{currentSearchedMessageIndex + 1}</span>
+              <span>/</span>
+              <span>{searchMatches.length}</span>
+
+            </div> : null }
             <button type="button" onClick={navigateSearchUpward} disabled={currentSearchedMessageIndex === 0}>
               <HiOutlineArrowUp className="text-sm" />
             </button>
