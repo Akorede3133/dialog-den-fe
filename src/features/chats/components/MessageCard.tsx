@@ -73,8 +73,16 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
       firstElem.scrollIntoView({ behavior: 'smooth'});
     }
   }, [currentSearchedMessageIndex, searchMatches])
-        
 
+
+  const copyMessage = async (content: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+    } catch (error) {
+      if (error instanceof Error)
+      throw new Error(error.message)
+    }
+  }
 
   return (
     <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative overflow-hi`}>
@@ -86,8 +94,8 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
         </ContextMenu.Open>
         <ContextMenu.Window type="message-context">
           <ul className={`absolute ${isSender ? 'left-0' : 'right-0' } top-[-70px] bg-white shadow-lg rounded-md text-text-primary z-10 w-full  text-sm`}>
-            <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 w-full">
-              <button className="w-full text-left pl-3" >Copy</button>
+            <li className={`flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 w-full ${message.type !== 'text' && 'hidden'}`}>
+              <button className="w-full text-left pl-3" onClick={() => copyMessage(content)} >Copy</button>
             </li>
             <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3">
               <button className="w-full text-left pl-3" >Delete</button>
