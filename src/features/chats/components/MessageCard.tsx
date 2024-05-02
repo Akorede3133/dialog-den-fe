@@ -10,6 +10,7 @@ import { selectChat } from "../redux/chatSlice";
 import { HiOutlineEllipsisVertical, HiOutlineTrash } from "react-icons/hi2";
 import ContextMenu from "../../../context/ContextMenu";
 import { HiOutlineClipboardCopy } from "react-icons/hi";
+import useDeleteMessage from "../hooks/useDeleteMessage";
 
 export type MessageProp = {
   id?: number;
@@ -36,6 +37,7 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
   const isSender = senderId === user?.id;
   const issenderImageCard = isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) ;
   const isReceiverImageCard = !isSender && (!messages[index - 1 ] || messages[index - 1]?.senderId == user?.id );
+  const { deleteMsg, isDeletingMsg } = useDeleteMessage();
 
   useEffect(() => {    
     const scrollToBottom = () => {
@@ -84,10 +86,6 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
     }
   }
 
-  const deleteMessage = () => {
-    
-  }
-
   return (
     <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative overflow-hi`}>
       <ContextMenu>
@@ -102,7 +100,7 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
               <button className="w-full text-left pl-3" onClick={() => copyMessage(content)} >Copy</button>
             </li>
             <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3">
-              <button className="w-full text-left pl-3" >Delete</button>
+              <button className="w-full text-left pl-3"  onClick={() => deleteMsg(id as number)}>Delete</button>
             </li>
           </ul>
         </ContextMenu.Window>
