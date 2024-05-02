@@ -84,6 +84,10 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
     }
   }
 
+  const deleteMessage = () => {
+    
+  }
+
   return (
     <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative overflow-hi`}>
       <ContextMenu>
