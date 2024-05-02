@@ -7,6 +7,9 @@ import TextMessage from "./TextMessage";
 import VoicePlayer from "./VoicePlayer";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectChat } from "../redux/chatSlice";
+import { HiOutlineEllipsisVertical, HiOutlineTrash } from "react-icons/hi2";
+import ContextMenu from "../../../context/ContextMenu";
+import { HiOutlineClipboardCopy } from "react-icons/hi";
 
 export type MessageProp = {
   id?: number;
@@ -74,12 +77,32 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
 
 
   return (
-    <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex flex-col max-w-[60%]`}>
-      { issenderImageCard && <SenderImageCard user={user} /> }
-      { isReceiverImageCard && <ReceiverImageCard /> }
-      { message.type === 'text' && <TextMessage isSender={isSender} content={content} createdAt={createdAt} status={status} /> }
-      { message.type === 'image' && <ImageMessage content={content} isSender={isSender} status={status} /> }
-      { message.type === 'voice' && <VoicePlayer content={content} isSender={isSender} status={status}  /> }
+    <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative overflow-hi`}>
+      <ContextMenu>
+        <ContextMenu.Open type="message-context">
+          <button className={` ${isSender ? 'order-1': 'order-2'} ${(isReceiverImageCard || issenderImageCard) && 'self-end mb-5'}`}>
+            <HiOutlineEllipsisVertical />
+          </button>
+        </ContextMenu.Open>
+        <ContextMenu.Window type="message-context">
+          <ul className={`absolute ${isSender ? 'left-0' : 'right-0' } top-[-70px] bg-white shadow-lg rounded-md text-text-primary z-10 w-full  text-sm`}>
+            <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 w-full">
+              <button className="w-full text-left pl-3" >Copy</button>
+            </li>
+            <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3">
+              <button className="w-full text-left pl-3" >Delete</button>
+            </li>
+          </ul>
+        </ContextMenu.Window>
+      </ContextMenu>
+     
+      <div className={`flex flex-col ${isSender ? 'order-2' : 'order-1'}`}>
+        { issenderImageCard && <SenderImageCard user={user} /> }
+        { isReceiverImageCard && <ReceiverImageCard /> }
+        { message.type === 'text' && <TextMessage isSender={isSender} content={content} createdAt={createdAt} status={status} /> }
+        { message.type === 'image' && <ImageMessage content={content} isSender={isSender} status={status} /> }
+        { message.type === 'voice' && <VoicePlayer content={content} isSender={isSender} status={status}  /> }
+      </div>
     </li>
   )
 }

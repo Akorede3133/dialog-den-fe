@@ -12,11 +12,11 @@ const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) 
   const contentArr = content.trim().split(' ');
     
   return (
-    <div className={`${isSender ?  'mr-[3.2rem] bg-bg-silver'  : `bg-[#1C9DEA]  ml-[3.2rem] text-white`} px-1 py-3 flex flex-col gap-2 relative w-full rounded-md`}>
-    <p className='text-sm wrap-text flex gap-1 mb-2 w-full overflow-hidden'>{
+    <div className={`${isSender ?  ' bg-bg-silver'  : `bg-[#1C9DEA] text-white`} px-2 py-3 flex flex-col gap-2 relative min-w-[70px] max-w-[200px] rounded-md`}>
+    <p className='text-sm flex flex-wrap gap-1 mb-2 overflow-hidde '>{
       contentArr.map((letter, index) => {
         return (
-          <span className='letter' key={index}>{letter}</span>
+          <span className='letter wrap-text' key={index}>{letter}</span>
         )
       })
     }</p>
@@ -28,9 +28,6 @@ const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) 
             { status === 'delivered' && <BsCheck2All /> }
             { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
             { status === 'sending' && <HiOutlineClock className='' /> }
-
-
-
           </div> 
       }
     </div>
