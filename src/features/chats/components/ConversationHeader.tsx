@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { callProp, displayCoversation, selectChat, setCurrentSearchedMessageIndex, setMessageSearchText, setOutGoingVideoCall, setOutGoingVoiceCall, setReceiver, setSearchMatches, setShowOtherUserProfile, setVideoCall, setVoiceCall } from "../redux/chatSlice";
 import ContextMenu from "../../../context/ContextMenu";
 import { FormEvent, useRef, useState } from "react";
+import useDeleteConversation from "../hooks/useDeleteConversation";
 const ConversationHeader = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -10,6 +11,7 @@ const ConversationHeader = () => {
   const { receiver, onlineUsers, socket, conversationMessages, searchMatches, currentSearchedMessageIndex } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
   const dispatch  = useAppDispatch();
+  const { deleteConvo, isDeletingCovo } = useDeleteConversation();
   const handleVoiceCall  = () => {
     dispatch(setVoiceCall(true));
     dispatch(setOutGoingVoiceCall(receiver as callProp))
@@ -55,6 +57,7 @@ const ConversationHeader = () => {
     if (currentSearchedMessageIndex > 0) {
       dispatch(setCurrentSearchedMessageIndex(currentSearchedMessageIndex - 1));
     }
+
   }
 
   const disableDownButtonSearchedMessagesNavigator = searchMatches.length - 1 === currentSearchedMessageIndex;
@@ -127,7 +130,7 @@ const ConversationHeader = () => {
               <button className="w-full text-left pl-3" >View Profile</button>
               <HiOutlineUser className="text-xl" />
             </li>
-            <li className="flex hover:bg-bg-silver items-center gap-3 p-3">
+            <li className="flex hover:bg-bg-silver items-center gap-3 p-3" onClick={() => deleteConvo(receiver?.id as number)}>
               <button className="w-full text-left pl-3">Delete</button>
               <HiOutlineTrash className="text-xl" />
             </li>
