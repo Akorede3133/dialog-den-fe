@@ -28,6 +28,7 @@ export type ChatProp =  {
   createdAt: string;
   updatedAt: string;
   user: MessageSenderProp & MessageReceiverProp;
+  count: number;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const [totalDuration, setTotalDuration] = useState
@@ -37,7 +38,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   
   const waveFormRef = useRef<HTMLDivElement>(null)
   
-  const { content, type, user, createdAt } = chat;
+  const { content, type, user, createdAt, count } = chat;
   const dispatch = useAppDispatch();
 
   // const { receiverId, receiverUsername, receiverEmail, receiverPhoto, senderId, senderUsername, senderEmail, senderPhoto } = user;
@@ -105,8 +106,10 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
         </div>
       </section>
       <div ref={waveFormRef} hidden></div>
-
-      <span className="text-[12px] text-text-gray">{formatTime(createdAt)}</span>
+      <div className='flex flex-col items-center gap-1'>
+        <span className="text-[12px] text-text-gray">{formatTime(createdAt)}</span>
+        { count ? <span className='text-sm text-message-count-text bg-red-200 w-[20px] h-[20px] rounded-full text-center'>{count}</span> : null }
+      </div>
     </li>
   )
 }

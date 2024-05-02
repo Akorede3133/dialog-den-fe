@@ -87,10 +87,10 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
   }
 
   return (
-    <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative overflow-hi`}>
+    <li  ref={ref} key={id} data-id={id} className={`${isSender ? 'self-end' : 'self-start'} flex items-center gap-1 relative`}>
       <ContextMenu>
         <ContextMenu.Open type="message-context">
-          <button className={` ${isSender ? 'order-1': 'order-2'} ${(isReceiverImageCard || issenderImageCard) && 'self-end mb-5'}`}>
+          <button className={` ${isSender ? 'order-1': 'order-2'} ${(isReceiverImageCard || issenderImageCard) && 'self-end mb-5'} self-start`}>
             <HiOutlineEllipsisVertical />
           </button>
         </ContextMenu.Open>

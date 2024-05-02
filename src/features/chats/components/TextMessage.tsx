@@ -20,7 +20,7 @@ const TextMessage = ({ isSender, content, createdAt, status }: TextMessageProp) 
         )
       })
     }</p>
-    <div className='flex gap-1 items-center absolute bottom-[1%] right-[5%]'>
+    <div className='flex gap-1 items-center absolute bottom-0 right-[5%]'>
       <span className={`text-[10px] ${isSender ?' text-text-primary' : 'text-gray-300'}`}>{formatTime(createdAt)}</span>
       { isSender && 
           <div className=''>

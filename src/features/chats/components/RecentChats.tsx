@@ -3,6 +3,7 @@ import RecentChatCard, { ChatProp } from "./RecentChatCard"
 
 const RecentChats = () => {
   const { chats, isGettingChats, error } = useGetRecentChats();    
+  console.log(chats);
   
   if (isGettingChats) {
     return <p>Loading...</p>
