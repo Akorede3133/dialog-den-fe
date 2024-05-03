@@ -34,6 +34,10 @@ const socketListener = (socket: Socket, dispatch: AppDispatch) => {
   socket.on('updatedOfferWithIceCandiadates', async ({candidate}) => {   
     dispatch(addPeerIce(candidate))
   });
+  socket.on('recentChat', (newChat) => {
+    console.log(newChat);
+    // dispatch()
+  });
 }
 
 export default socketListener;

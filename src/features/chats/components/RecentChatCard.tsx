@@ -29,6 +29,7 @@ export type ChatProp =  {
   updatedAt: string;
   user: MessageSenderProp & MessageReceiverProp;
   count: number;
+  status: string;
 };
 const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const [totalDuration, setTotalDuration] = useState
