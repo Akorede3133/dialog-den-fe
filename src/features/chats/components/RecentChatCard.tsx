@@ -2,7 +2,7 @@ import { FaMicrophone } from 'react-icons/fa6';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
-import { displayCoversation, selectChat, setReceiver } from '../redux/chatSlice';
+import { displayCoversation, selectChat, setReceiver, setRecentChats } from '../redux/chatSlice';
 import { HiPhoto } from 'react-icons/hi2';
 import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
@@ -42,7 +42,6 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   const { content, type, user, createdAt, count } = chat;
   const dispatch = useAppDispatch();
 
-  // const { receiverId, receiverUsername, receiverEmail, receiverPhoto, senderId, senderUsername, senderEmail, senderPhoto } = user;
 
     
   const isUserOnline = onlineUsers.includes(user?.receiverId as number || user?.senderId as number);
@@ -54,10 +53,11 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     photo: user?.senderPhoto || user?.receiverPhoto,
   } as UserProp;
   
-  const handleSelectChat = () => {
+  const handleSelectChat = () => {    
     dispatch(setReceiver(convo));
     dispatch(displayCoversation(true));
   }
+
 
   useEffect(() => {
     if (waveForm) {

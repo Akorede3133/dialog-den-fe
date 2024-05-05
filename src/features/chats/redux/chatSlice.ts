@@ -28,7 +28,7 @@ export type offerObjProp = {
   answererIceCandiates: RTCIceCandidate[],
 }
 
-type ChatStateProp = {
+export type ChatStateProp = {
   socket: Socket;
   onlineUsers: number[];
   isAuthenticated: boolean;

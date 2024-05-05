@@ -1,10 +1,11 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
-import { selectChat, setConversationMessages } from '../redux/chatSlice';
+import { selectChat, setConversationMessages, setRecentChats } from '../redux/chatSlice';
 import { useEffect } from 'react';
 import MessageCard, { MessageProp } from './MessageCard';
 import { useQueryClient } from '@tanstack/react-query';
+import useGetRecentChats from '../hooks/useGetRecentChats';
 
 
 const ConversationBody = () => {
@@ -14,12 +15,34 @@ const ConversationBody = () => {
   const { isGettingUser } = useCurrentUser();
   const { receiver, socket, conversationMessages } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
+  const { chats } = useGetRecentChats();
       
   useEffect(() => {
     if (messages) {
       dispatch(setConversationMessages(messages))
     }
   }, [messages, dispatch])
+
+  useEffect(() => {
+    if (chats) {
+      const updatedRecentChat = chats.map((chat) => {
+        const newChat = { ...chat };
+    
+        if (newChat.user.senderId === receiver?.id) {
+          return { ...newChat, count: 0 };
+        }
+        return newChat;
+      });    
+      dispatch(setRecentChats(updatedRecentChat));
+    }
+  }, [dispatch, chats, receiver?.id]);
+  
+
+  useEffect(() => {
+    if(messages) {
+      socket.emit('updateReadStatus', { receiverId: receiver?.id, messages })
+    }
+  }, [messages, receiver?.id, socket])
 
   useEffect(() => {    
     const handleMessage = (message: MessageProp) => {
