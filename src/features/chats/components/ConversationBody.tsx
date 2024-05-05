@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
-import { selectChat, setConversationMessages, setRecentChats } from '../redux/chatSlice';
+import { selectChat, setConversationMessages, setNewMessagesState, setRecentChats } from '../redux/chatSlice';
 import { useEffect } from 'react';
 import MessageCard, { MessageProp } from './MessageCard';
 import { useQueryClient } from '@tanstack/react-query';
@@ -13,7 +13,7 @@ const ConversationBody = () => {
   const queryClient = useQueryClient();
 
   const { isGettingUser } = useCurrentUser();
-  const { receiver, socket, conversationMessages } = useAppSelector(selectChat);
+  const { receiver, socket, conversationMessages, newMessages } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
   const { chats } = useGetRecentChats();
       
@@ -39,10 +39,11 @@ const ConversationBody = () => {
   
 
   useEffect(() => {
-    if(messages) {
-      socket.emit('updateReadStatus', { receiverId: receiver?.id, messages })
+    if(conversationMessages && newMessages) {
+      queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })      
+      socket.emit('updateReadStatus', { receiverId: receiver?.id, messages: conversationMessages })
     }
-  }, [messages, receiver?.id, socket])
+  }, [conversationMessages, receiver?.id, socket, newMessages, queryClient])
 
   useEffect(() => {    
     const handleMessage = (message: MessageProp) => {
@@ -56,6 +57,19 @@ const ConversationBody = () => {
       socket.off('getMessage', handleMessage);
     }
   }, [socket, dispatch, conversationMessages, queryClient])
+
+  useEffect(() => {
+    socket.on('updateReadStatus', ({ messages }) => {
+      const updatedConvoMessages = [...messages].map((msg) => {
+        if (msg.status !== 'read') {
+          msg.status = 'read';
+        }
+        return msg;
+      })
+      dispatch(setConversationMessages(updatedConvoMessages))
+      dispatch(setNewMessagesState(false));
+    })
+  }, [socket, dispatch])
  
   
   if (isPending || isGettingUser) {

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useGetRecentChats from "../hooks/useGetRecentChats"
 import RecentChatCard, { ChatProp } from "./RecentChatCard"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { selectChat, setRecentChats } from "../redux/chatSlice";
+import { selectChat, setNewMessagesState, setRecentChats } from "../redux/chatSlice";
 
 const RecentChats = () => {
   const { chats, isGettingChats, error } = useGetRecentChats();    
@@ -21,6 +21,7 @@ const RecentChats = () => {
       const targetChat = recentChats.find((chat) => (chat.user.senderId === newChat.user.senderId) || (chat.user.receiverId === newChat.user.senderId));
       obj.count = targetChat?.count as number + 1;
       dispatch(setRecentChats([obj, ...updatedChat]))
+      dispatch(setNewMessagesState(true)); // Indicate that the receiving  user has new set of messages from another user.
     });
   }, [socket, recentChats, dispatch])
   

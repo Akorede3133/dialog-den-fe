@@ -21,12 +21,12 @@ export type MessageReceiverProp = {
   receiverPhoto: string;
 }
 export type ChatProp =  {
-  messageId: number;
+  messageId?: number;
   content: string;
-  id: number;
+  id?: number;
   type: string;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
   user: MessageSenderProp & MessageReceiverProp;
   count: number;
   status: string;
