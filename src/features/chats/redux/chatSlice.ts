@@ -6,7 +6,7 @@ import { MessageProp } from "../components/MessageCard";
 import { ChatProp } from "../components/RecentChatCard";
 
 
-type ReceiverProp = {
+export type ReceiverProp = {
   id: number;
   username: string;
   email: string;

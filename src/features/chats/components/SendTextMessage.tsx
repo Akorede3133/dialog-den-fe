@@ -1,7 +1,7 @@
 import { HiOutlineEmojiHappy } from "react-icons/hi"
 import { HiOutlineMicrophone, HiOutlinePhoto, HiPaperAirplane } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
-import { selectChat, setConversationMessages, setRecentChats } from "../redux/chatSlice"
+import { ReceiverProp, selectChat, setConversationMessages, setRecentChats } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useEffect, useRef, useState } from "react"
 import useSendImage from "../hooks/useSendImage"
@@ -10,6 +10,7 @@ import Picker from "emoji-picker-react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import { MessageProp } from "./MessageCard"
 import { ChatProp, MessageReceiverProp, MessageSenderProp } from "./RecentChatCard"
+import { UserProp } from "../../contacts/components/ContactCard"
 
 type TextMessageProps = {
   showRecorder: () => void
@@ -21,7 +22,7 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { user } = useCurrentUser();
   const queryClient = useQueryClient();
   const emojiRef = useRef<HTMLDivElement>(null)
-  const { send, isSending } = useSendMessage();
+  const { send, isSending } = useSendMessage(user as UserProp, receiver as ReceiverProp);
   const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
  
@@ -89,28 +90,9 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
       dispatch(setRecentChats([newChat, ...updatedChats]))
     }    
     if (receiver) {
-      send({ data, receiverId: receiver?.id }, {
-        onSuccess: () => {
-          const newChat: ChatProp = {
-            content: message,
-            count: 0,
-            type: 'text',
-            status: 'sent',
-            createdAt: new Date().toISOString(),
-            user: {
-              senderId: user?.id as number,
-              senderEmail: user?.email as string,
-              senderPhoto: user?.photo as string,
-              senderUsername: user?.username as string,
-            } as MessageReceiverProp & MessageSenderProp
-          } 
-          socket.emit('recentChat', { newChat, receiverId: receiver.id } );
-          queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
-          queryClient.invalidateQueries({queryKey: ['recentChats']});
-        }
-      });
-      setMessage('');
+      send({ data, receiverId: receiver?.id });
     }
+    setMessage('')
   }
 
 

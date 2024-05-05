@@ -15,7 +15,7 @@ const RecentChats = () => {
   }, [chats, dispatch, isGettingChats])
 
   useEffect(() => {
-    socket.on('recentChat', (newChat) => {
+    socket.on('recentChat', (newChat) => {      
       const obj = {...newChat};      
       const updatedChat = recentChats.filter((chat) => (chat.user.senderId !== newChat.user.senderId) && (chat.user.receiverId !== newChat.user.senderId));
       const targetChat = recentChats.find((chat) => (chat.user.senderId === newChat.user.senderId) || (chat.user.receiverId === newChat.user.senderId));

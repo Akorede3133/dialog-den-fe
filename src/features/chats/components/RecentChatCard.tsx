@@ -2,11 +2,12 @@ import { FaMicrophone } from 'react-icons/fa6';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { formatTime } from '../../../utils/dateTime';
 import { UserProp } from '../../contacts/components/ContactCard';
-import { displayCoversation, selectChat, setReceiver, setRecentChats } from '../redux/chatSlice';
-import { HiPhoto } from 'react-icons/hi2';
+import { displayCoversation, selectChat, setReceiver } from '../redux/chatSlice';
+import { HiOutlineClock, HiPhoto } from 'react-icons/hi2';
 import { useEffect, useRef, useState } from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import formatDuration from '../../../utils/formatDuration';
+import { BsCheck2, BsCheck2All } from 'react-icons/bs';
 
 export type MessageSenderProp = {
   senderId: number;
@@ -31,7 +32,8 @@ export type ChatProp =  {
   count: number;
   status: string;
 };
-const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
+const RecentChatCard = ({ chat }: { chat: ChatProp }) => {  
+  
   const [totalDuration, setTotalDuration] = useState
   (0);
   const {onlineUsers} = useAppSelector(selectChat)  
@@ -39,7 +41,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
   
   const waveFormRef = useRef<HTMLDivElement>(null)
   
-  const { content, type, user, createdAt, count } = chat;
+  const { content, type, user, createdAt, count,status } = chat;
   const dispatch = useAppDispatch();
 
 
@@ -83,7 +85,14 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
         </div>
         <div className="flex flex-col">
           <span>{user?.senderUsername || user?. receiverUsername}</span>
-          {
+          <div className='flex items-center gap-1'>
+          { user.receiverId &&  <div className=''>
+            { status === 'sent' && <BsCheck2 /> }
+            { status === 'delivered' && <BsCheck2All /> }
+            { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
+            { status === 'sending' && <HiOutlineClock className='' /> }
+          </div>  }
+            {
             type === 'text' && <span className="text-sm text-text-gray line-clamp-2">{content.length > 50 ?content.replace(/\n/g, '').slice(0, 35) +'...' : content}</span>
           }
 
@@ -93,8 +102,9 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
               <HiPhoto className=' text-text-gray' />
             </div>
           }
-            {
-            type === 'voice' && <div className=' flex items-center gap-3'>
+          {
+            type === 'voice' && 
+            <div className=' flex items-center gap-3'>
               <span className='text-sm'>
                 <FaMicrophone className=' text-text-gray text-[0.7rem]' />
               </span>
@@ -103,6 +113,8 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
               </p>
             </div>
           }
+          </div>
+         
          
         </div>
       </section>

@@ -13,7 +13,7 @@ const ConversationBody = () => {
   const queryClient = useQueryClient();
 
   const { isGettingUser } = useCurrentUser();
-  const { receiver, socket, conversationMessages, newMessages } = useAppSelector(selectChat);
+  const { receiver, socket, conversationMessages, newMessages, recentChats } = useAppSelector(selectChat);
   const { messages, isPending, error } = useGetMessages(receiver?.id as number);
   const { chats } = useGetRecentChats();
       
@@ -67,9 +67,18 @@ const ConversationBody = () => {
         return msg;
       })
       dispatch(setConversationMessages(updatedConvoMessages))
+      const chat = recentChats.map((chat) => {
+        const chatCopy = { ...chat };
+        if (chatCopy.user.receiverId === receiver?.id) {
+          return { ...chatCopy, status: 'read' };
+        }
+        return chatCopy
+      });
+      dispatch(setRecentChats(chat))
+      queryClient.invalidateQueries({queryKey: ['recentChats']})
       dispatch(setNewMessagesState(false));
     })
-  }, [socket, dispatch])
+  }, [socket, dispatch, queryClient, recentChats, receiver?.id])
  
   
   if (isPending || isGettingUser) {
