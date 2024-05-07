@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { addAnswer, addPeerIce, offerObjProp, setConversationMessages, setIncomingVideoCall, setIncomingVoiceCall, setOfferObj, setOnGoingCall, setOnlineUsers, turnOffCalls } from "../redux/chatSlice";
+import { addAnswer, addPeerIce, offerObjProp, setIncomingVideoCall, setIncomingVoiceCall, setOfferObj, setOnGoingCall, setOnlineUsers, turnOffCalls } from "../redux/chatSlice";
 import { AppDispatch } from "../../../redux/store";
 
 const socketListener = (socket: Socket, dispatch: AppDispatch) => {
@@ -35,15 +35,6 @@ const socketListener = (socket: Socket, dispatch: AppDispatch) => {
   socket.on('updatedOfferWithIceCandiadates', async ({candidate}) => {   
     dispatch(addPeerIce(candidate))
   }); 
-  // socket.on('updateReadStatus', ({ messages }) => {
-  //   const updatedConvoMessages = [...messages].map((msg) => {
-  //     if (msg.status !== 'read') {
-  //       msg.status = 'read';
-  //     }
-  //     return msg;
-  //   })
-  //   dispatch(setConversationMessages(updatedConvoMessages))
-  // })
 }
 
 export default socketListener;

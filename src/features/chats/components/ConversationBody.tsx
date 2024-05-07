@@ -39,8 +39,8 @@ const ConversationBody = () => {
   
 
   useEffect(() => {
-    if(conversationMessages && newMessages) {
-      queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })      
+    if(conversationMessages.length && newMessages) {
+      queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })            
       socket.emit('updateReadStatus', { receiverId: receiver?.id, messages: conversationMessages })
     }
   }, [conversationMessages, receiver?.id, socket, newMessages, queryClient])
@@ -60,7 +60,7 @@ const ConversationBody = () => {
 
   useEffect(() => {
     socket.on('updateReadStatus', ({ messages }) => {
-      const updatedConvoMessages = [...messages].map((msg) => {
+      const updatedConvoMessages = [...messages].filter((message) => message.id).map((msg) => {
         if (msg.status !== 'read') {
           msg.status = 'read';
         }
@@ -78,7 +78,7 @@ const ConversationBody = () => {
       queryClient.invalidateQueries({queryKey: ['recentChats']})
       dispatch(setNewMessagesState(false));
     })
-  }, [socket, dispatch, queryClient, recentChats, receiver?.id])
+  }, [socket, dispatch, queryClient, receiver?.id, recentChats])
  
   
   if (isPending || isGettingUser) {
