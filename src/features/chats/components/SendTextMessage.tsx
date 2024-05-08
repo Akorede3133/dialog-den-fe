@@ -11,6 +11,7 @@ import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import { MessageProp } from "./MessageCard"
 import { ChatProp, MessageReceiverProp, MessageSenderProp } from "./RecentChatCard"
 import { UserProp } from "../../contacts/components/ContactCard"
+import updateChat from "../utils/updateChat"
 
 type TextMessageProps = {
   showRecorder: () => void
@@ -23,7 +24,7 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const queryClient = useQueryClient();
   const emojiRef = useRef<HTMLDivElement>(null)
   const { send, isSending } = useSendMessage(user as UserProp, receiver as ReceiverProp);
-  const { sendImageFile } = useSendImage();
+  const { sendImageFile } = useSendImage(user as UserProp, receiver as ReceiverProp);
   const [message, setMessage] = useState<string>('');
  
   const data: MessageProp = {
@@ -54,14 +55,10 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     };
     
     dispatch(setConversationMessages([...conversationMessages, imageData]));
+    updateChat({ recentChats, receiver, message: { type: 'image', content: url }, dispatch })
        
     if (receiver) {
-      sendImageFile({ file, receiverId: receiver?.id as number}, {
-        onSuccess: () => {
-          queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
-          queryClient.invalidateQueries({queryKey: ['recentChats']});
-        }
-      });
+      sendImageFile({ file, receiverId: receiver?.id as number});
     }
    
   }
@@ -69,33 +66,12 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const handleSend = () => {
     if (!message.trim()) return;
     dispatch(setConversationMessages([...conversationMessages, data]));
-    const chat = recentChats.find((chat) => (chat.user.receiverId || chat.user.senderId) === receiver?.id);
-   
-    const newChat: ChatProp = {
-      content: message,
-      type: 'text',
-      status: 'sending',
-      createdAt: new Date().toISOString(),
-      user: {
-        receiverId: receiver?.id as number,
-        receiverEmail: receiver?.email as string,
-        receiverPhoto: receiver?.photo as string,
-        receiverUsername: receiver?.username as string,
-      } as MessageReceiverProp & MessageSenderProp
-    } 
-    if (!chat) {
-      dispatch(setRecentChats([newChat, ...recentChats]))
-    } else {
-      const updatedChats = recentChats.filter((convo) => convo.id !== chat.id)
-      dispatch(setRecentChats([newChat, ...updatedChats]))
-    }    
+    updateChat({ recentChats, receiver, message: { type: 'text', content: message }, dispatch }) 
     if (receiver) {
       send({ data, receiverId: receiver?.id });
     }
     setMessage('')
   }
-
-
   const onEmojiClick = (emoji: { emoji: string }) => {    
     setMessage((prevMessage) => (
       `${prevMessage}${emoji.emoji}`

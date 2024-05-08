@@ -13,6 +13,7 @@ const sendImage = async (file: File, receiverId: number) => {
     if(!response.ok) {
       throw new Error(result.message);
     }
+    return result;
     
   } catch (error) {
     if (error instanceof Error) {

@@ -8,6 +8,7 @@ import { selectChat, setConversationMessages } from "../redux/chatSlice";
 import formatDuration from "../../../utils/formatDuration";
 import { MessageProp } from "./MessageCard";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import updateChat from "../utils/updateChat";
 
 
 type VoiceMessageProps = {
@@ -17,7 +18,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   const dispatch = useAppDispatch();
   const { sendVoiceFile, isSendingVoice } = useSendVoice();
   const { user } = useCurrentUser();
-  const { receiver, conversationMessages } = useAppSelector(selectChat);
+  const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
   const [isRecording, setIsRecording] = useState(false);
   const [isPlaying, setIsplaying] = useState(false);
   const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
@@ -159,6 +160,8 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
         createdAt: new Date().toISOString(),
       };
       dispatch(setConversationMessages([...conversationMessages, voiceData]))
+      updateChat({ recentChats, receiver, message: {content: url, type: 'voice' }, dispatch }) 
+
       setIsRecording(false);
       setCurrentTime(0);
       setRecordingDuration(0);
