@@ -1,5 +1,4 @@
 import { AppDispatch } from "../../../redux/store";
-import { MessageProp } from "../components/MessageCard";
 import { ChatProp, MessageReceiverProp, MessageSenderProp } from "../components/RecentChatCard";
 import { ReceiverProp, setRecentChats } from "../redux/chatSlice";
 type chatObjProp = {

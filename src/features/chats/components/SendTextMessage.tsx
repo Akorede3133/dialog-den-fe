@@ -1,16 +1,13 @@
 import { HiOutlineEmojiHappy } from "react-icons/hi"
 import { HiOutlineMicrophone, HiOutlinePhoto, HiPaperAirplane } from "react-icons/hi2"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
-import { ReceiverProp, selectChat, setConversationMessages, setRecentChats } from "../redux/chatSlice"
+import { selectChat, setConversationMessages } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useEffect, useRef, useState } from "react"
 import useSendImage from "../hooks/useSendImage"
-import { useQueryClient } from "@tanstack/react-query";
 import Picker from "emoji-picker-react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import { MessageProp } from "./MessageCard"
-import { ChatProp, MessageReceiverProp, MessageSenderProp } from "./RecentChatCard"
-import { UserProp } from "../../contacts/components/ContactCard"
 import updateChat from "../utils/updateChat"
 
 type TextMessageProps = {
@@ -19,12 +16,11 @@ type TextMessageProps = {
 const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const dispatch = useAppDispatch();
   const [showEmoji, setShowEmoji] = useState(false);
-  const { receiver, conversationMessages, recentChats, socket } = useAppSelector(selectChat);
+  const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
   const { user } = useCurrentUser();
-  const queryClient = useQueryClient();
   const emojiRef = useRef<HTMLDivElement>(null)
-  const { send, isSending } = useSendMessage(user as UserProp, receiver as ReceiverProp);
-  const { sendImageFile } = useSendImage(user as UserProp, receiver as ReceiverProp);
+  const { send, isSending } = useSendMessage();
+  const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
  
   const data: MessageProp = {

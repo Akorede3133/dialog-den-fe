@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import useCurrentUser from '../../auth/hooks/useCurrentUser';
 import useGetMessages from '../hooks/useGetMessages';
-import { selectChat, setConversationMessages, setHasUnreadMessagesState, setRecentChats } from '../redux/chatSlice';
+import { selectChat, setConversationMessages, setRecentChats } from '../redux/chatSlice';
 import { useEffect } from 'react';
 import MessageCard, { MessageProp } from './MessageCard';
 import { useQueryClient } from '@tanstack/react-query';

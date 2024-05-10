@@ -11,7 +11,7 @@ const ConversationHeader = () => {
   const { receiver, onlineUsers, socket, conversationMessages, searchMatches, currentSearchedMessageIndex } = useAppSelector(selectChat);
   const isOnline = onlineUsers.includes(receiver?.id as number)
   const dispatch  = useAppDispatch();
-  const { deleteConvo, isDeletingCovo } = useDeleteConversation();
+  const { deleteConvo } = useDeleteConversation();
   const handleVoiceCall  = () => {
     dispatch(setVoiceCall(true));
     dispatch(setOutGoingVoiceCall(receiver as callProp))

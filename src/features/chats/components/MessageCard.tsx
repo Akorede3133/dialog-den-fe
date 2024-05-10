@@ -7,9 +7,8 @@ import TextMessage from "./TextMessage";
 import VoicePlayer from "./VoicePlayer";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectChat } from "../redux/chatSlice";
-import { HiOutlineEllipsisVertical, HiOutlineTrash } from "react-icons/hi2";
+import { HiOutlineEllipsisVertical } from "react-icons/hi2";
 import ContextMenu from "../../../context/ContextMenu";
-import { HiOutlineClipboardCopy } from "react-icons/hi";
 import useDeleteMessage from "../hooks/useDeleteMessage";
 
 export type MessageProp = {
@@ -37,7 +36,7 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
   const isSender = senderId === user?.id;
   const issenderImageCard = isSender && (!messages[index - 1 ] || messages[index - 1]?.receiverId == user?.id ) ;
   const isReceiverImageCard = !isSender && (!messages[index - 1 ] || messages[index - 1]?.senderId == user?.id );
-  const { deleteMsg, isDeletingMsg } = useDeleteMessage();
+  const { deleteMsg } = useDeleteMessage();
 
   useEffect(() => {    
     const scrollToBottom = () => {

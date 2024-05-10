@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import useGetRecentChats from "../hooks/useGetRecentChats"
 import RecentChatCard, { ChatProp } from "./RecentChatCard"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { selectChat, setHasUnreadMessagesState, setRecentChats } from "../redux/chatSlice";
+import { selectChat, setRecentChats } from "../redux/chatSlice";
 
 const RecentChats = () => {
   const { chats, isGettingChats, error } = useGetRecentChats();    
-  const { recentChats, socket, hasUnreadMessages } = useAppSelector(selectChat);  
+  const { recentChats, socket } = useAppSelector(selectChat);  
   
   const dispatch = useAppDispatch();
   useEffect(() => {

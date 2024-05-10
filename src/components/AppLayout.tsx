@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectChat, setConversationMessages, setNewMessagesState } from '../features/chats/redux/chatSlice';
+import { selectChat, setConversationMessages } from '../features/chats/redux/chatSlice';
 import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
@@ -16,7 +16,7 @@ import OtherUserProfilePage from '../features/profile/components/OtherUserProfil
 import { useQueryClient } from '@tanstack/react-query';
 
 const AppLayout = () => {
-  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile, recentChats, conversationMessages } = useAppSelector(selectChat);
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile, conversationMessages } = useAppSelector(selectChat);
   const queryClient = useQueryClient();
 
   
@@ -28,9 +28,7 @@ const AppLayout = () => {
     if (user) {
       socket.emit('user', user)      
     }
-    socket.on('deliverMessage', (messageIds) => {
-      console.log(messageIds);
-      
+    socket.on('deliverMessage', (messageIds) => {      
       const updatedMessages = conversationMessages.map(message => (
         messageIds.includes(message.id) ? { ...message, status: 'delivered' } : message
       ));
