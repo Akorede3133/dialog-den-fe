@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 import NavBar from './NavBar';
 import Conversation from '../features/chats/components/Conversation';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { selectChat, setConversationMessages } from '../features/chats/redux/chatSlice';
+import { selectChat, setConversationMessages, setNewMessagesState } from '../features/chats/redux/chatSlice';
 import VoiceCall from '../features/chats/components/VoiceCall';
 import VideoCall from '../features/chats/components/VideoCall';
 import IncomingCallNotification from '../features/chats/components/IncomingCallNotification';
@@ -13,9 +13,11 @@ import socketListener from '../features/chats/utils/socketListener';
 import useCurrentUser from '../features/auth/hooks/useCurrentUser';
 import EmptyChat from '../features/chats/components/EmptyChat';
 import OtherUserProfilePage from '../features/profile/components/OtherUserProfilePage';
+import { useQueryClient } from '@tanstack/react-query';
 
 const AppLayout = () => {
-  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile } = useAppSelector(selectChat);
+  const {showConversation, socket, receiver, voiceCall, videoCall, incomingVoiceCall, incomingVideoCall, outGoingVoiceCall, outGoingVideoCall, onGoingCall, showOtherUserProfile, recentChats, conversationMessages } = useAppSelector(selectChat);
+  const queryClient = useQueryClient();
 
   
   const {user} = useCurrentUser();
@@ -25,10 +27,21 @@ const AppLayout = () => {
   useEffect(() => {
     if (user) {
       socket.emit('user', user)      
-    }    
+    }
+    socket.on('deliverMessage', (messageIds) => {
+      console.log(messageIds);
+      
+      const updatedMessages = conversationMessages.map(message => (
+        messageIds.includes(message.id) ? { ...message, status: 'delivered' } : message
+      ));
+      dispatch(setConversationMessages(updatedMessages));
+      queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })
+
+    });
     socketListener(socket, dispatch)
 
-  }, [socket, dispatch, user])
+  }, [socket, dispatch, user, queryClient, conversationMessages, receiver?.id])
+
 
   return (
     <div className='flex flex-col sm:flex-row h-screen  max-h-screen w-full overflow-hidden relative'>

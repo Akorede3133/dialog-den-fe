@@ -14,21 +14,7 @@ const useSendMessage = (user: UserProp, receiver: ReceiverProp) => {
   const { socket } = useAppSelector(selectChat)
   const { mutate: send, isPending: isSending, data: message} = useMutation({
     mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
-    onSuccess: (msg) => {
-      const newChat: ChatProp = {
-        content: msg.content,
-        count: 0,
-        type: 'text',
-        status: 'sent',
-        createdAt: new Date().toISOString(),
-        user: {
-          senderId: user?.id as number,
-          senderEmail: user?.email as string,
-          senderPhoto: user?.photo as string,
-          senderUsername: user?.username as string,
-        } as MessageReceiverProp & MessageSenderProp
-      }       
-      socket.emit('recentChat', { newChat, receiverId: receiver.id } );
+    onSuccess: () => {       
       queryClient.invalidateQueries({queryKey: ['messages', receiver.id] });
       queryClient.invalidateQueries({queryKey: ['recentChats']});
     }

@@ -31,7 +31,7 @@ export type offerObjProp = {
 export type ChatStateProp = {
   socket: Socket;
   onlineUsers: number[];
-  newMessages: boolean;
+  hasUnreadMessages: boolean;
   isAuthenticated: boolean;
   showOtherUserProfile: boolean;
   conversationMessages: MessageProp[];
@@ -64,7 +64,7 @@ export type ChatStateProp = {
 const initialState: ChatStateProp = {
   socket: io(import.meta.env.VITE_SOCKET_URL),
   onlineUsers: [],
-  newMessages: false,
+  hasUnreadMessages: false,
   isAuthenticated: false,
   showOtherUserProfile: false,
   conversationMessages: [],
@@ -201,12 +201,12 @@ export const chatSlice = createSlice({
     setRecentChats: (state, { payload }) => {
       state.recentChats = payload;
     },
-    setNewMessagesState: (state, { payload }) => {
-      state.newMessages = payload;
+    setHasUnreadMessagesState: (state, { payload }) => {
+      state.hasUnreadMessages = payload;
     }
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setNewMessagesState } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setHasUnreadMessagesState } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

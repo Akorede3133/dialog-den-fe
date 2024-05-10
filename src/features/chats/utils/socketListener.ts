@@ -35,6 +35,22 @@ const socketListener = (socket: Socket, dispatch: AppDispatch) => {
   socket.on('updatedOfferWithIceCandiadates', async ({candidate}) => {   
     dispatch(addPeerIce(candidate))
   }); 
+    // dispatch(setConversationMessages(updatedConvoMessages))
+    // const chat = recentChats.map((chat) => {
+    //   const chatCopy = { ...chat };
+    //   if (chatCopy.user.receiverId === receiver?.id) {
+    //     return { ...chatCopy, status: 'read' };
+    //   }
+    //   return chatCopy
+    // });
+    // console.log(chat);
+    
+    // dispatch(setRecentChats(chat))
+    // queryClient.invalidateQueries({queryKey: ['recentChats']})
+    // queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })                 
+
+    // dispatch(setHasUnreadMessagesState(false));
+  // })
 }
 
 export default socketListener;
