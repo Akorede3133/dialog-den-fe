@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import MessageCard, { MessageProp } from './MessageCard';
 import { useQueryClient } from '@tanstack/react-query';
 import useGetRecentChats from '../hooks/useGetRecentChats';
+import CoversationSkeleton from './CoversationSkeleton';
 
 
 const ConversationBody = () => {
@@ -54,15 +55,27 @@ const ConversationBody = () => {
     }
   }, [dispatch, chats, receiver?.id]);
   
-  if (isPending || isGettingUser) {
-    return <p className='min-h-screen'>Loading...</p>
+  if (isGettingUser || isPending ) {
+    return (
+      <div className='flex flex-col gap-3 min-h-screen p-5'>
+        {
+          [1, 2, 3, 4, 5, 6, 7, 8, ].map((item, index) => {
+            return <CoversationSkeleton key={item} index={index} />
+          })
+
+        }
+      </div>
+    )
   }
   if (error) {
     return <p>{error.message}</p>
   }
+  // if (!conversationMessages.length) {
+  //   return <p>No message</p>
+  // }
     
   return (
-    <div className="bg-[#EFF7FE] overflow-auto flex-grow convo p-3">
+    <div className="overflow-auto flex-grow convo p-3">
       <ul className="flex flex-col gap-4">
         {
           conversationMessages.map((message: MessageProp, index: number) => {                                    

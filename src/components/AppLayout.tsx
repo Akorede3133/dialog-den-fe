@@ -53,7 +53,7 @@ const AppLayout = () => {
         <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light sm:order-1">
           <Outlet />
         </div>
-        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full ${showOtherUserProfile ? 'half--conversation': 'conversation'} absolute top-0 right-0 bg-green-500 sm:static order-3 overflow-hidden`}>
+        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full ${showOtherUserProfile ? 'half--conversation': 'conversation'} absolute top-0 right-0 sm:static order-3 overflow-hidden`}>
           {
             receiver ? <Conversation /> : <EmptyChat />
           }
