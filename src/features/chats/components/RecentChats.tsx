@@ -3,6 +3,7 @@ import useGetRecentChats from "../hooks/useGetRecentChats"
 import RecentChatCard, { ChatProp } from "./RecentChatCard"
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { selectChat, setRecentChats } from "../redux/chatSlice";
+import RecentChatLoading from "./RecentChatLoading";
 
 const RecentChats = () => {
   const { chats, isGettingChats, error } = useGetRecentChats();    
@@ -22,7 +23,16 @@ const RecentChats = () => {
   }, [socket, dispatch])
   
   if (isGettingChats) {
-    return <p>Loading...</p>
+    return (
+      <div className="flex gap-4 flex-col px-5">
+        {
+          [1, 2, 3, 4, 5].map((item) => {      
+            return <RecentChatLoading key={item} />
+          })
+        }
+      </div>
+      
+    )
   }
   if (error) {
     return <p>{error.message}</p>
