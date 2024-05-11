@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const useLogin = () => {
   const navigate = useNavigate();
-  const { mutate: loginUser, isPending: isLogginIn } = useMutation({
+  const { mutate: loginUser, isPending: isLogginIn, error } = useMutation({
     mutationFn: login,
     onSuccess: () => {
       navigate('/');
@@ -13,7 +13,7 @@ const useLogin = () => {
     }
   });
 
-  return { loginUser, isLogginIn }
+  return { loginUser, isLogginIn, error }
 }
 
 export default useLogin;

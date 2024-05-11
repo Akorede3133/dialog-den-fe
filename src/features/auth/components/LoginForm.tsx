@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import useLogin from "../hooks/useLogin";
 import { useAppDispatch } from "../../../redux/hooks";
 import { setAuthenticated } from "../../chats/redux/chatSlice";
+import toast from "react-hot-toast";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
@@ -14,7 +15,7 @@ const LoginForm = () => {
 
   const { register, handleSubmit, formState: {errors } } = useForm<Input>();
 
-  const { loginUser, isLogginIn } = useLogin();
+  const { loginUser, isLogginIn, error } = useLogin();
 
   const onSubmit: SubmitHandler<Input> = (data) => {
     loginUser(data, {
@@ -22,6 +23,9 @@ const LoginForm = () => {
         dispatch(setAuthenticated(true));
       }
     });
+  }
+  if (error) {
+    toast.error(error.message);
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
@@ -50,7 +54,7 @@ const LoginForm = () => {
         { errors.password && <span className=" text-sm text-red-500">{errors.password.message}</span> }
       </section>
       <section className="pt-3">
-        <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isLogginIn}>Login</button>
+        <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isLogginIn}>{isLogginIn ? 'Loging in...' : 'Login'}</button>
       </section>
       <section className="text-center space-y-3 pt-5">
         <p>Don&apos;t have an account? <Link to='/register' className="text-message-bg-blue">register</Link></p>

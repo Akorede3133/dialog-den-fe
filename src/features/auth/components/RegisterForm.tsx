@@ -3,6 +3,7 @@ import { HiOutlineMail } from "react-icons/hi"
 import { HiOutlineLockClosed, HiOutlineUser } from "react-icons/hi2"
 import { Link } from "react-router-dom"
 import useRegister from "../hooks/useRegister"
+import toast from "react-hot-toast"
 
 const RegisterForm = () => {
   type Inputs = {
@@ -11,10 +12,13 @@ const RegisterForm = () => {
     password: string
   }
   const { handleSubmit, register, formState: { errors} } = useForm<Inputs>();
-  const { registerUser, isRegistering } = useRegister();
+  const { registerUser, isRegistering, error } = useRegister();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     registerUser(data);
     
+  }
+  if (error) {
+    toast.error(error.message)
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
@@ -61,7 +65,7 @@ const RegisterForm = () => {
         }
       </section>
       <section className="pt-3">
-        <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isRegistering}>Register</button>
+        <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isRegistering}>{isRegistering ? 'Registering...' : 'Register'}</button>
       </section>
       <section className="text-center space-y-3 pt-5">
         <p>Already have an account? <Link to='/login' className="text-message-bg-blue">Signin</Link></p>

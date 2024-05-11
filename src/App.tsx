@@ -7,6 +7,7 @@ import Settings from "./features/settings/Settings"
 import Contacts from "./features/contacts/page/Contacts"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
+import { Toaster } from "react-hot-toast"
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>
@@ -31,6 +32,7 @@ const client = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={client} >
+      <Toaster />
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <RouterProvider router={router} />
     </QueryClientProvider>
