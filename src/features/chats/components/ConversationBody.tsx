@@ -7,6 +7,7 @@ import MessageCard, { MessageProp } from './MessageCard';
 import { useQueryClient } from '@tanstack/react-query';
 import useGetRecentChats from '../hooks/useGetRecentChats';
 import CoversationSkeleton from './CoversationSkeleton';
+import EmptyMessage from './EmptyMessage';
 
 
 const ConversationBody = () => {
@@ -70,9 +71,9 @@ const ConversationBody = () => {
   if (error) {
     return <p>{error.message}</p>
   }
-  // if (!conversationMessages.length) {
-  //   return <p>No message</p>
-  // }
+  if (!conversationMessages.length) {
+    return <EmptyMessage />
+  }
     
   return (
     <div className="overflow-auto flex-grow convo p-3">
