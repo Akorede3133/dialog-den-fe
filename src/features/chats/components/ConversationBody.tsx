@@ -35,6 +35,8 @@ const ConversationBody = () => {
     socket.on('getMessage', (message) => {
       dispatch(setConversationMessages([...conversationMessages, message]))
       queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })
+      queryClient.invalidateQueries({ queryKey: ['recentChats'] })
+
     });
   }, [socket, conversationMessages, dispatch, receiver?.id, queryClient])
 
