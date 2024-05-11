@@ -9,6 +9,7 @@ import Picker from "emoji-picker-react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import { MessageProp } from "./MessageCard"
 import updateChat from "../utils/updateChat"
+import toast from "react-hot-toast"
 
 type TextMessageProps = {
   showRecorder: () => void
@@ -19,7 +20,7 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
   const { user } = useCurrentUser();
   const emojiRef = useRef<HTMLDivElement>(null)
-  const { send, isSending } = useSendMessage();
+  const { send, error } = useSendMessage();
   const { sendImageFile } = useSendImage();
   const [message, setMessage] = useState<string>('');
  
@@ -89,6 +90,9 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const handleEmoji = () => {
     setShowEmoji((prev) => !prev)
   }
+  if (error) {
+    toast.error('Failed to send message.');
+  }
   return (
     <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3 w-full">
       { showEmoji && <div ref={emojiRef} className=" absolute bottom-[100px] right-20">
@@ -108,7 +112,7 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
         <button onClick={showRecorder}>
           <HiOutlineMicrophone className=" text-message-bg-blue" />
         </button>
-        <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSend} disabled={isSending}>
+        <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSend}>
           <HiPaperAirplane className=" text-white text-2xl" />
         </button>
       </section>

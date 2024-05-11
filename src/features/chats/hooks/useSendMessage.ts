@@ -10,7 +10,7 @@ type MessageProp = {
 const useSendMessage = () => {
   const queryClient = useQueryClient();
   useAppSelector(selectChat)
-  const { mutate: send, isPending: isSending, data: message} = useMutation({
+  const { mutate: send, data: message, error} = useMutation({
     mutationFn: ({ data, receiverId }: MessageProp) => sendMessage(data, receiverId),
     onSuccess: () => {       
       queryClient.invalidateQueries({queryKey: ['messages'] });
@@ -18,7 +18,7 @@ const useSendMessage = () => {
     }
   })
 
-  return { send, isSending, message }
+  return { send, message, error }
 }
 
 export default useSendMessage;

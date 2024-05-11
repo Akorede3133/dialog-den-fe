@@ -9,6 +9,7 @@ import formatDuration from "../../../utils/formatDuration";
 import { MessageProp } from "./MessageCard";
 import useCurrentUser from "../../auth/hooks/useCurrentUser";
 import updateChat from "../utils/updateChat";
+import toast from "react-hot-toast";
 
 
 type VoiceMessageProps = {
@@ -16,7 +17,7 @@ type VoiceMessageProps = {
 }
 const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   const dispatch = useAppDispatch();
-  const { sendVoiceFile, isSendingVoice } = useSendVoice();
+  const { sendVoiceFile, isSendingVoice, error } = useSendVoice();
   const { user } = useCurrentUser();
   const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
   const [isRecording, setIsRecording] = useState(false);
@@ -32,6 +33,12 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
   const waveFormRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  const hideRecorderComponent = () => {
+    hideRecorder();
+    recordStream.getTracks().forEach((track) => {
+      track.stop();
+    })
+  }
   const handleStartRecording = useCallback(async () => {
     setIsRecording(true);
     setRecordingDuration(0);
@@ -171,9 +178,12 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     }
 
   }
+  if (error) {
+    toast.error('Failed to send voice message.')
+  }
   return (
-    <div className="flex justify-end items-center gap-10 px-4 h-full p-3">
-      <FaTrash className=" text-message-bg-blue text-xl" onClick={hideRecorder} />
+    <div className="flex justify-between sm:justify-end items-center gap-2 sm:gap-6 px-4 h-full p-3">
+      <FaTrash className=" text-message-bg-blue text-xl cursor-pointer" onClick={hideRecorderComponent} />
       { isRecording ? 
           <div className=" animate-pulse text-sm text-text-primary">
             <p>Recording <span>{formatDuration(recordingDuration)}</span></p>
@@ -182,8 +192,8 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
             { 
               <div className="flex items-center gap-4">
                 {
-                  isPlaying ? <FaPause className=" text-text-gray"  onClick={handlePauseRecord}/>
-                  : <FaPlay onClick={handlePlayRecord} className=" text-text-primary text-xl" />
+                  isPlaying ? <FaPause className=" text-text-gray cursor-pointer"  onClick={handlePauseRecord}/>
+                  : <FaPlay onClick={handlePlayRecord} className=" text-text-primary text-xl cursor-pointer" />
                 }
             </div>
           }
@@ -195,11 +205,11 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       <div>
         {
           isRecording ? <FaStop onClick={handleStopRecording} className="text-red-500 text-2xl" />
-          : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl" />
+          : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl cursor-pointer" />
         }
       </div>
       <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSendVoice} disabled={isRecording || isSendingVoice}>
-        <HiPaperAirplane className={` text-white text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' }`} />
+        <HiPaperAirplane className={` text-white text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' } cursor-pointer`} />
       </button>
       <audio ref={audioRef} controls hidden></audio>
     </div>
