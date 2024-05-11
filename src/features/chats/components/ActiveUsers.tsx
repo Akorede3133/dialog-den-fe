@@ -5,6 +5,7 @@ import useGetUsers from "../../auth/hooks/useGetUsers"
 import { UserProp } from "../../contacts/components/ContactCard"
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import ActiveUsersList from "./ActiveUsersList"
+import ActiveUsersSkeleton from "./ActiveUsersSkeleton"
 
 const ActiveUsers = () => {
   const { onlineUsers: onlineUsersIds } = useAppSelector(selectChat)
@@ -34,7 +35,15 @@ const ActiveUsers = () => {
   }, [appUsers, onlineUsersIds, currentUser?.id])
 
   if (isGettingUsers && isGettingUser) {
-    return <p>Loading...</p>
+    return (
+      <div className="flex gap-4 py-5">
+        {
+          [1, 2, 3, 4, 5].map((item) => {
+            return <ActiveUsersSkeleton key={item} />
+          })
+        }
+      </div>
+    )
   }
   if (activeUsers.length) {
     return (
