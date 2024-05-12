@@ -1,0 +1,123 @@
+import { HiOutlineEmojiHappy } from "react-icons/hi"
+import { HiOutlineMicrophone, HiOutlinePhoto, HiPaperAirplane } from "react-icons/hi2"
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks"
+import { selectChat, setConversationMessages } from "../redux/chatSlice"
+import useSendMessage from "../hooks/useSendMessage"
+import { useEffect, useRef, useState } from "react"
+import useSendImage from "../hooks/useSendImage"
+import Picker from "emoji-picker-react";
+import useCurrentUser from "../../auth/hooks/useCurrentUser"
+import { MessageProp } from "./MessageCard"
+import updateChat from "../utils/updateChat"
+import toast from "react-hot-toast"
+
+type TextMessageProps = {
+  showRecorder: () => void
+}
+const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
+  const dispatch = useAppDispatch();
+  const [showEmoji, setShowEmoji] = useState(false);
+  const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
+  const { user } = useCurrentUser();
+  const emojiRef = useRef<HTMLDivElement>(null)
+  const { send, error } = useSendMessage();
+  const { sendImageFile } = useSendImage();
+  const [message, setMessage] = useState<string>('');
+ 
+  const data: MessageProp = {
+    content: message,
+    type: 'text',
+    senderId: user?.id as number,
+    receiverId: receiver?.id as number,
+    status: 'sending',
+    createdAt: new Date().toISOString(),
+  };
+
+
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] as File;
+    const blob = new Blob([file], { type: 'image/jpeg'});
+    const url = URL.createObjectURL(blob);
+    const imageData: MessageProp = {
+      content: url,
+      type: 'image',
+      senderId: user?.id as number,
+      receiverId: receiver?.id as number,
+      status: 'sending',
+      createdAt: new Date().toISOString(),
+    };
+    
+    dispatch(setConversationMessages([...conversationMessages, imageData]));
+    updateChat({ recentChats, receiver, message: { type: 'image', content: url }, dispatch })
+       
+    if (receiver) {
+      sendImageFile({ file, receiverId: receiver?.id as number});
+    }
+   
+  }
+
+  const handleSend = () => {
+    if (!message.trim()) return;
+    dispatch(setConversationMessages([...conversationMessages, data]));
+    updateChat({ recentChats, receiver, message: { type: 'text', content: message }, dispatch }) 
+    if (receiver) {
+      send({ data, receiverId: receiver?.id });
+    }
+    setMessage('')
+  }
+  const onEmojiClick = (emoji: { emoji: string }) => {    
+    setMessage((prevMessage) => (
+      `${prevMessage}${emoji.emoji}`
+    ))    
+  }
+
+  useEffect(() => {
+    const emojiEvent = (e: MouseEvent) => {
+      if (emojiRef.current && !emojiRef.current.contains(e.target as Node)) {
+        setShowEmoji(false);
+      }
+    }
+    document.addEventListener('click', emojiEvent, true)
+    return () => {
+      document.addEventListener('click', emojiEvent, true);
+    }
+  }, [])
+
+  const handleEmoji = () => {
+    setShowEmoji((prev) => !prev)
+  }
+  if (error) {
+    toast.error('Failed to send message.');
+  }
+  return (
+    <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3 w-full">
+      { showEmoji && <div ref={emojiRef} className=" absolute bottom-[100px] right-20">
+        <Picker onEmojiClick={onEmojiClick} /> 
+      </div> }
+      <section className="">
+        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-auto text-area" value={message} onChange={handleInput }   rows={1}/>
+      </section>
+      <section className="flex gap-5 items-center">
+        <button onClick={handleEmoji}>
+          <HiOutlineEmojiHappy className=" text-message-bg-blue" />
+        </button>
+        <label htmlFor="image" className=" cursor-pointer">
+          <HiOutlinePhoto className=" text-message-bg-blue" />
+          <input type="file" name="image" id="image" hidden accept="image/png, image/jpeg" onChange={handleImageUpload} />
+        </label>
+        <button onClick={showRecorder}>
+          <HiOutlineMicrophone className=" text-message-bg-blue" />
+        </button>
+        <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSend}>
+          <HiPaperAirplane className=" text-white text-2xl" />
+        </button>
+      </section>
+    </div>
+  )
+}
+
+export default SendTextMessage

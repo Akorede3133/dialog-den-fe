@@ -1,0 +1,219 @@
+import { useCallback, useEffect, useRef, useState } from "react"
+import { FaMicrophone, FaPause, FaPlay, FaStop, FaTrash } from "react-icons/fa6"
+import { HiPaperAirplane } from "react-icons/hi2";
+import WaveSurfer from "wavesurfer.js";
+import useSendVoice from "../hooks/useSendVoice";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { selectChat, setConversationMessages } from "../redux/chatSlice";
+import formatDuration from "../../../utils/formatDuration";
+import { MessageProp } from "./MessageCard";
+import useCurrentUser from "../../auth/hooks/useCurrentUser";
+import updateChat from "../utils/updateChat";
+import toast from "react-hot-toast";
+
+
+type VoiceMessageProps = {
+  hideRecorder: () => void
+}
+const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
+  const dispatch = useAppDispatch();
+  const { sendVoiceFile, isSendingVoice, error } = useSendVoice();
+  const { user } = useCurrentUser();
+  const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isPlaying, setIsplaying] = useState(false);
+  const [waveForm, setWaveForm] = useState<WaveSurfer | null>(null);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null)
+  const [recordStream, setRecordStream] = useState<MediaStream>(new MediaStream());
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [totalDuration, setTotalDuration] = useState(0);
+  const [audioFile, setAudioFile] = useState<File | null>(null)
+
+  const waveFormRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  const hideRecorderComponent = () => {
+    hideRecorder();
+    recordStream.getTracks().forEach((track) => {
+      track.stop();
+    })
+  }
+  const handleStartRecording = useCallback(async () => {
+    setIsRecording(true);
+    setRecordingDuration(0);
+  
+    if (navigator.mediaDevices) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        setRecordStream(stream);
+        const mediaRecorder = new MediaRecorder(stream);
+        setMediaRecorder(mediaRecorder);
+        if (audioRef.current) {
+          audioRef.current.srcObject = stream;
+        }
+        const chunks: Blob[] = [];
+        mediaRecorder.ondataavailable = (e) => {
+          chunks.push(e.data);
+        }
+        
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });       
+          const audioURL = URL.createObjectURL(blob);
+          waveForm?.load(audioURL);
+        }
+        mediaRecorder.start();
+        
+      } catch (error) {
+        console.error(`The following getUserMedia error occurred: ${error}`);
+      }
+    }
+  }, [setIsRecording, setRecordingDuration, audioRef, waveForm]);
+  
+  
+  useEffect(() => {
+    if (!waveFormRef.current) return;
+    const waveSurfer = WaveSurfer.create({
+      container: waveFormRef.current,
+      waveColor: '#ccc',
+      progressColor: '#4a9eff',
+      height: 30,
+      cursorColor: '#7ae3c3',
+      cursorWidth: 1,
+      barWidth: 2,
+      barGap: 1,
+      barRadius: 2,
+      barHeight: 2,
+      hideScrollbar: true,
+    });
+    setWaveForm(waveSurfer)
+    waveSurfer.on('finish', () => {
+      setIsplaying(false);
+    })
+    return () => {
+      waveSurfer.destroy();
+    }
+ 
+  }, [])
+
+  useEffect(() => {
+    if (waveForm) {
+      handleStartRecording();
+    }
+  }, [waveForm, handleStartRecording])
+  useEffect(() => {
+    if (isRecording) {
+      const interval = setInterval(() => {
+        setRecordingDuration((duration) => {
+          setTotalDuration(duration + 1);
+          return duration + 1;
+        })
+      }, 1000)
+      return () => {
+        clearInterval(interval);
+      }
+    }
+  }, [isRecording])
+
+  useEffect(() => {
+    if (waveForm) {
+      waveForm.on('audioprocess', () => {
+        const currentTime = waveForm.getCurrentTime();
+        setCurrentTime(currentTime);
+      })
+    }
+  }, [waveForm, currentTime])
+
+  const handleStopRecording = () => {
+    setIsRecording(false);    
+    recordStream.getTracks().forEach((track) => {
+      track.stop();
+    })
+    mediaRecorder?.stop();
+    waveForm?.stop();
+    let audioChunks: Blob[] = [];
+    mediaRecorder?.addEventListener('dataavailable', (e) => {
+      audioChunks.push(e.data)
+    })
+    mediaRecorder?.addEventListener('stop', () => {      
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' })
+      const audioFile = new File([audioBlob], 'recording.mp3');      
+      setAudioFile(audioFile);
+      audioChunks = [];
+    })
+  }
+  const handlePlayRecord = () => {
+      waveForm?.play();
+      setIsplaying(true);
+  }
+  const handlePauseRecord = () => {
+      waveForm?.pause();
+      setIsplaying(false);
+  }
+
+  const handleSendVoice  = () => {   
+    if (audioFile) {
+      const data = {
+        file: audioFile as File,
+        receiverId: receiver?.id as number
+      }
+      const url = URL.createObjectURL(audioFile);
+      const voiceData: MessageProp = {
+        content: url,
+        type: 'voice',
+        senderId: user?.id as number,
+        receiverId: receiver?.id as number,
+        status: 'sending',
+        createdAt: new Date().toISOString(),
+      };
+      dispatch(setConversationMessages([...conversationMessages, voiceData]))
+      updateChat({ recentChats, receiver, message: {content: url, type: 'voice' }, dispatch }) 
+
+      setIsRecording(false);
+      setCurrentTime(0);
+      setRecordingDuration(0);
+      hideRecorder();
+      setAudioFile({} as File)
+      sendVoiceFile(data);
+    }
+
+  }
+  if (error) {
+    toast.error('Failed to send voice message.')
+  }
+  return (
+    <div className="flex justify-between sm:justify-end items-center gap-2 sm:gap-6 px-4 h-full p-3">
+      <FaTrash className=" text-message-bg-blue text-xl cursor-pointer" onClick={hideRecorderComponent} />
+      { isRecording ? 
+          <div className=" animate-pulse text-sm text-text-primary">
+            <p>Recording <span>{formatDuration(recordingDuration)}</span></p>
+          </div>
+        : <div>
+            { 
+              <div className="flex items-center gap-4">
+                {
+                  isPlaying ? <FaPause className=" text-text-gray cursor-pointer"  onClick={handlePauseRecord}/>
+                  : <FaPlay onClick={handlePlayRecord} className=" text-text-primary text-xl cursor-pointer" />
+                }
+            </div>
+          }
+        </div>
+      }
+      <div ref={waveFormRef} className="w-[160px] sm:w-60 shadow-md" hidden={isRecording} />
+      {  isPlaying && <span>{formatDuration(currentTime)}</span> }
+      { !isRecording && !isPlaying && <span>{formatDuration(totalDuration)}</span> }
+      <div>
+        {
+          isRecording ? <FaStop onClick={handleStopRecording} className="text-red-500 text-2xl" />
+          : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl cursor-pointer" />
+        }
+      </div>
+      <button className=" bg-message-bg-blue rounded-full h-[40px] w-[40px] flex justify-center items-center" onClick={handleSendVoice} disabled={isRecording || isSendingVoice}>
+        <HiPaperAirplane className={` text-white text-2xl ${(isRecording || isSendingVoice) && ' opacity-20' } cursor-pointer`} />
+      </button>
+      <audio ref={audioRef} controls hidden></audio>
+    </div>
+  )
+}
+
+export default SendVoiceMessage

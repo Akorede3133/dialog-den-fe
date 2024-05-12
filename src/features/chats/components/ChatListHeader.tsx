@@ -1,0 +1,15 @@
+import PagesHeader from "../../../components/PagesHeader"
+import PagesSearch from "../../../components/PagesSearch"
+import ActiveUsers from "./ActiveUsers"
+const ChatListHeader = () => {
+  return (
+    <div className="px-5">
+      <PagesHeader text="Chat" />
+      <PagesSearch placeholder="Search messages or users" />
+      <ActiveUsers />
+      <h2 className=" font-roboto-condensed text-text-primary font-medium text-sm">Recent</h2>
+    </div>
+  )
+}
+
+export default ChatListHeader

@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.conversation {
+  width: 100%;
+}
+
+.search--text {
+  background-color: #EF4669;
+}
+
+@media (min-width: 648px) {
+  .conversation {
+    width: calc(100% - 490px);
+  }
+  .half--conversation {
+    width: calc(100% - 490px - 400px);
+  }
+}
+
+
+
+.recent--chats::-webkit-scrollbar,
+.profile::-webkit-scrollbar,
+.contacts::-webkit-scrollbar,
+.convo::-webkit-scrollbar,
+.text-area::-webkit-scrollbar {
+  width: 6px;
+}
+.recent--chats::-webkit-scrollbar-thumb,
+.profile::-webkit-scrollbar-thumb,
+.contacts::-webkit-scrollbar-thumb,
+.convo::-webkit-scrollbar-thumb,
+.text-area::-webkit-scrollbar-thumb {
+  background-color: #c9d1e1;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* ::-webkit-scrollbar {
+  width: 0;
+}
+
+:hover::-webkit-scrollbar {
+  width: 6px;
+} */
+
+/* ::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+} */
+
+
+:root {
+  --color-secondary: #878a92;
+  --color-primary: #343a40;
+  --color-silver: #E6EBF5;
+  --color-blue: #7269EF;
+  --color--background--light: #fff;
+  --color--background--dark: #262E35;
+  --color--sidebar-light: #7269EF;
+  --color-sidebar--dark: #303841;
+  --color--sender--background--dark: #262E35;
+  --color--message--cirle: #523B49;
+  --color--message--text: #EF4669;
+}
+
+
+.wrap-text {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  max-width: 100%;
+}

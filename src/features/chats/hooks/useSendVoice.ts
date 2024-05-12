@@ -1,0 +1,17 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import sendVoice from "../api/sendVoice";
+
+const useSendVoice = () => {
+  const queryClient = useQueryClient();
+  const { mutate: sendVoiceFile, isPending: isSendingVoice, error} = useMutation({
+    mutationFn: ({ file, receiverId }: { file: File, receiverId: number }) => sendVoice(file, receiverId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({queryKey: ['messages'] });
+      queryClient.invalidateQueries({queryKey: ['recentChats'] });
+    }
+  })
+
+  return { sendVoiceFile, isSendingVoice, error };
+}
+
+export default useSendVoice;
