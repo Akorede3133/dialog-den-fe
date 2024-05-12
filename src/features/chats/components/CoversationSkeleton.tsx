@@ -1,4 +1,4 @@
-const CoversationSkeleton = ({ index }) => {
+const CoversationSkeleton = ({ index }: { index: number }) => {
   return (
     <div className={`${ index % 2 ? ' self-end' : 'self-start' } w-[50%]  bg-gray animate-pulse gap-2 flex items-center`}>
       <div className="w-[50px] h-[40px] rounded-full bg-gray-200 self-start">
