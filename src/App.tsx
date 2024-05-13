@@ -8,10 +8,13 @@ import Contacts from "./features/contacts/page/Contacts"
 import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
 import { Toaster } from "react-hot-toast"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>
-      <Route element={<AppLayout />}>
+      <Route element={<ProtectedRoute>
+        <AppLayout />
+      </ProtectedRoute>}>
         <Route path="/" element={<Chat />} />
         <Route path="profile" element={<Profile />} />
         <Route path="settings" element={<Settings />} />
