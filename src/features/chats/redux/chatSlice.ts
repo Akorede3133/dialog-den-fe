@@ -60,6 +60,9 @@ export type ChatStateProp = {
   recentChats: ChatProp[];
   searchedRecentChats: ChatProp[]
   searchedRecentChatsText: string;
+  searchedContacts: null | {};
+  searchedContactsText: string;
+
 
 }
 
@@ -94,7 +97,9 @@ const initialState: ChatStateProp = {
   currentSearchedMessageIndex: 0,
   recentChats: [],
   searchedRecentChats: [],
-  searchedRecentChatsText: ''
+  searchedRecentChatsText: '',
+  searchedContacts: null,
+  searchedContactsText: '',
 
 }
 
@@ -211,9 +216,15 @@ export const chatSlice = createSlice({
     setSearchedRecentChatsText: (state, { payload }) => {
       state.searchedRecentChatsText = payload;
     },
+    setSearchedContacts: (state, { payload }) => {
+      state.searchedContacts = payload;
+    },
+    setSearchedContactsText: (state, { payload }) => {
+      state.searchedContactsText = payload;
+    },
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setSearchedRecentChats, setSearchedRecentChatsText  } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setSearchedRecentChats, setSearchedRecentChatsText, setSearchedContacts, setSearchedContactsText  } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;
