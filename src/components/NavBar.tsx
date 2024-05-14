@@ -1,16 +1,18 @@
 import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
-import logo from '../assets/logo.png';
+import logo from '../assets/chat-logo.png';
 import useCurrentUser from "../features/auth/hooks/useCurrentUser";
 import ContextMenu from "../context/ContextMenu";
-import { BiLogOut, BiLogOutCircle } from "react-icons/bi";
+import { BiLogOutCircle } from "react-icons/bi";
+import useLogout from "../features/auth/hooks/useLogout";
 
 const NavBar = () => {
   const { user } = useCurrentUser();
+  const { logoutUser } = useLogout();
   return (
-    <header className={`w-full sm:w-[90px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1 relative`}>
-      <section className="hidden sm:block my-5 px-3">
-        <img src={logo} className=" w-[70px] h-auto object-cover rounded-md" alt="" />
+    <header className={`w-full sm:w-[70px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1 relative sm:flex flex-col items-center`}>
+      <section className="hidden sm:block mt-5 mb-10 px-3">
+        <img src={logo} className=" w-[70px h-auto object-cover rounded-md" alt="" />
       </section>
       <nav>
         <ul className=" grid grid-cols-5 sm:flex items-center sm:flex-col sm:justify-between sm:gap-10 sm:px-4 ">
@@ -37,7 +39,7 @@ const NavBar = () => {
                     <HiOutlineCog8Tooth className="text-xl" />
                   </button>
                 </li>
-                <li className=" hover:bg-bg-silver flex items-center">
+                <li className=" hover:bg-bg-silver flex items-center" onClick={() => logoutUser()}>
                   <button className="w-full p-3 text-left">Logout</button>
                   <button className="pr-3">
                     <BiLogOutCircle className="text-xl" />

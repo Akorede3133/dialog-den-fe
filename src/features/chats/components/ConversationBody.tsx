@@ -58,9 +58,9 @@ const ConversationBody = () => {
   
   if (isGettingUser || isPending ) {
     return (
-      <div className='flex flex-col gap-3 min-h-screen p-5'>
+      <div className='flex flex-col gap-3 overflow-auto flex-grow convo p-3'>
         {
-          [1, 2, 3, 4, 5, 6, 7, 8, ].map((item, index) => {
+          [1, 2, 3, 4, 5, 6, 7].map((item, index) => {
             return <CoversationSkeleton key={item} index={index} />
           })
 
