@@ -1,4 +1,4 @@
-import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon  } from "react-icons/hi2";
+import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon, HiOutlineUsers  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
 import logo from '../assets/chat-logo.png';
 import useCurrentUser from "../features/auth/hooks/useCurrentUser";
@@ -25,7 +25,7 @@ const NavBar = () => {
         <ul className=" grid grid-cols-5 sm:flex items-center sm:flex-col sm:justify-between sm:gap-10 sm:px-4 ">
           <NavIcon link='profile' icon={<HiOutlineUserCircle className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
           <NavIcon link='' icon={<HiOutlineChatBubbleOvalLeftEllipsis className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
-          <NavIcon link='contacts' icon={<HiOutlineUser className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
+          <NavIcon link='contacts' icon={<HiOutlineUsers className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
           <NavIcon link='settings' icon={<HiOutlineCog8Tooth className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
           <li className=" hidden sm:block">
             <button className="p-4">
