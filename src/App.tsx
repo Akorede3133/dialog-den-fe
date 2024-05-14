@@ -9,6 +9,7 @@ import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
 import { Toaster } from "react-hot-toast"
 import ProtectedRoute from "./components/ProtectedRoute"
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 const router = createBrowserRouter(createRoutesFromElements(
   <Route>
@@ -36,7 +37,7 @@ const App = () => {
   return (
     <QueryClientProvider client={client} >
       <Toaster />
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
     </QueryClientProvider>
   )
