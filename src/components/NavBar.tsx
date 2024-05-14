@@ -2,16 +2,18 @@ import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUser, HiOutlineUserCircle
 import NavIcon from "./NavIcon";
 import logo from '../assets/logo.png';
 import useCurrentUser from "../features/auth/hooks/useCurrentUser";
+import ContextMenu from "../context/ContextMenu";
+import { BiLogOut, BiLogOutCircle } from "react-icons/bi";
 
 const NavBar = () => {
   const { user } = useCurrentUser();
   return (
-    <header className={`w-full sm:w-[90px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1`}>
+    <header className={`w-full sm:w-[90px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1 relative`}>
       <section className="hidden sm:block my-5 px-3">
         <img src={logo} className=" w-[70px] h-auto object-cover rounded-md" alt="" />
       </section>
       <nav>
-        <ul className="flex items-center sm:flex-col justify-between sm:gap-10 px-4">
+        <ul className=" grid grid-cols-5 sm:flex items-center sm:flex-col sm:justify-between sm:gap-10 sm:px-4 ">
           <NavIcon link='profile' icon={<HiOutlineUserCircle className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
           <NavIcon link='' icon={<HiOutlineChatBubbleOvalLeftEllipsis className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
           <NavIcon link='contacts' icon={<HiOutlineUser className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
@@ -21,9 +23,31 @@ const NavBar = () => {
               <HiOutlineMoon  className="text-xl hover:text-primary-blue bg-inherit text-inherit" />
             </button>
           </li>
-          <li>
-            <img src={user?.photo} alt="" className="w-[30px] h-[30px] rounded-full" />
-          </li>
+          <ContextMenu>
+            <ContextMenu.Open type="logout">
+              <li className=" cursor-pointer flex justify-center">
+                <img src={user?.photo} alt="" className="w-[30px] h-[30px] rounded-full" />
+              </li>
+            </ContextMenu.Open>
+            <ContextMenu.Window type="logout">
+              <ul className="absolute top-[-170%] right-[10px] sm:top-[80%] sm:right-[-120%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
+              <li className=" hover:bg-bg-silver flex items-center">
+                  <button className="w-full p-3 text-left">Settings</button>
+                  <button className="pr-3">
+                    <HiOutlineCog8Tooth className="text-xl" />
+                  </button>
+                </li>
+                <li className=" hover:bg-bg-silver flex items-center">
+                  <button className="w-full p-3 text-left">Logout</button>
+                  <button className="pr-3">
+                    <BiLogOutCircle className="text-xl" />
+
+                  </button>
+                </li>
+              </ul>
+            </ContextMenu.Window>
+          </ContextMenu>
+        
         </ul>
       </nav>
     </header>

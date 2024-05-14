@@ -16,7 +16,7 @@ const activeStyle:CSSProperties = {
 const NavIcon = ( { icon, link }: IconProp  ) => {
   return (
     <li>
-      <NavLink to={link} className='p-4 block' style={({ isActive }) => isActive ? activeStyle : {}}>
+      <NavLink to={link} className='p-4 flex justify-center' style={({ isActive }) => isActive ? activeStyle : {}}>
         { icon }
       </NavLink>
     </li>
