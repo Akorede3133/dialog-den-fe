@@ -37,7 +37,7 @@ const App = () => {
   return (
     <QueryClientProvider client={client} >
       <Toaster />
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         <RouterProvider router={router} />
     </QueryClientProvider>
   )
