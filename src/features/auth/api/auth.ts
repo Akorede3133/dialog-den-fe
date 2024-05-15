@@ -57,6 +57,27 @@ export const login = async (data: LoginProp) => {
   }
  
 }
+export const logout = async () => {
+  try {
+    const response = await fetch(`${API_URL}/logout`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    });
+    const result = await response.json();
+    
+    if(!response.ok) {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    }
+  }
+ 
+}
 
 export const currentUser = async (): Promise<UserProp> => {
   try {

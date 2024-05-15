@@ -21,13 +21,13 @@ const IncomingCallNotification = ({ incomingCall }: {incomingCall: callProp}) =>
     }
   }
   return (
-    <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver text-white rounded-lg px-4 flex items-start py-3 gap-5 ">
+    <div className="absolute z-50  right-[10%] top-[70%] w-[300px] bg-bg-silver dark:bg-sidebar-dark text-white dark:text-text-primary-dark rounded-lg px-4 flex items-start py-3 gap-5 shadow-md">
       <div className=' flex items-center gap-4'>
         <img src={incomingCall?.photo} alt="" className="w-[50px] object-cover h-[50px] rounded-full" />
       </div>
       <div className='flex text-text-primary flex-col gap-1 items-start '>
-        <p className='text-sm'>{incomingCall?.username}</p>
-        <p className='text-sm capitalize'>{`Incoming ${incomingCall?.type} call`}</p>
+        <p className='text-sm dark:text-text-primary-dark'>{incomingCall?.username}</p>
+        <p className='text-sm capitalize dark:text-text-primary-dark'>{`Incoming ${incomingCall?.type} call`}</p>
         <div className=' flex items-center gap-4'>
             <button className='bg-red-500 text-white px-4 py-2 rounded-full text-sm' onClick={handleRejectCall}>
             Reject

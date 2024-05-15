@@ -185,15 +185,15 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
     <div className="flex justify-between sm:justify-end items-center gap-2 sm:gap-6 px-4 h-full p-3">
       <FaTrash className=" text-message-bg-blue text-xl cursor-pointer" onClick={hideRecorderComponent} />
       { isRecording ? 
-          <div className=" animate-pulse text-sm text-text-primary">
+          <div className=" animate-pulse text-sm text-text-primary dark:text-text-primary-dark">
             <p>Recording <span>{formatDuration(recordingDuration)}</span></p>
           </div>
         : <div>
             { 
               <div className="flex items-center gap-4">
                 {
-                  isPlaying ? <FaPause className=" text-text-gray cursor-pointer"  onClick={handlePauseRecord}/>
-                  : <FaPlay onClick={handlePlayRecord} className=" text-text-primary text-xl cursor-pointer" />
+                  isPlaying ? <FaPause className=" text-text-gray cursor-pointer dark:text-text-primary-dark"  onClick={handlePauseRecord}/>
+                  : <FaPlay onClick={handlePlayRecord} className=" text-text-primary dark:text-text-primary-dark text-xl cursor-pointer" />
                 }
             </div>
           }
@@ -204,7 +204,7 @@ const SendVoiceMessage = ({ hideRecorder }: VoiceMessageProps) => {
       { !isRecording && !isPlaying && <span>{formatDuration(totalDuration)}</span> }
       <div>
         {
-          isRecording ? <FaStop onClick={handleStopRecording} className="text-red-500 text-2xl" />
+          isRecording ? <FaStop onClick={handleStopRecording} className="text-red-500 cursor-pointer text-2xl" />
           : <FaMicrophone onClick={handleStartRecording} className="text-red-500 text-xl cursor-pointer" />
         }
       </div>

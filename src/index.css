@@ -14,10 +14,10 @@
 
 @media (min-width: 648px) {
   .conversation {
-    width: calc(100% - 490px);
+    width: calc(100% - 470px);
   }
   .half--conversation {
-    width: calc(100% - 490px - 400px);
+    width: calc(100% - 470px - 400px);
   }
 }
 

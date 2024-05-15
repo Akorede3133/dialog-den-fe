@@ -40,11 +40,11 @@ const ProfileHeader = () => {
               </button>
             </ContextMenu.Open>
             <ContextMenu.Window type="profile">
-              <ul className=" absolute top-[20%] right-[-90%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
-                <li className=" hover:bg-bg-silver">
+              <ul className=" absolute top-[20%] right-[-90%] bg-white dark:bg-bg-dark  shadow-lg w-[120px] rounded-md text-text-primary dark:text-text-primary-dark text-sm">
+                <li className=" hover:bg-bg-silver  dark:hover:bg-sidebar-dark">
                   <button className="w-full p-3 text-left" onClick={() => setTakePhoto(true)}>Camera</button>
                 </li>
-                <li className=" hover:bg-bg-silver">
+                <li className=" hover:bg-bg-silver dark:hover:bg-sidebar-dark">
                   <button onClick={() => photoRef.current?.click()} className="w-full text-left p-3">Gallery</button>
                 </li>
               </ul>
@@ -55,11 +55,11 @@ const ProfileHeader = () => {
         </div>
         <div className="flex flex-col justify-center items-center">
           <p className=" text-text-primary font-medium">{user?.username}</p>
-          <p className=" text-text-gray">Active</p>
+          <p className=" text-text-gray dark:text-text-primary-dark">Active</p>
         </div>
       </section>
       <section className=" border-t  my-5 py-3">
-        <p className="text-text-gray">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual.</p>
+        <p className="text-text-gray dark:text-text-primary-dark">If several languages coalesce, the grammar of the resulting language is more simple and regular than that of the individual.</p>
       </section>
     </div>
   )

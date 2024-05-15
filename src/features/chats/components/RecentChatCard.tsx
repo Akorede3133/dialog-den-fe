@@ -77,23 +77,23 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
     setWaveForm(waveSurfer)
   }, [])
   return (
-    <li className="flex cursor-pointer justify-between items-center" onClick={handleSelectChat}>
+    <li className="flex cursor-pointer justify-between items-center hover:bg-bg-silver dark:hover:bg-sidebar-dark px-5 py-3" onClick={handleSelectChat}>
       <section className="flex items-center gap-4">
         <div className='relative w-[30px] h-[30px]'>
           <img src={convo.photo} alt="" className='w-full h-full rounded-full object-cover'/>
           { isUserOnline && <span className='bg-green-500 h-[10px] w-[10px] rounded-full border border-white absolute top-[50%] right-0'></span> }
         </div>
         <div className="flex flex-col">
-          <span>{user?.senderUsername || user?. receiverUsername}</span>
+          <span className=' dark:text-text-primary-dark '>{user?.senderUsername || user?. receiverUsername}</span>
           <div className='flex items-center gap-1'>
           { user.receiverId &&  <div className=''>
             { status === 'sent' && <BsCheck2 /> }
             { status === 'delivered' && <BsCheck2All /> }
-            { status === 'read' && <BsCheck2All className=' text-blue-900' /> }
+            { status === 'read' && <BsCheck2All className=' text-blue-900 dark:text-blue-500' /> }
             { status === 'sending' && <HiOutlineClock className='' /> }
           </div>  }
             {
-            type === 'text' && <span className="text-sm text-text-gray line-clamp-2">{content.length > 50 ?content.replace(/\n/g, '').slice(0, 35) +'...' : content}</span>
+            type === 'text' && <span className="text-sm text-text-gray line-clamp-2 dark:text-text-dark">{content.length > 50 ?content.replace(/\n/g, '').slice(0, 35) +'...' : content}</span>
           }
 
           {
@@ -120,7 +120,7 @@ const RecentChatCard = ({ chat }: { chat: ChatProp }) => {
       </section>
       <div ref={waveFormRef} hidden></div>
       <div className='flex flex-col items-center gap-1'>
-        <span className="text-[12px] text-text-gray">{formatTime(createdAt)}</span>
+        <span className="text-[12px] text-text-gray dark:text-text-dark">{formatTime(createdAt)}</span>
         { count ? <span className='text-sm text-message-count-text bg-red-200 w-[20px] h-[20px] rounded-full text-center'>{count}</span> : null }
       </div>
     </li>

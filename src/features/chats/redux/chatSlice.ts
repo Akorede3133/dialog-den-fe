@@ -31,7 +31,6 @@ export type offerObjProp = {
 export type ChatStateProp = {
   socket: Socket;
   onlineUsers: number[];
-  hasUnreadMessages: boolean;
   isAuthenticated: boolean;
   showOtherUserProfile: boolean;
   conversationMessages: MessageProp[];
@@ -58,13 +57,19 @@ export type ChatStateProp = {
   messageSearchMode: boolean;
   messageSearchText: string;
   currentSearchedMessageIndex: number;
-  recentChats: ChatProp[]
+  recentChats: ChatProp[];
+  searchedRecentChats: ChatProp[]
+  searchedRecentChatsText: string;
+  searchedContacts: null | {};
+  searchedContactsText: string;
+  darkMode: boolean;
+
+
 }
 
 const initialState: ChatStateProp = {
   socket: io(import.meta.env.VITE_SOCKET_URL),
   onlineUsers: [],
-  hasUnreadMessages: false,
   isAuthenticated: false,
   showOtherUserProfile: false,
   conversationMessages: [],
@@ -92,6 +97,12 @@ const initialState: ChatStateProp = {
   messageSearchText: '',
   currentSearchedMessageIndex: 0,
   recentChats: [],
+  searchedRecentChats: [],
+  searchedRecentChatsText: '',
+  searchedContacts: null,
+  searchedContactsText: '',
+  darkMode: localStorage.getItem('darkMode') ? true : false
+
 }
 
 export const chatSlice = createSlice({
@@ -201,12 +212,24 @@ export const chatSlice = createSlice({
     setRecentChats: (state, { payload }) => {
       state.recentChats = payload;
     },
-    setHasUnreadMessagesState: (state, { payload }) => {
-      state.hasUnreadMessages = payload;
-    }
+    setSearchedRecentChats: (state, { payload }) => {
+      state.searchedRecentChats = payload;
+    },
+    setSearchedRecentChatsText: (state, { payload }) => {
+      state.searchedRecentChatsText = payload;
+    },
+    setSearchedContacts: (state, { payload }) => {
+      state.searchedContacts = payload;
+    },
+    setSearchedContactsText: (state, { payload }) => {
+      state.searchedContactsText = payload;
+    },
+    setDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
+    },
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setHasUnreadMessagesState } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setSearchedRecentChats, setSearchedRecentChatsText, setSearchedContacts, setSearchedContactsText, setDarkMode  } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

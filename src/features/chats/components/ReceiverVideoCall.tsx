@@ -150,13 +150,13 @@ const ReceiverVideoCall = () => {
   const smallDisplayClass = 'absolute h-[150px] w-[150px] object-cover bg-black rounded-md cursor-pointer bottom-[20%] z-10 right-[5%]'
 
   return (
-    <div className=" bg-message-bg-blu bg-white h-screen lg:h-[25rem] flex flex-col justify-between lg:justify-star items-center gap-4 w-full lg:w-[30rem] lg:right-[10px] lg:top-[10px] lg:rounded-[1rem] overflow-hidden  py-5 absolute z-30 shadow-[0_0_10px_rgba(0,0,0,0.2)]">
+    <div className=" bg-message-bg-blu bg-white dark:bg-bg-dark h-screen lg:h-[25rem] flex flex-col justify-between lg:justify-star items-center gap-4 w-full lg:w-[30rem] lg:right-[10px] lg:top-[10px] lg:rounded-[1rem] overflow-hidden  py-5 absolute z-30 shadow-[0_0_10px_rgba(0,0,0,0.2)]">
       <video ref={localVideoRef}  className={callerBigDisplay ? bigDisplayClass : smallDisplayClass} autoPlay muted onClick={!callerBigDisplay ? toggleBigDisplay : () => null}></video>
       <video ref={remoteVideoRef} className={callerBigDisplay ? smallDisplayClass : bigDisplayClass} autoPlay playsInline hidden={!onGoingCall} onClick={callerBigDisplay ? toggleBigDisplay : () => null}></video>
 
       <div className=' text-center absolute'>
-        <p className={`text-2xl ${callerBigDisplay ? 'text-text-primary' : ' text-white'}`}>{incomingVideoCall?.username}</p>
-        <span className={`text-sm ${callerBigDisplay ? 'text-text-primary' : ' text-white'}`}>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
+        <p className={`text-2xl ${callerBigDisplay ? 'text-text-primary-dark' : ' text-white'}`}>{incomingVideoCall?.username}</p>
+        <span className={`text-sm ${callerBigDisplay ? 'text-text-primary-dark' : ' text-white'}`}>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       {
         true && <div className=' w-full self-end flex justify-between px-10 items-center gap-4 absolute bottom-0 py-3 bg-bg-dark'>
