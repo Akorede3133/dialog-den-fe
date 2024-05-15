@@ -57,7 +57,7 @@ const ContactItems = () => {
   }
     
   return (
-    <div className="h-full overflow-auto contacts px-5">
+    <div className="h-full overflow-auto contacts">
       <ul className=" mt-6 space-y-8">
       {Object.entries(users).map(([category, usersInCategory]) => (
           <ContactCard key={category} category={category} users={usersInCategory as UserProp[]} />

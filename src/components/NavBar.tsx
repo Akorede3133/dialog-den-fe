@@ -51,14 +51,14 @@ const NavBar = () => {
               </li>
             </ContextMenu.Open>
             <ContextMenu.Window type="logout">
-              <ul className="absolute top-[-170%] right-[10px] sm:top-[80%] sm:right-[-120%] bg-white  shadow-lg w-[120px] rounded-md text-text-primary text-sm">
-              <li className=" hover:bg-bg-silver flex items-center">
+              <ul className="absolute top-[-170%] right-[10px] sm:top-[80%] sm:right-[-120%] bg-white dark:bg-sidebar-dark  shadow-lg w-[120px] rounded-md text-text-primary dark:text-text-primary-dark text-sm">
+              <li className=" hover:bg-bg-silver flex items-center dark:hover:bg-sender-bg-dark">
                   <button className="w-full p-3 text-left">Settings</button>
                   <button className="pr-3">
                     <HiOutlineCog8Tooth className="text-xl" />
                   </button>
                 </li>
-                <li className=" hover:bg-bg-silver flex items-center" onClick={handleLogout}>
+                <li className=" hover:bg-bg-silver dark:hover:bg-sender-bg-dark flex items-center" onClick={handleLogout}>
                   <button className="w-full p-3 text-left">Logout</button>
                   <button className="pr-3">
                     <BiLogOutCircle className="text-xl" />

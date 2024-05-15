@@ -21,10 +21,10 @@ const ContactCard = ({ category, users }: CategoryProp) => {
   }
   return ( 
     <li className="space-y-4">
-      <h2 className="text-primary-blue font-medium">{category}</h2>
+      <h2 className="text-primary-blue font-medium px-3">{category}</h2>
       <ul className="space-y-4">
         {users.map((user) => (
-          <li className="w-full" key={user.id}>
+          <li className="w-full hover:bg-bg-silver dark:hover:bg-sidebar-dark py-3 px-3" key={user.id}>
             <button className="w-full text-left" onClick={() => handleSelectChat(user)}>{user.username}</button>
           </li>
         ))}

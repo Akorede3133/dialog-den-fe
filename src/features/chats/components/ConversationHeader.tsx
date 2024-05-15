@@ -126,15 +126,15 @@ const ConversationHeader = () => {
         </ContextMenu.Open>
         <ContextMenu.Window type="chat-header">
           <ul className="absolute top-[70px] right-[10px] bg-white dark:bg-bg-dark shadow-lg rounded-md text-text-primary z-10 dark:text-text-primary-dark  text-sm">
-            <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 md:hidden" onClick={() => dispatch(setShowOtherUserProfile(true))}>
+            <li className="flex hover:bg-bg-silver dark:hover:bg-sidebar-dark items-center cursor-pointer gap-3 p-3 md:hidden" onClick={() => dispatch(setShowOtherUserProfile(true))}>
               <button className="w-full text-left pl-3" >View Profile</button>
               <HiOutlineUser className="text-xl" />
             </li>
-            <li className="flex hover:bg-bg-silver items-center gap-3 p-3" onClick={() => deleteConvo(receiver?.id as number)}>
+            <li className="flex hover:bg-bg-silver dark:hover:bg-sidebar-dark items-center gap-3 p-3" onClick={() => deleteConvo(receiver?.id as number)}>
               <button className="w-full text-left pl-3">Delete</button>
               <HiOutlineTrash className="text-xl" />
             </li>
-            <li className="flex hover:bg-bg-silver items-center gap-3 p-3" onClick={() => setShowSearch(true)}>
+            <li className="flex hover:bg-bg-silver dark:hover:bg-sidebar-dark items-center gap-3 p-3" onClick={() => setShowSearch(true)}>
               <button className="w-full text-left pl-3">Search Messages</button>
                 <HiOutlineMagnifyingGlass className="text-xl" />
             </li>
