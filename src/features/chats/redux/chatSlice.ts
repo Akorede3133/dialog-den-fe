@@ -62,6 +62,7 @@ export type ChatStateProp = {
   searchedRecentChatsText: string;
   searchedContacts: null | {};
   searchedContactsText: string;
+  darkMode: boolean;
 
 
 }
@@ -100,6 +101,7 @@ const initialState: ChatStateProp = {
   searchedRecentChatsText: '',
   searchedContacts: null,
   searchedContactsText: '',
+  darkMode: localStorage.getItem('darkMode') ? true : false
 
 }
 
@@ -222,9 +224,12 @@ export const chatSlice = createSlice({
     setSearchedContactsText: (state, { payload }) => {
       state.searchedContactsText = payload;
     },
+    setDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
+    },
   }
 })
 
-export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setSearchedRecentChats, setSearchedRecentChatsText, setSearchedContacts, setSearchedContactsText  } = chatSlice.actions;
+export const {displayCoversation, setConversationMessages, setOnlineUsers, setReceiver, setVoiceCall, setVideoCall, turnOffCalls, setLocalStream, setRemoteStream, setRemotePeerConnection, setOutGoingVoiceCall, setOutGoingVideoCall, setIncomingVoiceCall, setIncomingVideoCall, addIce, addOffer, addAnswer, setOfferObj, setOnGoingCall, addPeerIce, setShowOtherUserProfile, setAuthenticated, setSearchMatches, setMessageSearchMode, setMessageSearchText, setCurrentSearchedMessageIndex, setRecentChats, setSearchedRecentChats, setSearchedRecentChatsText, setSearchedContacts, setSearchedContactsText, setDarkMode  } = chatSlice.actions;
 export const selectChat = (state: RootState) => state.chat;
 export default chatSlice.reducer;

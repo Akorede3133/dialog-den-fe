@@ -10,9 +10,9 @@ const ActiveUserCard = ({ user }: { user: UserProp}) => {
     dispatch(displayCoversation(true));
   }
   return (
-    <li className='bg-bg-silver flex justify-end py-2 flex-col rounded-md px-4 relative h-[50px]' onClick={handleSelectChat}>
+    <li className='bg-bg-silver dark:bg-sidebar-dark flex justify-end py-2 flex-col rounded-md px-4 relative h-[50px]' onClick={handleSelectChat}>
       <OnlineImage photo={user?.photo} />
-      <p className=' text-text-primary font-medium text-sm '>{user?.username}</p>
+      <p className=' text-text-primary dark:text-text-primary-dark font-medium text-sm '>{user?.username}</p>
     </li>
   )
 }

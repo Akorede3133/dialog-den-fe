@@ -51,7 +51,7 @@ const ActiveUsers = () => {
     )
   }
   // if (!activeUsers.length) {
-    return <p className="text-xl text-text-primary text-center py-2">No active users</p>
+    return <p className="text-xl dark:text-text-primary-dark text-text-primary text-center py-2">No active users</p>
   // }
  
 }

@@ -22,10 +22,10 @@ const ChatListHeader = () => {
   }
   return (
     <div className="px-5">
-      <PagesHeader text="Chat" />
+      <PagesHeader text="Chats" />
       <PagesSearch placeholder="Search messages or users" search={handleSearch} />
       <ActiveUsers />
-      <h2 className=" font-roboto-condensed text-text-primary font-medium text-sm">Recent</h2>
+      <h2 className=" font-roboto-condensed text-text-primary dark:text-text-primary-dark font-medium text-sm">Recent</h2>
     </div>
   )
 }

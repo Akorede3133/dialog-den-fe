@@ -8,11 +8,13 @@ export default {
     extend: {
       colors: {
         'bg-light': '#fff',
-        'bg-dark': '#262e35',
+        'bg-dark': '#303841',
+        'text-dark': '#9394b6',
         'text-primary': '#343a40',
+        'text-primary-dark': '#eff2f7',
         'primary-blue': '#7269ef',
         'sidebar-light': '#F5F7FB',
-        'sidebar-dark': '#303841',
+        'sidebar-dark': '#36404a',
         'sender-bg-dark': '#262e35',
         'message-count-cirle': '#523b49',
         'message-count-text': '#ef4669',
@@ -27,4 +29,5 @@ export default {
     },
   },
   plugins: [],
+  darkMode: 'selector'
 }

@@ -90,15 +90,15 @@ const MessageCard = ({ message, messages, index }: MessageCardProp) => {
       <ContextMenu>
         <ContextMenu.Open type="message-context">
           <button className={` ${isSender ? 'order-1': 'order-2'} ${(isReceiverImageCard || issenderImageCard) && 'self-end mb-5'} self-start`}>
-            <HiOutlineEllipsisVertical />
+            <HiOutlineEllipsisVertical className=" dark:text-text-primary-dark" />
           </button>
         </ContextMenu.Open>
         <ContextMenu.Window type="message-context">
-          <ul className={`absolute ${isSender ? 'left-0' : 'right-0' } top-[-70px] bg-white shadow-lg rounded-md text-text-primary z-10 w-full  text-sm`}>
-            <li className={`flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 w-full ${message.type !== 'text' && 'hidden'}`}>
+          <ul className={`absolute ${isSender ? 'left-0' : 'right-0' } top-[-70px] bg-white dark:bg-bg-dark dark:text-text-primary-dark shadow-lg rounded-md text-text-primary z-10 w-full  text-sm`}>
+            <li className={`flex hover:bg-bg-silver dark:hover:bg-sidebar-dark items-center cursor-pointer gap-3 p-3 w-full ${message.type !== 'text' && 'hidden'}`}>
               <button className="w-full text-left pl-3" onClick={() => copyMessage(content)} >Copy</button>
             </li>
-            <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3">
+            <li className="flex hover:bg-bg-silver dark:hover:bg-sidebar-dark items-center cursor-pointer gap-3 p-3">
               <button className="w-full text-left pl-3"  onClick={() => deleteMsg(id as number)}>Delete</button>
             </li>
           </ul>

@@ -63,7 +63,7 @@ const ConversationHeader = () => {
   const disableDownButtonSearchedMessagesNavigator = searchMatches.length - 1 === currentSearchedMessageIndex;
   
   return (
-    <div className="flex justify-between bg-white px-3 py-3 border-b relative w-full">
+    <div className="flex justify-between bg-white dark:bg-sender-bg-dark px-3 py-3 border-b dark:border-bg-dark relative w-full">
       { showSearch &&  <form onSubmit={handleSearch} ref={searchRef} className="absolute rounded-lg bg-white z-10 p-2 left-[50%] top-[20px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex  gap-3">
         <input type="text" className=" bg-bg-silver p-2 w-full outline-none text-sm"  autoFocus placeholder="Search..." value={searchText} onChange={(e) => setSearchText(e.target.value)} />
         <button type="button" className=" absolute right-0 top-0 px-1 py-1" onClick={hideSearchForm}>
@@ -91,41 +91,41 @@ const ConversationHeader = () => {
         <HiOutlineChevronLeft />
       </button>
         <img src={receiver?.photo} alt="" className="w-[35px] h-[35px] rounded-full object-cover" />
-        <p>{receiver?.username}</p>
+        <p className=" dark:text-text-primary-dark">{receiver?.username}</p>
         { isOnline && <span className="h-[10px] w-[10px] bg-green-500 rounded-full"></span>}
      </section>
 
      <ul className="flex items-center px-3">
       <li className=" hidden md:block mr-10">
         <button onClick={() => setShowSearch(true)}>
-          <HiOutlineMagnifyingGlass className="text-xl" />
+          <HiOutlineMagnifyingGlass className="text-xl dark:text-bg-silver" />
         </button>
         </li>
       <li className="mr-10">
         <button onClick={handleVoiceCall}>
-          <HiOutlinePhone className="text-xl" />
+          <HiOutlinePhone className="text-xl dark:text-bg-silver" />
         </button>
       </li>
       <li className="mr-10">
         <button onClick={handleVideoCall}>
-          <HiOutlineVideoCamera className="text-xl" />
+          <HiOutlineVideoCamera className="text-xl dark:text-bg-silver" />
         </button>
       </li>
       <li className="hidden md:block mr-10">
         <button onClick={() => dispatch(setShowOtherUserProfile(true))}>
-          <HiOutlineUser className="text-xl" />
+          <HiOutlineUser className="text-xl dark:text-bg-silver" />
         </button>
       </li>
       <ContextMenu>
         <ContextMenu.Open type="chat-header">
           <li className="">
             <button>
-              <HiOutlineEllipsisHorizontal className="text-xl" />
+              <HiOutlineEllipsisHorizontal className="text-xl dark:text-bg-silver" />
             </button>
           </li>
         </ContextMenu.Open>
         <ContextMenu.Window type="chat-header">
-          <ul className="absolute top-[70px] right-[10px] bg-white shadow-lg rounded-md text-text-primary z-10  text-sm">
+          <ul className="absolute top-[70px] right-[10px] bg-white dark:bg-bg-dark shadow-lg rounded-md text-text-primary z-10 dark:text-text-primary-dark  text-sm">
             <li className="flex hover:bg-bg-silver items-center cursor-pointer gap-3 p-3 md:hidden" onClick={() => dispatch(setShowOtherUserProfile(true))}>
               <button className="w-full text-left pl-3" >View Profile</button>
               <HiOutlineUser className="text-xl" />

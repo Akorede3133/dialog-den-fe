@@ -50,10 +50,10 @@ const AppLayout = () => {
         { videoCall && outGoingVideoCall &&  <VideoCall /> }
         { videoCall && incomingVideoCall && <ReceiverVideoCall /> }
         <NavBar />
-        <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light sm:order-1">
+        <div className="h-full  overflow-hidden w-full sm:max-w-[400px] sm:[w-400px] bg-sidebar-light dark:bg-bg-dark sm:order-1 dark:text-white">
           <Outlet />
         </div>
-        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full ${showOtherUserProfile ? 'half--conversation': 'conversation'} absolute top-0 right-0 sm:static order-3 overflow-hidden`}>
+        <div className={`${(!receiver || !showConversation) ? 'translate-x-[100%] sm:transition-none sm:translate-x-0 transition-all ease-in duration-[0.4s]' : 'block'} sm:block h-full ${showOtherUserProfile ? 'half--conversation': 'conversation'} absolute top-0 right-0 sm:static order-3 overflow-hidden bg-[#EFF7FE] dark:bg-sender-bg-dark`}>
           {
             receiver ? <Conversation /> : <EmptyChat />
           }

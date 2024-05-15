@@ -5,7 +5,7 @@ import { selectChat, setConversationMessages } from "../redux/chatSlice"
 import useSendMessage from "../hooks/useSendMessage"
 import { useEffect, useRef, useState } from "react"
 import useSendImage from "../hooks/useSendImage"
-import Picker from "emoji-picker-react";
+import Picker, { Theme} from "emoji-picker-react";
 import useCurrentUser from "../../auth/hooks/useCurrentUser"
 import { MessageProp } from "./MessageCard"
 import updateChat from "../utils/updateChat"
@@ -17,7 +17,7 @@ type TextMessageProps = {
 const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
   const dispatch = useAppDispatch();
   const [showEmoji, setShowEmoji] = useState(false);
-  const { receiver, conversationMessages, recentChats } = useAppSelector(selectChat);
+  const { receiver, conversationMessages, recentChats, darkMode } = useAppSelector(selectChat);
   const { user } = useCurrentUser();
   const emojiRef = useRef<HTMLDivElement>(null)
   const { send, error } = useSendMessage();
@@ -94,12 +94,12 @@ const SendTextMessage = ({ showRecorder }: TextMessageProps) => {
     toast.error('Failed to send message.');
   }
   return (
-    <div className="bg-white relative grid grid-cols-[1fr,auto] items-center gap-4 p-3 w-full">
-      { showEmoji && <div ref={emojiRef} className=" absolute bottom-[100px] right-20">
-        <Picker onEmojiClick={onEmojiClick} /> 
+    <div className="bg-white dark:bg-sender-bg-dark relative grid grid-cols-[1fr,auto] items-center gap-4 p-3 w-full">
+      { showEmoji && <div ref={emojiRef} className=" absolute left-[50%] translate-x-[-50%] sm:translate-x-0  z-[1000] bottom-[80px] sm:right-20">
+        <Picker onEmojiClick={onEmojiClick} theme={darkMode ? Theme.DARK : Theme.LIGHT} /> 
       </div> }
       <section className="">
-        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver p-3 w-full rounded-md outline-none overflow-auto text-area" value={message} onChange={handleInput }   rows={1}/>
+        <textarea placeholder="Enter Message..."  className=" resize-none h-[50px] bg-bg-silver dark:bg-sidebar-dark dark:text-text-primary-dark p-3 w-full rounded-md outline-none overflow-auto text-area" value={message} onChange={handleInput }   rows={1}/>
       </section>
       <section className="flex gap-5 items-center">
         <button onClick={handleEmoji}>

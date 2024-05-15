@@ -50,7 +50,7 @@ const RecentChats = () => {
   if (isSearching && searchedRecentChats.length) {
     return (
       <div className="recent--chats h-full overflow-auto py-5">
-        <ul className="space-y-5 px-5">
+        <ul className="space-y-5">
           {
             searchedRecentChats.map((chat: ChatProp, index) => (
               <RecentChatCard key={index} chat={chat} />
@@ -71,7 +71,7 @@ const RecentChats = () => {
 
   return (
     <div className="recent--chats h-full overflow-auto py-5">
-      <ul className="space-y-5 px-5">
+      <ul className="space-y-5">
         {
           recentChats.map((chat: ChatProp, index) => (
             <RecentChatCard key={index} chat={chat} />

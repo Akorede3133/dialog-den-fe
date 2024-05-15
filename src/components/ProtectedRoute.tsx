@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, [user, isGettingUser, navigate])
   
   if (isGettingUser) {
-    return <div className="min-h-screen h-full flex justify-center items-center">
+    return <div className="min-h-screen h-full flex justify-center items-center dark:bg-bg-dark">
       <Spin size="large" />
     </div>
   }

@@ -3,7 +3,7 @@ import { UserProp } from "../../contacts/components/ContactCard"
 const SenderImageCard = ({ user }: { user: UserProp }) => {
 
   return (
-    <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end'>
+    <div className='flex items-start gap-3 pb-2 mb-[-5px] text-sm self-end dark:text-text-primary-dark'>
       <span>{user?.username}</span>
       <img src={user?.photo} alt="" className='h-[40px] w-[40px] rounded-full object-cover' />
     </div> 
