@@ -28,14 +28,14 @@ const LoginForm = () => {
     toast.error(error.message);
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-sidebar-dark rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
       <section className=" space-y-2">
         <label htmlFor="username" className=" text-sm text-text-primary font-semibold">Username</label>
-        <div className="border flex gap-3 rounded-md">
-          <button className="bg-bg-silver p-3">
-            <HiOutlineUser className=" text-text-gray" />
+        <div className="border flex gap-3 rounded-md dark:border-bg-dark">
+          <button className="bg-bg-silver dark:bg-sidebar-dark p-3">
+            <HiOutlineUser className=" text-text-gray dark:text-text-primary-dark" />
           </button>
-          <input type="text" placeholder="Enter Username" className=" outline-none text-sm w-full" {...register('username', {
+          <input type="text" placeholder="Enter Username" className=" outline-none text-sm w-full dark:bg-bg-dark dark:text-text-primary-dark " {...register('username', {
             required: 'This field is required'
           })} />
         </div>
@@ -43,11 +43,11 @@ const LoginForm = () => {
       </section>
       <section className=" space-y-2">
         <label htmlFor="password" className=" text-sm text-text-primary font-semibold">Password</label>
-        <div className="border flex gap-3 rounded-md">
-          <button className="bg-bg-silver p-3">
-            <HiOutlineLockClosed className=" text-text-gray" />
+        <div className="border flex gap-3 rounded-md dark:border-bg-dark">
+          <button  className="bg-bg-silver dark:bg-sidebar-dark p-3">
+            <HiOutlineLockClosed className=" text-text-gray dark:text-text-primary-dark" />
           </button>
-          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full" {...register('password', {
+          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full dark:bg-bg-dark text-text-primary-dark " {...register('password', {
             required: 'This field is required'
           })} />
         </div>
@@ -56,7 +56,7 @@ const LoginForm = () => {
       <section className="pt-3">
         <button className="capitalize bg-message-bg-blue w-full text-white py-2 rounded-md" disabled={isLogginIn}>{isLogginIn ? 'Loging in...' : 'Login'}</button>
       </section>
-      <section className="text-center space-y-3 pt-5">
+      <section className="text-center dark:text-text-primary-dark space-y-3 pt-5">
         <p>Don&apos;t have an account? <Link to='/register' className="text-message-bg-blue">register</Link></p>
         <p>&copy; 2024 Dialogden</p>
       </section>
