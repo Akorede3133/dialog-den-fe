@@ -1,36 +1,48 @@
-import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon, HiOutlineUsers  } from "react-icons/hi2";
+import { HiOutlineChatBubbleOvalLeftEllipsis, HiOutlineUserCircle, HiOutlineCog8Tooth, HiOutlineMoon, HiOutlineUsers, HiOutlineSun  } from "react-icons/hi2";
 import NavIcon from "./NavIcon";
 import logo from '../assets/chat-logo.png';
 import useCurrentUser from "../features/auth/hooks/useCurrentUser";
 import ContextMenu from "../context/ContextMenu";
 import { BiLogOutCircle } from "react-icons/bi";
 import useLogout from "../features/auth/hooks/useLogout";
-import { useAppSelector } from "../redux/hooks";
-import { selectChat } from "../features/chats/redux/chatSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { selectChat, setDarkMode } from "../features/chats/redux/chatSlice";
 
 const NavBar = () => {
   const { user } = useCurrentUser();
-  const { socket } = useAppSelector(selectChat)
+  const { socket, darkMode } = useAppSelector(selectChat)
+  console.log(darkMode);
+  
   const { logoutUser } = useLogout();
+  const dispatch = useAppDispatch();
+
   const handleLogout = () => {
     logoutUser();
     socket.emit('logout', { userId: user?.id })
   }
+  const handleDarkMode = () => {
+    dispatch(setDarkMode())
+  }
   return (
-    <header className={`w-full sm:w-[70px] bg-white drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1 relative sm:flex flex-col items-center`}>
+    <header className={`w-full sm:w-[70px] bg-white dark:bg-sidebar-dark drop-shadow-xl shadow-inner sm:h-full sm:max-h-full order-2 sm:order-1 relative sm:flex flex-col items-center`}>
       <section className="hidden sm:block mt-5 mb-10 px-3">
         <img src={logo} className=" w-[70px h-auto object-cover rounded-md" alt="" />
       </section>
       <nav>
-        <ul className=" grid grid-cols-5 sm:flex items-center sm:flex-col sm:justify-between sm:gap-10 sm:px-4 ">
-          <NavIcon link='profile' icon={<HiOutlineUserCircle className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
-          <NavIcon link='' icon={<HiOutlineChatBubbleOvalLeftEllipsis className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
-          <NavIcon link='contacts' icon={<HiOutlineUsers className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
-          <NavIcon link='settings' icon={<HiOutlineCog8Tooth className="text-xl hover:text-primary-blue bg-inherit text-inherit"  />} />
-          <li className=" hidden sm:block">
-            <button className="p-4">
-              <HiOutlineMoon  className="text-xl hover:text-primary-blue bg-inherit text-inherit" />
+        <ul className=" grid grid-cols-6 sm:flex items-center sm:flex-col sm:justify-between sm:gap-10 sm:px-4 ">
+          <NavIcon link='profile' icon={<HiOutlineUserCircle className="text-2xl text-[#86878a] font-bold dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit"  />} />
+          <NavIcon link='' icon={<HiOutlineChatBubbleOvalLeftEllipsis className="text-2xl text-[#86878a] dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit"  />} />
+          <NavIcon link='contacts' icon={<HiOutlineUsers className="text-2xl text-[#86878a] dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit"  />} />
+          <NavIcon link='settings' icon={<HiOutlineCog8Tooth className="text-2xl text-[#86878a] dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit"  />} />
+          <li className="flex items-center justify-center" onClick={handleDarkMode}>
+            {
+              darkMode ? <button className="p-4">
+              <HiOutlineSun  className="text-2xl text-[#86878a] dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit" />
+            </button> : <button className="p-4">
+              <HiOutlineMoon  className="text-2xl text-[#86878a] dark:text-gray-200 hover:text-primary-blue bg-inherit text-inherit" />
             </button>
+            }
+          
           </li>
           <ContextMenu>
             <ContextMenu.Open type="logout">
