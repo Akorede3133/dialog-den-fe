@@ -4,7 +4,7 @@ type HeaderProp = {
 
 const PagesHeader = ({ text }: HeaderProp) => {
   return (
-    <h3 className=" text-text-primary text-2xl font-medium py-5">{text}</h3>
+    <h3 className=" text-text-primary dark:text-text-primary-dark text-2xl font-medium py-5">{text}</h3>
   )
 }
 

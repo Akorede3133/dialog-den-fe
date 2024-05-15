@@ -6,7 +6,7 @@ type PageSearchProp = {
 }
 const PagesSearch = ( { placeholder, search }: PageSearchProp) => {
   return (
-    <div className=" bg-bg-silver flex items-center gap-8 px-4 py-3 rounded-sm mb-5">
+    <div className=" bg-bg-silver dark:bg-sidebar-dark flex items-center gap-8 px-4 py-3 rounded-sm mb-5">
       <HiOutlineMagnifyingGlass className="text-[18px] text-text-gray" />
       <input type="text" className="bg-inherit text-sm outline-none focus:outline-none w-full" placeholder={placeholder} onChange={search} />
     </div>
