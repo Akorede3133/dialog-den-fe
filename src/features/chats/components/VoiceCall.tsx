@@ -112,13 +112,13 @@ const VoiceCall = () => {
 
 
   return (
-    <div className="bg-bg-silver h-screen lg:h-[25rem] flex flex-col justify-between lg:justify-star items-center gap-4 w-full lg:w-[30rem] lg:right-[10px] lg:top-[10px] rounded-[1rem]  py-5 absolute z-30 shadow-[0_0_10px_rgba(0,0,0,0.2)]">
+    <div className="bg-bg-silver dark:bg-bg-dark h-screen lg:h-[25rem] flex flex-col justify-between lg:justify-star items-center gap-4 w-full lg:w-[30rem] lg:right-[10px] lg:top-[10px] rounded-[1rem]  py-5 absolute z-30 shadow-[0_0_10px_rgba(0,0,0,0.2)]">
       <audio ref={localAudioRef} hidden autoPlay playsInline></audio>
       <audio ref={remoteAudioRef} hidden autoPlay playsInline></audio>
 
       <div className=' text-center'>
-        <p className=' text-2xl text-text-primary'>{outGoingVoiceCall?.username}</p>
-        <span className=' text-text-primary text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
+        <p className=' text-2xl text-text-primary dark:text-text-primary-dark'>{outGoingVoiceCall?.username}</p>
+        <span className=' text-text-primary dark:text-text-primary-dark text-sm'>{onGoingCall ? formatDuration(callDuration) : 'calling...'}</span>
       </div>
       <img src={outGoingVoiceCall?.photo} alt="" className='w-[150px] h-[150px] rounded-full object-cover' />
       { !onGoingCall && 
