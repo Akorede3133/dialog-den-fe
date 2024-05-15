@@ -9,7 +9,6 @@ import Login from "./features/auth/pages/Login"
 import Register from "./features/auth/pages/Register"
 import { Toaster } from "react-hot-toast"
 import ProtectedRoute from "./components/ProtectedRoute"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { useAppSelector } from "./redux/hooks"
 import { selectChat } from "./features/chats/redux/chatSlice"
 import { useEffect } from "react"
@@ -38,7 +37,6 @@ const client = new QueryClient({
 });
 const App = () => {
   const { darkMode } = useAppSelector(selectChat)
-  console.log(darkMode);
   if (darkMode) {
     localStorage.setItem('darkMode', 'dark')
   } else {
