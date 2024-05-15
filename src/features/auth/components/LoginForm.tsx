@@ -47,7 +47,7 @@ const LoginForm = () => {
           <button  className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineLockClosed className=" text-text-gray dark:text-text-primary-dark" />
           </button>
-          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full dark:bg-bg-dark text-text-primary-dark " {...register('password', {
+          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full dark:bg-bg-dark dark;text-text-primary-dark " {...register('password', {
             required: 'This field is required'
           })} />
         </div>
