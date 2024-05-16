@@ -23,7 +23,7 @@ const RegisterForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-sidebar-dark rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
       <section className=" space-y-2">
-        <label htmlFor="email" className=" text-sm text-text-primary font-semibold">Email</label>
+        <label htmlFor="email" className=" text-sm text-text-primary dark:text-text-primary-dark font-semibold">Email</label>
         <div className="border dark:border-bg-dark flex gap-3 rounded-md">
           <button className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineMail className=" text-text-gray dark:text-text-primary-dark" />
@@ -37,7 +37,7 @@ const RegisterForm = () => {
         }
       </section>
       <section className=" space-y-2">
-        <label htmlFor="username" className=" text-sm text-text-primary font-semibold">Username</label>
+        <label htmlFor="username" className=" text-sm text-text-primary dark:text-text-primary-dark font-semibold">Username</label>
         <div className="border dark:border-bg-dark flex gap-3 rounded-md">
           <button className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineUser className=" text-text-gray dark:text-text-primary-dark" />
@@ -51,7 +51,7 @@ const RegisterForm = () => {
         }
       </section>
       <section className=" space-y-2">
-        <label htmlFor="password" className=" text-sm text-text-primary font-semibold">Password</label>
+        <label htmlFor="password" className=" text-sm text-text-primary dark:text-text-primary-dark font-semibold">Password</label>
         <div className="border dark:border-bg-dark flex gap-3 rounded-md">
           <button className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineLockClosed className=" text-text-gray dark:text-text-primary-dark" />
