@@ -56,7 +56,7 @@ const VoicePlayer = ({ content, isSender, status }: { content: string, isSender:
     setIsPlaying(false);
   }
   return (
-    <div  className={`${isSender ? ` mr-[rem] bg-bg-silver dark:bg-sidebar-dark` : `bg-[#1C9DEA] ml-[3.2rem] text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
+    <div  className={`${isSender ? ` bg-bg-silver dark:bg-sidebar-dark` : `bg-[#1C9DEA] ml-[3.2rem text-white`} px-2 pb-2 rounded flex flex-col gap-2 `}>
       <div className="flex items-center gap-2">
         <div className="mt-5">
           {
@@ -67,7 +67,7 @@ const VoicePlayer = ({ content, isSender, status }: { content: string, isSender:
           <div ref={waveFormRef} className="w-full mt-5 bg-red" ></div>
         </div>
       </div>
-      <div className="flex justify-between text-[0.7rem]">
+      <div className="flex justify-between text-[0.7rem] dark:text-text-primary-dark">
         { isPlaying ? <span>{formatDuration(currentTime)}</span> : <span>{formatDuration(totalDuration)}</span> }
         <span>7:58am</span>
       </div>
