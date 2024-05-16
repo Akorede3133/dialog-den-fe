@@ -30,7 +30,7 @@ const LoginForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white dark:bg-sidebar-dark rounded-md shadow-md p-4 w-[90%] sm:w-[500px] mx-auto space-y-3 my-10">
       <section className=" space-y-2">
-        <label htmlFor="username" className=" text-sm text-text-primary font-semibold">Username</label>
+        <label htmlFor="username" className=" text-sm text-text-primary dark:text-text-primary-dark font-semibold">Username</label>
         <div className="border flex gap-3 rounded-md dark:border-bg-dark">
           <button className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineUser className=" text-text-gray dark:text-text-primary-dark" />
@@ -42,12 +42,12 @@ const LoginForm = () => {
         { errors.username && <span className=" text-sm text-red-500">{errors.username.message}</span> }
       </section>
       <section className=" space-y-2">
-        <label htmlFor="password" className=" text-sm text-text-primary font-semibold">Password</label>
+        <label htmlFor="password" className=" text-sm text-text-primary  dark:text-text-primary-dark font-semibold">Password</label>
         <div className="border flex gap-3 rounded-md dark:border-bg-dark">
           <button  className="bg-bg-silver dark:bg-sidebar-dark p-3">
             <HiOutlineLockClosed className=" text-text-gray dark:text-text-primary-dark" />
           </button>
-          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full dark:bg-bg-dark dark;text-text-primary-dark " {...register('password', {
+          <input type="password" placeholder="Enter Password" className=" outline-none text-sm w-full dark:bg-bg-dark dark:text-text-primary-dark " {...register('password', {
             required: 'This field is required'
           })} />
         </div>

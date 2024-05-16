@@ -34,6 +34,7 @@ const AppLayout = () => {
       ));
       dispatch(setConversationMessages(updatedMessages));
       queryClient.invalidateQueries({ queryKey: ['messages', receiver?.id] })
+      queryClient.invalidateQueries({ queryKey: ['recentChats'] })
 
     });
     socketListener(socket, dispatch)
