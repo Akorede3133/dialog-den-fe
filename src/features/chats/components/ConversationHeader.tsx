@@ -64,15 +64,15 @@ const ConversationHeader = () => {
   
   return (
     <div className="flex justify-between bg-white dark:bg-sender-bg-dark px-3 py-3 border-b dark:border-bg-dark relative w-full">
-      { showSearch &&  <form onSubmit={handleSearch} ref={searchRef} className="absolute rounded-lg bg-white z-10 p-2 left-[50%] top-[20px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex  gap-3">
-        <input type="text" className=" bg-bg-silver p-2 w-full outline-none text-sm"  autoFocus placeholder="Search..." value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+      { showSearch &&  <form onSubmit={handleSearch} ref={searchRef} className="absolute rounded-lg bg-white z-10 dark:bg-sidebar-dark p-2 left-[50%] top-[20px] w-[200px] max-w-[200px] shadow-[0_0_10px_rgba(0,0,0,0.2)] flex  gap-3">
+        <input type="text" className=" bg-bg-silver dark:bg-bg-dark dark:text-text-primary-dark p-2 w-full outline-none text-sm"  autoFocus placeholder="Search..." value={searchText} onChange={(e) => setSearchText(e.target.value)} />
         <button type="button" className=" absolute right-0 top-0 px-1 py-1" onClick={hideSearchForm}>
-          <HiOutlineXMark />
+          <HiOutlineXMark className=" dark:text-text-primary-dark" />
         </button>
         <section className="flex items-center mt-2 gap-2 ">
           <div className=" flex items-center gap-1">
             <button type="button" onClick={navigateSearchDownward} disabled={disableDownButtonSearchedMessagesNavigator}>
-              <HiOutlineArrowDown className={`text-sm `}  />
+              <HiOutlineArrowDown className=" dark:text-text-primary-dark text-sm"  />
             </button>
             { searchMatches.length ? <div className="text-[12px]">
               <span>{currentSearchedMessageIndex + 1}</span>
@@ -81,14 +81,14 @@ const ConversationHeader = () => {
 
             </div> : null }
             <button type="button" onClick={navigateSearchUpward} disabled={currentSearchedMessageIndex === 0}>
-              <HiOutlineArrowUp className="text-sm" />
+              <HiOutlineArrowUp className="text-sm dark:text-text-primary-dark" />
             </button>
           </div>
         </section>
       </form> }
      <section className="flex items-center gap-2">
       <button className="sm:hidden" onClick={handleCloseConversation}>
-        <HiOutlineChevronLeft />
+        <HiOutlineChevronLeft className=" dark:text-text-primary-dark" />
       </button>
         <img src={receiver?.photo} alt="" className="w-[35px] h-[35px] rounded-full object-cover" />
         <p className=" dark:text-text-primary-dark">{receiver?.username}</p>
