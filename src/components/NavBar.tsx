@@ -6,12 +6,11 @@ import ContextMenu from "../context/ContextMenu";
 import { BiLogOutCircle } from "react-icons/bi";
 import useLogout from "../features/auth/hooks/useLogout";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectChat, setDarkMode } from "../features/chats/redux/chatSlice";
+import { selectChat, setDarkMode, setReceiver } from "../features/chats/redux/chatSlice";
 
 const NavBar = () => {
   const { user } = useCurrentUser();
   const { socket, darkMode } = useAppSelector(selectChat)
-  console.log(darkMode);
   
   const { logoutUser } = useLogout();
   const dispatch = useAppDispatch();
@@ -19,6 +18,7 @@ const NavBar = () => {
   const handleLogout = () => {
     logoutUser();
     socket.emit('logout', { userId: user?.id })
+    dispatch(setReceiver(null));
   }
   const handleDarkMode = () => {
     dispatch(setDarkMode())
