@@ -18,7 +18,7 @@ const NavBar = () => {
   const handleLogout = () => {
     logoutUser();
     socket.emit('logout', { userId: user?.id })
-    dispatch(setReceiver(null));
+    // dispatch(setReceiver(null));
   }
   const handleDarkMode = () => {
     dispatch(setDarkMode())
