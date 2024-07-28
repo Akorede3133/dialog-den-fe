@@ -6,7 +6,7 @@ import ContextMenu from "../context/ContextMenu";
 import { BiLogOutCircle } from "react-icons/bi";
 import useLogout from "../features/auth/hooks/useLogout";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectChat, setDarkMode, setReceiver } from "../features/chats/redux/chatSlice";
+import { selectChat, setDarkMode } from "../features/chats/redux/chatSlice";
 
 const NavBar = () => {
   const { user } = useCurrentUser();
