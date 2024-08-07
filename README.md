@@ -5,6 +5,7 @@
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
     - [Key Features ](#key-features-)
+    - [🚀 Backend Link ](#-backend-link-)
   - [🚀 Live Demo ](#-live-demo-)
   - [💻 Getting Started ](#-getting-started-)
     - [Prerequisites](#prerequisites)
@@ -50,6 +51,9 @@ Dialogue Den is a robust chat application built using the PERN stack (PostgreSQL
 - Image Sharing: Share images with your contacts.
 - Voice and Video Calls: Make real-time voice and video calls using WebRTC.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## 🚀 Backend Link <a name="live-demo"></a>
+- [Backend Link](https://github.com/Akorede3133/dialog-den-be)
 
 ## 🚀 Live Demo <a name="live-demo"></a>
 
